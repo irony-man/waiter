@@ -162,6 +162,7 @@ export default {
         } else {
           this.instance = await this.createMenuItem(this.instance);
         }
+        this.$toast.success("Item saved!!");
         this.$emit('saved', this.instance);
       } catch (error) {
         if (error instanceof HttpBadRequestError) {

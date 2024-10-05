@@ -1,23 +1,8 @@
 # # Standard Library
-# import functools
-# import io
-# import os
-# import uuid
-# from datetime import timedelta
-# from decimal import Decimal
-# from platform import machine
-# from typing import Any, Callable, Collection, Dict, List, Optional
-
-
-# import bcrypt
-# import pgeocode
-# from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.files.images import ImageFile
 from django.core.validators import MaxValueValidator, MinValueValidator
-
-# from django.db import IntegrityError
 from django.db.models import (
     PROTECT,
     BooleanField,
@@ -26,11 +11,11 @@ from django.db.models import (
     DecimalField,
     ForeignKey,
     ImageField,
+    JSONField,
     OneToOneField,
     PositiveIntegerField,
     TextField,
 )
-from django.utils import timezone
 from loguru import logger
 
 from common.abstract_models import CreateUpdate
@@ -91,15 +76,18 @@ class Restaurant(CreateUpdate):
 
 
 class Table(CreateUpdate):
-    number = PositiveIntegerField()
+    number = PositiveIntegerField(default=0)
     restaurant = ForeignKey(Restaurant, on_delete=PROTECT)
     qr_code = ImageField()
+    qr_code_response = JSONField(default=dict, blank=True)
+
+    def qr_code_url(self):
+        return self.qr_code_response.get("secure_url", None)
 
     def __str__(self):
         return f"{self.number} / {self.restaurant}"
 
     def save(self, **kwargs):
-        self.number = self.restaurant.table_count + 1
         if not self.qr_code:
             self.qr_code = ImageFile(
                 attach_qr(self.uid), name=f"QR_{self.uid}.png"

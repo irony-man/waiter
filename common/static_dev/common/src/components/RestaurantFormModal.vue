@@ -108,6 +108,7 @@ export default {
         } else {
           this.instance = await this.createRestaurant(this.instance);
         }
+        this.$toast.success("Restaurant saved!!");
         this.$emit('saved', this.instance);
       } catch (error) {
         if (error instanceof HttpBadRequestError) {

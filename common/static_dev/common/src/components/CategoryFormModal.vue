@@ -112,12 +112,13 @@ export default {
         } else {
           this.instance = await this.createCategory(this.instance);
         }
+        this.$toast.success("Category saved!!");
         this.$emit('saved', this.instance);
       } catch (error) {
         if (error instanceof HttpBadRequestError) {
           this.errors = error.data;
         }
-        this.$toast.error("Error saving Item!!");
+        this.$toast.error("Error saving Category!!");
         console.error(error);
       } finally {
         this.instance.submitting = false;

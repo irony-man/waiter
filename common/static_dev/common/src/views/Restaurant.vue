@@ -37,6 +37,7 @@
               Add Table
             </LoadingButton>
             <LoadingButton
+              v-if="tableData.results.length"
               class="btn-outline-danger"
               :is-loading="!!deletingTable"
               btn-icon="fas fa-trash"
@@ -64,7 +65,7 @@
               </div>
               <img
                 class="img card-img-bottom"
-                :src="table.qr_code"
+                :src="table.qr_code_url"
                 :alt="`Table number ${table.number}`">
             </div>
           </div>
@@ -256,6 +257,7 @@ export default {
       try {
         this.tableCreating = true;
         await this.createTable({restaurant: this.restaurant.uid});
+        this.$toast.success("Table created!!");
         this.tableData.results = [];
         this.tableData.page = 0;
         await this.fetchTable();
@@ -273,6 +275,7 @@ export default {
       try {
         this.deleting = true;
         await this.deleteRestaurant(this.restaurant.uid);
+        this.$toast.success("Restaurant deleted!!");
         this.$router.push({ name: 'home' });
       } catch (error) {
         this.$toast.error("Error deleting Restaurant!!");
@@ -288,6 +291,7 @@ export default {
       try {
         this.deletingTable = true;
         await this.deleteRestaurantTable(this.restaurant.uid);
+        this.$toast.success("Table deleted!!");
         this.tableData.results = [];
         this.tableData.page = 0;
         await this.fetchTable();

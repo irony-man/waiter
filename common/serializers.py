@@ -170,7 +170,6 @@ class TableSerializer(serializers.ModelSerializer):
         "uid", Restaurant.objects, RestaurantSerializer
     )
     number = serializers.IntegerField(required=False, allow_null=True)
-    qr_code = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Table
@@ -178,7 +177,7 @@ class TableSerializer(serializers.ModelSerializer):
             "uid",
             "number",
             "restaurant",
-            "qr_code",
+            "qr_code_url",
             "created",
             "updated",
         ]

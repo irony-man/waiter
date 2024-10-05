@@ -167,16 +167,6 @@ class LoginAPIView(APIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
-class Logout(AuthMixin, APIView):
-    def get(self, request, *args, **kwargs):
-        try:
-            logout(request)
-            return Response({"message": "Successfully logged out!!"})
-        except Exception as e:
-            logger.error(e)
-            return Response(status=HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 class UserProfileViewSet(AuthMixin, ModelViewSet):
     lookup_field = "uid"
     serializer_class = LiteUserProfileSerializer
@@ -233,9 +223,12 @@ class TableViewSet(AuthMixin, ModelViewSet):
     serializer_class = TableSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ("restaurant__uid",)
+    http_method_names = ("get", "post", "delete")
 
     def get_queryset(self):
-        return Table.objects.all().order_by("number")
+        return Table.objects.filter(
+            restaurant__chain=self.request.chain
+        ).order_by("number")
 
 
 class CategoryViewSet(AuthMixin, ModelViewSet):
@@ -246,7 +239,9 @@ class CategoryViewSet(AuthMixin, ModelViewSet):
     search_fields = ("name",)
 
     def get_queryset(self):
-        return Category.objects.all().order_by("name")
+        return Category.objects.filter(
+            restaurant__chain=self.request.chain
+        ).order_by("name")
 
 
 class MenuItemViewSet(AuthMixin, ModelViewSet):
@@ -256,4 +251,6 @@ class MenuItemViewSet(AuthMixin, ModelViewSet):
     serializer_class = MenuItemSerializer
 
     def get_queryset(self):
-        return MenuItem.objects.all()
+        return MenuItem.objects.filter(
+            category__restaurant__chain=self.request.chain
+        )

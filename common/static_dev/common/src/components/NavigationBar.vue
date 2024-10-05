@@ -19,17 +19,6 @@
             style="max-width: 60px;">
         </router-link>
         <div class="navbar-toolbar d-flex align-items-center">
-          <button
-            type="button"
-            class="navbar-toggler collapsed ms-3"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse1"
-            aria-controls="navbarCollapse1"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"/>
-          </button>
-
           <a
             class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2"
             href="/app/logout">
