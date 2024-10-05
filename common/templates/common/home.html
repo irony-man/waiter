@@ -1,0 +1,14 @@
+{% extends 'common/base.html' %}
+{% load vite_tags static %}
+
+{% block script %}
+  {% vite_js "src/main.js" %}
+{% endblock script %}
+
+{% block content %}
+  <div id="app"></div>
+{% endblock content %}
+
+{% block extra_head %}
+  {% vite_css_standalone 'src/styles/style.scss' %}
+{% endblock extra_head %}

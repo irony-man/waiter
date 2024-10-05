@@ -1,0 +1,74 @@
+{
+    "root": true,
+    "env": {
+      "browser": true,
+      "commonjs": false,
+      "es6": true
+    },
+    "ignorePatterns": [
+      "vue.config.js",
+      "vite.config.js",
+      "node_modules"
+    ],
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "plugin:vue/vue3-strongly-recommended",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser",
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "sourceType": "module",
+      "ecmaVersion": 8,
+      "requireConfigFile": false,
+      "allowImportExportEverywhere": true
+    },
+    "plugins": [
+      "vue"
+    ],
+    "globals": {
+      "System": false,
+      "breakpoint": false,
+      "__WSHOST__": false
+    },
+    "rules": {
+      "no-console": "off",
+      "no-debugger": "warn",
+      "vue/multi-word-component-names": "off",
+      "vue/no-reserved-component-names": "off",
+      "vue/attributes-order": "error",
+      "vue/order-in-components": "error",
+      "no-unused-vars": [
+        "warn",
+        {
+          "varsIgnorePattern": "^e$|selectize"
+        }
+      ],
+      "indent": ["error", 2],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "vue/html-closing-bracket-newline": [
+        "error",
+        {
+          "singleline": "never",
+          "multiline": "never"
+        }
+      ],
+      "vue/html-closing-bracket-spacing": [
+        "error",
+        {
+          "startTag": "never",
+          "endTag": "never",
+          "selfClosingTag": "never"
+        }
+      ]
+    }
+}

@@ -1,0 +1,3 @@
+# [Waiter](https://waiter.onrender.com/)
+
+Welcome to [Waiter](https://waiter.onrender.com/), the ultimate dining experience! Our platform allows you to easily order food directly from your table at your favorite restaurant by simply scanning a QR code. No more waiting for servers or handling physical menus—just scan, browse the digital menu, customize your order, and submit it instantly. Track your order in real time, request refills, and even pay—all from your smartphone! Enjoy a seamless, contactless, and efficient dining experience with [Waiter](https://waiter.onrender.com/). Your convenience is our priority!

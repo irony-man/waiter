@@ -1,0 +1,32 @@
+{% load static vite_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'telinput/intlTelInput.css' %}">
+  <link rel="stylesheet" media="screen" href="{% static 'cz/css/theme.min.css' %}">
+  <link rel="icon" type="image/ico" href="{% static 'images/logo-favicon.ico' %}">
+  <meta name="facebook-domain-verification" content="78frp82nxj2tg1ia11rtv7306afngw"/>
+  {% vite_css_standalone 'src/styles/style.scss' %}
+  {% block extra_head %}{% endblock extra_head %}
+  {% block head_script %}{% endblock head_script %}
+  <title>
+    {% block title %}
+      Waiter
+    {% endblock title %}
+  </title>
+</head>
+
+<body data-bs-theme="light">
+{% csrf_token %}
+{% block content %}{% endblock content %}
+<script src="{% static 'js/bootstrap.bundle.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'fa/js/all.min.js' %}"></script>
+{% block script %}{% endblock script %}
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+[
+  {
+    "category": "All Time Favourite",
+    "items": [
+      { "name": "French Fries", "full_price": 106 },
+      { "name": "Chilli Cheese Toast", "full_price": 115 },
+      { "name": "Chilli Cheese Garlic Toast", "full_price": 115 },
+      { "name": "Garlic Bread", "full_price": 98 },
+      { "name": "Garlic Bread with Cheese", "full_price": 119 }
+    ]
+  },
+
+  {
+    "category": "Sandvich",
+    "items": [
+      { "name": "Plain Sandwich", "full_price": 175 },
+      { "name": "Grilled Sandwich", "full_price": 175 },
+      { "name": "Club Sandwich", "full_price": 175 }
+    ]
+  },
+
+  {
+    "category": "Salads",
+    "items": [{ "name": "Russian Salad / Macaroni", "full_price": 119 }]
+  },
+
+  {
+    "category": "Burgers",
+    "items": [{ "name": "Veg. Burger", "full_price": 72 }]
+  },
+
+  {
+    "category": "Bakes & Meals",
+    "items": [
+      { "name": "Macaroni Hotpot", "full_price": 205 },
+      { "name": "Veg. Augratin", "full_price": 205 }
+    ]
+  },
+
+  {
+    "category": "Choice of Pasta's",
+    "items": [
+      { "name": "Pasta Spicy Tomato / Classical Cheese", "full_price": 190 },
+      { "name": "Pasta in Twin Sauce", "full_price": 190 }
+    ]
+  },
+
+  {
+    "category": "Pizza's",
+    "items": [
+      { "name": "Plain Cheese Pizza", "full_price": 190 },
+      { "name": "Capsicum, Onion Pizza", "full_price": 210 },
+      { "name": "Tomato, Onion Pizza", "full_price": 210 },
+      { "name": "Capsicum, Onion, Mushroom Pizza", "full_price": 250 },
+      { "name": "Jain Spl. Pizza", "full_price": 250 },
+      { "name": "Tandoori Pizza", "full_price": 250 },
+      { "name": "Super Veggie Pizza (Double Cheese)", "full_price": 265 }
+    ]
+  },
+
+  {
+    "category": "Extra Toppings",
+    "items": [{ "name": "Cheese", "full_price": 55 }]
+  },
+
+  {
+    "category": "Hearth Stone Special",
+    "items": [
+      { "name": "Lasagna Roll", "full_price": 133 },
+      { "name": "Paneer Salsa Wrap", "full_price": 133 },
+      { "name": "Lebanese Falafel", "full_price": 133 }
+    ]
+  },
+
+  {
+    "category": "Soups",
+    "items": [
+      { "name": "Hot & Sour", "full_price": 109 },
+      { "name": "Lemon & Coriander", "full_price": 109 },
+      { "name": "Veg. Noodle Soup", "full_price": 109 },
+      { "name": "Sweet Corn", "full_price": 109 },
+      { "name": "Veg. Munchow", "full_price": 109 },
+      { "name": "Veg. Clear Soup", "full_price": 109 }
+    ]
+  },
+
+  {
+    "category": "Starters",
+    "items": [
+      { "name": "Spring Roll", "full_price": 145 },
+      { "name": "Chilly Paneer Dry", "full_price": 195 },
+      { "name": "Veg. Manchurian Dry", "full_price": 153 },
+      { "name": "Potatoes in Honey & Chilly", "full_price": 175 },
+      { "name": "Fried Vegetables in Salt & Pepper", "full_price": 190 },
+      { "name": "Crispy Spinach & Baby Corn", "full_price": 198 },
+      { "name": "Chilly Mushroom Dry", "full_price": 193 }
+    ]
+  },
+
+  {
+    "category": "Main Course",
+    "items": [
+      { "name": "Veg Chopsuey", "full_price": 195 },
+      { "name": "Chilly Paneer Gravy", "full_price": 205 },
+      { "name": "Manchurian Gravy", "full_price": 175 },
+      { "name": "Sweet & Sour Veg.", "full_price": 175 },
+      { "name": "Mixed Veg. in Hot Garlic Sauce", "full_price": 185 },
+      { "name": "Shredded Potatoes in Hot Garlic Sauce", "full_price": 153 }
+    ]
+  },
+
+  {
+    "category": "Noodles",
+    "items": [
+      { "name": "Veg Hakka Noodles", "full_price": 145 },
+      { "name": "Chilli Garlic Noodles", "full_price": 145 },
+      { "name": "Pan Fried Noodles", "full_price": 225 },
+      { "name": "Gravy Noodles", "full_price": 225 }
+    ]
+  },
+
+  {
+    "category": "Rice",
+    "items": [
+      { "name": "Veg. Fried Rice", "full_price": 165 },
+      { "name": "Chilly Garlic Rice", "full_price": 165 }
+    ]
+  },
+
+  {
+    "category": "Snacky Bites",
+    "items": [
+      { "name": "Pav Bhaji", "full_price": 140 },
+      { "name": "Jain Pav Bhaji", "full_price": 155 },
+      { "name": "Bombay Vada Pav", "full_price": 102 },
+      { "name": "Extra Pav", "full_price": 35 }
+    ]
+  },
+
+  {
+    "category": "Soups",
+    "items": [{ "name": "Tomato Soup", "full_price": 89 }]
+  },
+
+  {
+    "category": "Starters",
+    "items": [
+      { "name": "Tandoori Paneer Tikka", "full_price": 220 },
+      { "name": "Malai Paneer Tikka", "full_price": 220 },
+      { "name": "Soya Tandoori Tikka", "full_price": 175 },
+      { "name": "Tandoori Aloo", "full_price": 179 },
+      { "name": "Punjabi Soya Chap", "full_price": 179 },
+      { "name": "Hare-Bhare Kabab", "full_price": 162 },
+      { "name": "Dahi ke Kabab", "full_price": 179 },
+      { "name": "Platter", "full_price": 325 }
+    ]
+  },
+
+  {
+    "category": "Subziyan",
+    "items": [
+      { "name": "Shahi Paneer", "full_price": 210 },
+      { "name": "Kadhai Paneer", "full_price": 210 },
+      { "name": "Paneer Butter Masala", "full_price": 210 },
+      { "name": "Mushroom Masala", "full_price": 215 },
+      { "name": "Malai Kofta", "full_price": 210 }
+    ]
+  },
+
+  {
+    "category": "Dals",
+    "items": [
+      { "name": "Dal Makhani", "full_price": 192 },
+      { "name": "Yellow Dal", "full_price": 141 },
+      { "name": "Rajma", "full_price": 141 },
+      { "name": "Chole", "full_price": 141 }
+    ]
+  },
+
+  {
+    "category": "Breads",
+    "items": [
+      { "name": "Tandoori Roti", "full_price": 30 },
+      { "name": "Roomali Roti", "full_price": 17 },
+      { "name": "Butter Roti", "full_price": 36 },
+      { "name": "Plain Naan", "full_price": 43 },
+      { "name": "Butter Naan", "full_price": 58 },
+      { "name": "Garlic Naan Butter", "full_price": 60 },
+      { "name": "Tawa Parantha", "full_price": 53 },
+      { "name": "Laccha Parantha", "full_price": 53 },
+      { "name": "Pudina Parantha", "full_price": 53 },
+      { "name": "Stuffed Kulcha (Aloo)", "full_price": 65 },
+      { "name": "Stuffed Kulcha (Paneer)", "full_price": 65 },
+      { "name": "Stuffed Kulcha (Onion)", "full_price": 65 },
+      { "name": "Papad", "full_price": 15 }
+    ]
+  },
+
+  {
+    "category": "Rice / Pulao / Biryanis / Raitas",
+    "items": [
+      { "name": "Steam Rice", "full_price": 161 },
+      { "name": "Soya Dum Biryani", "full_price": 220 },
+      { "name": "Veg. Pulao", "full_price": 161 },
+      { "name": "Mix Veg. Pulao", "full_price": 161 },
+      { "name": "Jeera Pulao", "full_price": 161 },
+      { "name": "Matka Biryani With Raita", "full_price": 220 },
+      { "name": "Hyderabadi Biryani", "full_price": 220 },
+      { "name": "Plain Raita", "full_price": 102 },
+      { "name": "Boondi Raita", "full_price": 102 },
+      { "name": "Mix. Veg. Raita", "full_price": 102 },
+      { "name": "Jeera Raita", "full_price": 102 },
+      { "name": "Pineapple Raita", "full_price": 102 }
+    ]
+  },
+
+  {
+    "category": "Dessert",
+    "items": [
+      { "name": "Gulab Jamun", "full_price": 60 },
+      { "name": "Halwa (Seasonal)", "full_price": 60 }
+    ]
+  },
+
+  {
+    "category": "Meal For One (North Indian)",
+    "items": [
+      { "name": "Thali Regular (Only Packing)", "full_price": 196 },
+      { "name": "Thali Special", "full_price": 280 },
+      { "name": "Roomali Roti with Paneer Tikka Masala", "full_price": 250 },
+      { "name": "Rogan Soya Chap with Roomali Roti", "full_price": 250 }
+    ]
+  },
+
+  {
+    "category": "South-Indian",
+    "items": [
+      { "name": "Rice Idli", "full_price": 81 },
+      { "name": "Sambhar Vada", "full_price": 85 },
+      { "name": "Dahi Vada", "full_price": 81 }
+    ]
+  },
+
+  {
+    "category": "Dosas",
+    "items": [
+      { "name": "Plain Dosa (Butter)", "full_price": 125 },
+      { "name": "Onion Dosa (Butter)", "full_price": 136 },
+      { "name": "Paper Dosa", "full_price": 130 },
+      { "name": "Mysore Dosa", "full_price": 123 },
+      { "name": "Rawa Dosa", "full_price": 119 },
+      { "name": "Onion Rawa Dosa", "full_price": 136 },
+      { "name": "Masala Dosa (Butter)", "full_price": 145 },
+      { "name": "Onion Masala Dosa (Butter)", "full_price": 156 },
+      { "name": "Paper Masala Dosa", "full_price": 150 },
+      { "name": "Mysore Masala Dosa", "full_price": 143 },
+      { "name": "Rawa Masala Dosa", "full_price": 156 },
+      { "name": "Onion Rawa Masala Dosa", "full_price": 171 }
+    ]
+  },
+
+  {
+    "category": "Uttapam",
+    "items": [
+      { "name": "Onion Uttapam", "full_price": 155 },
+      { "name": "Tomato Uttapam", "full_price": 155 },
+      { "name": "Mix Veg Uttapam", "full_price": 155 }
+    ]
+  },
+
+  {
+    "category": "Rice",
+    "items": [
+      { "name": "Sambhar Rice", "full_price": 132 },
+      { "name": "Curd Rice", "full_price": 132 }
+    ]
+  },
+
+  {
+    "category": "Sweets",
+    "items": [{ "name": "Rava Kesri", "full_price": 72 }]
+  },
+
+  {
+    "category": "Extra",
+    "items": [
+      { "name": "Sambhar", "full_price": 35 },
+      { "name": "Chutney", "full_price": 15 }
+    ]
+  },
+
+  {
+    "category": "S.L.U.R.P.",
+    "items": [{ "name": "Fresh Juices", "full_price": 160 }]
+  },
+
+  {
+    "category": "Smoothies & Mocktails",
+    "items": [
+      { "name": "Fruit Punch", "full_price": 150 },
+      { "name": "Red Sea", "full_price": 150 },
+      { "name": "Virgin Colada", "full_price": 150 },
+      { "name": "Love Valley", "full_price": 150 },
+      { "name": "Pomi Twist", "full_price": 150 },
+      { "name": "Ginger Fizz", "full_price": 150 },
+      { "name": "Italian Smooch", "full_price": 150 },
+      { "name": "Devils Kiss", "full_price": 150 },
+      { "name": "Blue Lagoon", "full_price": 150 },
+      { "name": "Fresh Mint Mojito", "full_price": 150 },
+      { "name": "Kiwi Smoothie", "full_price": 150 },
+      { "name": "Virgin Guava", "full_price": 150 },
+      { "name": "Litchi Smoothie", "full_price": 150 },
+      { "name": "Peach Apricot", "full_price": 150 },
+      { "name": "Blue Berry Smoothie", "full_price": 150 },
+      { "name": "Green Hayland", "full_price": 150 },
+      { "name": "White Rosy", "full_price": 150 },
+      { "name": "Watermelon Mojito", "full_price": 150 }
+    ]
+  },
+
+  {
+    "category": "Ice Cream",
+    "items": [
+      { "name": "Vanilla/Strawberry", "full_price": 51 },
+      { "name": "Tutti Fruti", "full_price": 60 },
+      { "name": "Pineapple", "full_price": 60 },
+      { "name": "Chocolate", "full_price": 60 },
+      { "name": "Butter Scotch", "full_price": 60 },
+      { "name": "Kaju Kishmish", "full_price": 60 },
+      { "name": "Vanilla Chocochips", "full_price": 60 },
+      { "name": "Mango", "full_price": 60 },
+      { "name": "Anjeer Honey", "full_price": 60 },
+      { "name": "Chocolate Almond Fudge", "full_price": 60 },
+      { "name": "Kesar Pista", "full_price": 60 },
+      { "name": "Black Currant", "full_price": 60 }
+    ]
+  },
+
+  {
+    "category": "Sundaes",
+    "items": [
+      { "name": "Hot Chocolate Fudge", "full_price": 165 },
+      { "name": "Fruit Salad Sundae", "full_price": 165 }
+    ]
+  },
+
+  {
+    "category": "Ice Cream Sodas",
+    "items": [
+      { "name": "Lime Ice / Orange", "full_price": 119 },
+      { "name": "Golden Glow / Strawberry", "full_price": 119 }
+    ]
+  },
+
+  {
+    "category": "Ice Cream Shakes",
+    "items": [
+      { "name": "Vanilla", "full_price": 128 },
+      { "name": "Mango", "full_price": 128 },
+      { "name": "Pineapple", "full_price": 128 },
+      { "name": "Chocolate / Coffee", "full_price": 128 },
+      { "name": "Kesar Pista", "full_price": 128 },
+      { "name": "Butter Scotch", "full_price": 128 }
+    ]
+  },
+
+  {
+    "category": "Tea & Coffee",
+    "items": [
+      { "name": "Tea", "full_price": 40 },
+      { "name": "Coffee Mocachino", "full_price": 51 },
+      { "name": "Coffee Americano (Black)", "full_price": 55 },
+      { "name": "Coffee Espresso", "full_price": 60 },
+      { "name": "Ice Tea (Lemon)", "full_price": 51 },
+      { "name": "Coffee Cappuccino", "full_price": 51 },
+      { "name": "Espresso (Black)", "full_price": 55 },
+      { "name": "Cold-Coffee (Frappe)", "full_price": 70 }
+    ]
+  },
+
+  {
+    "category": "Aerated Beverages",
+    "items": [
+      { "name": "Cola / Orange / Lemon", "full_price": 55 },
+      { "name": "Diet Pepsi", "full_price": 55 },
+      { "name": "Fresh Lime Soda Sweet / Salt", "full_price": 60 },
+      { "name": "Mineral Water", "full_price": 55 },
+      { "name": "Fresh Lime Water Sweet / Salt", "full_price": 60 }
+    ]
+  }
+]
