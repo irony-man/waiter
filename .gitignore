@@ -479,5 +479,3 @@ static
 
 # Duck DB files
 *.duck.db
-
-*.sqlite3
