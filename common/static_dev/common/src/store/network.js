@@ -14,10 +14,12 @@ function getCsrfToken() {
 }
 
 class BaseHttpError extends Error {
-  constructor(message, data) {
+  constructor(message, data, statusCode) {
     super(message);
     this.data = data;
+    this.statusCode = statusCode;
     this.name = this.constructor.name;
+    this.message = message;
     if (typeof Error.captureStackTrace === "function") {
       Error.captureStackTrace(this, this.constructor);
     } else {
@@ -30,14 +32,18 @@ export class HttpBadRequestError extends BaseHttpError {}
 
 export class HttpNotOkError extends BaseHttpError {}
 
+export class HttpNotFound extends BaseHttpError {}
+
+export class HttpServerError extends BaseHttpError {}
+
+
 async function execute(url, options) {
   let data;
   let response;
   const msg = "Error in processing request. Try later or contact support";
 
-  const request = new Request(url, options);
   try {
-    response = await fetch(request);
+    response = await fetch(url, options);
     if (options.method !== "delete" && response.status !== 204) {
       const content = response.headers.get("Content-Type");
       if (content === "application/json") {
@@ -51,16 +57,18 @@ async function execute(url, options) {
   }
 
   if (response) {
-    // There is strange bug in Firefox where redirected responses do not give proper data
-    // For now we assume that all redirects are for broker connect
-    if (response.redirected || response.status === 0) {
-      return {vueRoute: {name: 'brokers', query: {code: 'TokenExpired'}}};
-    } else if (response.status === 400) {
-      throw new HttpBadRequestError("Http 400 [BadRequest]", data);
-    } else if (response.status > 400) {
+    if (response.status === 400) {
+      throw new HttpBadRequestError("Http 400 [BadRequest]", data, response.status);
+    } else if (response.status === 404) {
+      throw new HttpNotFound("Http 404 [Not found]", data, response.status);
+    } else if (response.status > 400 && response.status < 500) {
       throw new HttpNotOkError(
         `Http ${response.status}` + ` [${response.statusText}]`,
-        data
+        data, response.status
+      );
+    } else if (response?.status >= 500) {
+      throw new HttpServerError(
+        'Server Error.'
       );
     }
     return data;
@@ -141,8 +149,4 @@ export const getRESTParams = (reqData, url) => {
 
 export const getUrl = (path) => {
   return `/api/v1/${path}/`;
-};
-
-export const getTradeUrl = (path) => {
-  return `/api/v1/trades/${path}`;
 };

@@ -54,8 +54,10 @@ export default {
       default: true,
     },
     modelValue: {
+      type: String,
       required: true,
     },
   },
+  emits: ['update:modelValue'],
 };
 </script>

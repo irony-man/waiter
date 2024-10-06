@@ -1,157 +1,166 @@
 <template>
   <Loader ref="loader">
-    <div class="container my-5">
-      <Breadcrumb
-        :router-items="routerItems"
-        :name="restaurant.name"/>
-      <PageTitle
-        class="border-bottom pb-4"
-        :secondary="`A restaurant of ${user.chain_name}`"
-        :primary="restaurant.name">
-        <template #right>
-          <LoadingButton
-            class="btn-outline-danger"
-            :is-loading="!!deleting"
-            btn-icon="fas fa-trash"
-            @click="removeRestaurant">
-            Delete Restaurant
-          </LoadingButton>
-        </template>
-      </PageTitle>
-
-
-      <div class="mb-5">
-        <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
-          <div class="flex-grow-1">
-            <h6 class="fw-bold mb-0 text-uppercase">
-              Tables
-            </h6>
-          </div>
-
-          <div class="d-flex gap-3 flex-wrap align-items-center">
+    <div
+      class="container my-5">
+      <Empty
+        v-if="!!restaurant.notFound"
+        title="Restaurant not Found"
+        text="The restaurant you are looking for is not in this chain."
+        icon="fas fa-face-frown"/>
+      <div
+        v-else>
+        <Breadcrumb
+          :router-items="routerItems"
+          :name="restaurant.name"/>
+        <PageTitle
+          class="border-bottom pb-4"
+          :secondary="`A restaurant of ${user.chain_name}`"
+          :primary="restaurant.name">
+          <template #right>
             <LoadingButton
-              :is-loading="tableCreating"
+              class="btn-outline-danger"
+              :is-loading="!!deleting"
+              btn-icon="fas fa-trash"
+              @click="removeRestaurant">
+              Delete Restaurant
+            </LoadingButton>
+          </template>
+        </PageTitle>
+
+
+        <div class="mb-5">
+          <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-0 text-uppercase">
+                Tables
+              </h6>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap align-items-center">
+              <LoadingButton
+                :is-loading="tableCreating"
+                class="btn-primary"
+                btn-icon="fas fa-plus"
+                @click="saveTable">
+                Add Table
+              </LoadingButton>
+              <LoadingButton
+                v-if="tableData.results.length"
+                class="btn-outline-danger"
+                :is-loading="!!deletingTable"
+                btn-icon="fas fa-trash"
+                @click="removeTable">
+                Delete Table
+              </LoadingButton>
+            </div>
+          </div>
+          <Empty
+            v-if="!tableData.results.length"
+            title="No Tables"
+            text="You don't have any tables in this restaurant."
+            icon="fas fa-face-frown"/>
+
+          <div
+            v-else
+            class="row g-5">
+            <div
+              v-for="table in tableData.results"
+              :key="table.uid"
+              class="col-12 col-sm-6 col-md-4">
+              <div class="card h-100">
+                <div class="bg-secondary card-header">
+                  Table number <span class="fw-bold">#{{ table.number }}</span>
+                </div>
+                <img
+                  class="img card-img-bottom"
+                  :src="table.qr_code_url"
+                  :alt="`Table number ${table.number}`">
+              </div>
+            </div>
+            <div
+              v-if="tableData.next"
+              class="mt-5 text-center">
+              <LoadingButton
+                :is-loading="!!tableData.loading"
+                class="btn-dark"
+                btn-type="button"
+                @click="fetchTable()">
+                Load More
+              </LoadingButton>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-0 text-uppercase">
+                Categories
+              </h6>
+            </div>
+
+            <Button
               class="btn-primary"
               btn-icon="fas fa-plus"
-              @click="saveTable">
-              Add Table
-            </LoadingButton>
-            <LoadingButton
-              v-if="tableData.results.length"
-              class="btn-outline-danger"
-              :is-loading="!!deletingTable"
-              btn-icon="fas fa-trash"
-              @click="removeTable">
-              Delete Table
-            </LoadingButton>
-          </div>
-        </div>
-        <Empty
-          v-if="!tableData.results.length"
-          title="No Tables"
-          text="You don't have any tables in this restaurant."
-          icon="fas fa-face-frown"/>
-
-        <div
-          v-else
-          class="row g-5">
-          <div
-            v-for="table in tableData.results"
-            :key="table.uid"
-            class="col-12 col-sm-6 col-md-4">
-            <div class="card h-100">
-              <div class="bg-secondary card-header">
-                Table number <span class="fw-bold">#{{ table.number }}</span>
-              </div>
-              <img
-                class="img card-img-bottom"
-                :src="table.qr_code_url"
-                :alt="`Table number ${table.number}`">
-            </div>
-          </div>
-          <div
-            v-if="tableData.next"
-            class="mt-5 text-center">
-            <LoadingButton
-              :is-loading="!!tableData.loading"
-              class="btn-dark"
-              btn-type="button"
-              @click="fetchTable()">
-              Load More
-            </LoadingButton>
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-5">
-        <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
-          <div class="flex-grow-1">
-            <h6 class="fw-bold mb-0 text-uppercase">
-              Categories
-            </h6>
+              @click="showModal = true">
+              Add Category
+            </Button>
           </div>
 
-          <Button
-            class="btn-primary"
-            btn-icon="fas fa-plus"
-            @click="showModal = true">
-            Add Category
-          </Button>
-        </div>
+          <Empty
+            v-if="!categoryData.results.length"
+            title="No Categories"
+            text="You don't have any categories for this restaurant."
+            icon="fas fa-face-frown"/>
 
-        <Empty
-          v-if="!categoryData.results.length"
-          title="No Categories"
-          text="You don't have any categories for this restaurant."
-          icon="fas fa-face-frown"/>
-
-        <div v-else>
-          <div class="row justify-content-center g-5">
-            <div
-              v-for="category in categoryData.results"
-              :key="category.uid"
-              class="col-6 col-md-4 col-lg-3 col-xl-2">
-              <router-link
-                :to="{ name: 'category', params: { uid: category.uid } }">
-                <div class="card bg-secondary text-center h-100">
-                  <div class="icon-img-container">
-                    <img
-                      v-if="category.image"
-                      :src="category.image"
-                      :alt="category.name">
-                    <img
-                      v-else
-                      src="../assets/images/plate.png"
-                      :alt="category.name">
-                  </div>
-                  <div class="card-body">
-                    <div class="card-text fw-normal">
-                      {{ category.name }}
+          <div v-else>
+            <div class="row justify-content-center g-5">
+              <div
+                v-for="category in categoryData.results"
+                :key="category.uid"
+                class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <router-link
+                  :to="{ name: 'category', params: { uid: category.uid } }">
+                  <div class="card bg-secondary text-center h-100">
+                    <div class="icon-img-container">
+                      <img
+                        v-if="category.image"
+                        :src="category.image"
+                        :alt="category.name">
+                      <img
+                        v-else
+                        src="../assets/images/plate.png"
+                        :alt="category.name">
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text fw-normal">
+                        {{ category.name }}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </router-link>
+                </router-link>
+              </div>
+            </div>
+            <div
+              v-if="categoryData.next"
+              class="mt-5 text-center">
+              <LoadingButton
+                :is-loading="!!categoryData.loading"
+                class="btn-dark"
+                btn-type="button"
+                @click="fetchCategory()">
+                Load More
+              </LoadingButton>
             </div>
           </div>
-          <div
-            v-if="categoryData.next"
-            class="mt-5 text-center">
-            <LoadingButton
-              :is-loading="!!categoryData.loading"
-              class="btn-dark"
-              btn-type="button"
-              @click="fetchCategory()">
-              Load More
-            </LoadingButton>
-          </div>
         </div>
-      </div>
 
-      <CategoryFormModal
-        v-if="showModal"
-        :category="instance"
-        @closed="showModal = false"
-        @saved="saveCategory"/>
+        <CategoryFormModal
+          v-if="showModal"
+          :category="instance"
+          @closed="showModal = false"
+          @saved="saveCategory"/>
+      </div>
     </div>
   </Loader>
 </template>
@@ -165,6 +174,7 @@ import Breadcrumb from "../components/Breadcrumb.vue";
 import LoadingButton from "../components/LoadingButton.vue";
 import Button from "../components/Button.vue";
 import CategoryFormModal from "../components/CategoryFormModal.vue";
+import { HttpNotFound, HttpServerError } from "../store/network";
 
 export default {
   name: "RestaurantView",
@@ -205,18 +215,30 @@ export default {
     }
   },
   async mounted() {
-    const [a] = await Promise.all([
-      this.getRestaurant(this.restaurantUid),
+    await Promise.all([
+      this.fetchRestaurant(),
       this.fetchTable(),
       this.fetchCategory(),
     ]);
-
-    this.restaurant = a;
-    this.instance.restaurant = a;
     this.$refs.loader.complete();
   },
   methods: {
     ...mapActions(['getRestaurant', 'listTable', 'createTable', 'deleteRestaurant', 'deleteRestaurantTable', 'listCategory']),
+    async fetchRestaurant() {
+      try {
+        this.restaurant = await this.getRestaurant(this.restaurantUid);
+      } catch (error) {
+        console.error(error);
+        let message = "Error fetching Restaurant!!";
+        if(error instanceof HttpNotFound) {
+          this.restaurant.notFound = true;
+          message = error.data?.detail ?? "Restaurant not found!!";
+        } else if(error instanceof HttpServerError) {
+          message = this.error.message;
+        }
+        this.$toast.error(message);
+      }
+    },
     async fetchCategory() {
       try {
         this.categoryData.loading = true;
@@ -251,6 +273,7 @@ export default {
     },
     startEditing(idx) {
       this.instance = this.categoryData.results[idx];
+      this.instance.restaurant = this.restaurant;
       this.showModal = true;
     },
     async saveTable() {

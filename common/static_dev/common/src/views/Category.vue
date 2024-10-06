@@ -1,145 +1,152 @@
 <template>
   <Loader ref="loader">
     <div class="container my-5">
-      <Breadcrumb
-        :router-items="routerItems"
-        :name="category.name"/>
-      <PageTitle
-        class="border-bottom pb-4"
-        :secondary="`A category of <strong>${category.restaurant.name}</strong>`"
-        :primary="category.name">
-        <template #right>
-          <div class="d-flex gap-3 flex-wrap align-items-center">
+      <Empty
+        v-if="!!category.notFound"
+        title="Category not Found"
+        text="The category you are looking for is not in this restaurant."
+        icon="fas fa-face-frown"/>
+      <div v-else>
+        <Breadcrumb
+          :router-items="routerItems"
+          :name="category.name"/>
+        <PageTitle
+          class="border-bottom pb-4"
+          :secondary="`A category of <strong>${category.restaurant.name}</strong>`"
+          :primary="category.name">
+          <template #right>
+            <div class="d-flex gap-3 flex-wrap align-items-center">
+              <Button
+                class="btn-warning"
+                btn-icon="fas fa-pen"
+                @click="showCategoryForm = true">
+                Edit Category
+              </Button>
+              <LoadingButton
+                v-if="!menuItemData.results.length"
+                class="btn-outline-danger"
+                :is-loading="!!deleting"
+                btn-icon="fas fa-trash"
+                @click="removeCategory">
+                Delete Category
+              </LoadingButton>
+            </div>
+          </template>
+        </PageTitle>
+
+
+        <div class="mb-5">
+          <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-0 text-uppercase">
+                Items
+              </h6>
+            </div>
+
             <Button
-              class="btn-warning"
-              btn-icon="fas fa-pen"
-              @click="showCategoryForm = true">
-              Edit Category
-            </Button>
-            <LoadingButton
-              v-if="!menuItemData.results.length"
-              class="btn-outline-danger"
-              :is-loading="!!deleting"
-              btn-icon="fas fa-trash"
-              @click="removeCategory">
-              Delete Category
-            </LoadingButton>
-          </div>
-        </template>
-      </PageTitle>
-
-
-      <div class="mb-5">
-        <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
-          <div class="flex-grow-1">
-            <h6 class="fw-bold mb-0 text-uppercase">
-              Items
-            </h6>
-          </div>
-
-          <Button
-            class="btn-primary"
-            btn-icon="fas fa-plus"
-            @click="() => startEditing(-1)">
-            Add Item
-          </Button>
-        </div>
-
-        <Empty
-          v-if="!menuItemData.results.length"
-          title="No Items"
-          text="You don't have any items in this Category."
-          icon="fas fa-face-frown"/>
-
-        <div v-else>
-          <div class="table-responsive">
-            <table class="table table-striped align-middle">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th
-                    v-if="showHalfPrice"
-                    class="text-end">
-                    Half Price
-                  </th>
-                  <th class="text-end">
-                    {{ showHalfPrice ? 'Full' : '' }} Price
-                  </th>
-                  <th class="text-end"/>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, idx) in menuItemData.results"
-                  :key="item.uid">
-                  <td colspan="auto">
-                    <div class="d-flex align-items-center">
-                      <div class="is-20 me-2 mb-2">
-                        <img
-                          v-if="item.menu_type === 'VEG'"
-                          src="../assets/images/veg.png"
-                          alt="Veg">
-                        <img
-                          v-else
-                          src="../assets/images/non-veg.png"
-                          alt="Non Veg">
-                      </div>
-                      <p class="mb-0">
-                        {{ item.name }}
-                      </p>
-                    </div>
-                    <small
-                      v-if="item.description"
-                      class="mt-2 fw-light">{{ item.description }}</small>
-                  </td>
-                  <td
-                    v-if="showHalfPrice"
-                    class="text-end">
-                    {{ $filters.formatCurrency(item.half_price) }}
-                  </td>
-                  <td class="text-end">
-                    {{ $filters.formatCurrency(item.full_price) }}
-                  </td>
-                  <td class="text-end">
-                    <div>
-                      <LoadingButton
-                        :is-loading="!!item.deleting"
-                        btn-icon="fas fa-pen text-warning"
-                        @click="() => startEditing(idx)"/>
-                      <LoadingButton
-                        :is-loading="!!item.deleting"
-                        btn-type="button"
-                        btn-icon="fas text-danger fa-trash"
-                        @click="() => removeItem(item)"/>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div
-            v-if="menuItemData.next"
-            class="mt-3 text-center">
-            <LoadingButton
-              :is-loading="!!menuItemData.loading"
-              btn-type="button"
               class="btn-primary"
-              @click="fetchMenuItems()">
-              Load More
-            </LoadingButton>
+              btn-icon="fas fa-plus"
+              @click="() => startEditing(-1)">
+              Add Item
+            </Button>
+          </div>
+
+          <Empty
+            v-if="!menuItemData.results.length"
+            title="No Items"
+            text="You don't have any items in this Category."
+            icon="fas fa-face-frown"/>
+
+          <div v-else>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th
+                      v-if="showHalfPrice"
+                      class="text-end">
+                      Half Price
+                    </th>
+                    <th class="text-end">
+                      {{ showHalfPrice ? 'Full' : '' }} Price
+                    </th>
+                    <th class="text-end"/>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(item, idx) in menuItemData.results"
+                    :key="item.uid">
+                    <td colspan="auto">
+                      <div class="d-flex align-items-center">
+                        <div class="is-20 me-2 mb-2">
+                          <img
+                            v-if="item.menu_type === 'VEG'"
+                            src="../assets/images/veg.png"
+                            alt="Veg">
+                          <img
+                            v-else
+                            src="../assets/images/non-veg.png"
+                            alt="Non Veg">
+                        </div>
+                        <p class="mb-0">
+                          {{ item.name }}
+                        </p>
+                      </div>
+                      <small
+                        v-if="item.description"
+                        class="mt-2 fw-light">{{ item.description }}</small>
+                    </td>
+                    <td
+                      v-if="showHalfPrice"
+                      class="text-end">
+                      {{ $filters.formatCurrency(item.half_price) }}
+                    </td>
+                    <td class="text-end">
+                      {{ $filters.formatCurrency(item.full_price) }}
+                    </td>
+                    <td class="text-end">
+                      <div>
+                        <LoadingButton
+                          :is-loading="!!item.deleting"
+                          btn-icon="fas fa-pen text-warning"
+                          @click="() => startEditing(idx)"/>
+                        <LoadingButton
+                          :is-loading="!!item.deleting"
+                          btn-type="button"
+                          btn-icon="fas text-danger fa-trash"
+                          @click="() => removeItem(item)"/>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              v-if="menuItemData.next"
+              class="mt-3 text-center">
+              <LoadingButton
+                :is-loading="!!menuItemData.loading"
+                btn-type="button"
+                class="btn-primary"
+                @click="fetchMenuItems()">
+                Load More
+              </LoadingButton>
+            </div>
           </div>
         </div>
+        <MenuItemFormModal
+          v-if="showMenuItemForm"
+          :menu-item="instance"
+          @closed="showMenuItemForm = false"
+          @saved="saveItem"/>
+        <CategoryFormModal
+          v-if="showCategoryForm"
+          :category="category"
+          @closed="showCategoryForm = false"
+          @saved="saveCategory"/>
       </div>
-      <MenuItemFormModal
-        v-if="showMenuItemForm"
-        :menu-item="instance"
-        @closed="showMenuItemForm = false"
-        @saved="saveItem"/>
-      <CategoryFormModal
-        v-if="showCategoryForm"
-        :category="category"
-        @closed="showCategoryForm = false"
-        @saved="saveCategory"/>
     </div>
   </Loader>
 </template>
@@ -155,6 +162,7 @@ import LoadingButton from "../components/LoadingButton.vue";
 import Button from "../components/Button.vue";
 import MenuItemFormModal from "../components/MenuItemFormModal.vue";
 import CategoryFormModal from "../components/CategoryFormModal.vue";
+import { HttpNotFound, HttpServerError } from "../store/network";
 
 export default {
   name: "CategoryView",
@@ -195,16 +203,29 @@ export default {
     }
   },
   async mounted() {
-    const [a] = await Promise.all([
-      this.getCategory(this.categoryUid),
+    await Promise.all([
+      this.fetchCategory(),
       this.fetchMenuItems()
     ]);
-
-    this.category = { ...this.category, ...a };
     this.$refs.loader.complete();
   },
   methods: {
     ...mapActions(['getCategory', 'listMenuItem', 'deleteCategory', 'deleteMenuItem']),
+    async fetchCategory() {
+      try {
+        this.category = await this.getCategory(this.categoryUid);
+      } catch (error) {
+        console.error(error);
+        let message = "Error fetching Category!!";
+        if(error instanceof HttpNotFound) {
+          this.category.notFound = true;
+          message = error.data?.detail ?? "Category not found!!";
+        } else if(error instanceof HttpServerError) {
+          message = this.error.message;
+        }
+        this.$toast.error(message);
+      }
+    },
     async fetchMenuItems() {
       try {
         this.menuItemData.loading = true;

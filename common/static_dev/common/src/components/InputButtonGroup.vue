@@ -46,6 +46,7 @@ export default {
     },
     modelValue: {
       required: true,
+      type: String || Number
     },
     type: {
       type: String,
