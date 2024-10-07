@@ -1,13 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
-from django.views.generic import CreateView, DetailView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView
 from django_filters.rest_framework import DjangoFilterBackend
-from loguru import logger
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
@@ -16,7 +16,6 @@ from rest_framework.status import (
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
-    HTTP_500_INTERNAL_SERVER_ERROR,
 )
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -54,40 +53,29 @@ class AuthMixin:
         )
 
 
-class HomePage(AuthMixin, TemplateView):
+class HomePage(TemplateView):
+    template_name = "common/home.html"
+
+
+class DashboardPage(AuthMixin, TemplateView):
     template_name = "common/home.html"
 
 
 class LoginPinRequestView(CreateView):
     form_class = LoginPinRequestForm
     template_name = "common/login.html"
+    success_url = reverse_lazy("dashboard")
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("common:home")
+            return redirect(self.success_url)
         return super(LoginPinRequestView, self).dispatch(
             request, *args, **kwargs
         )
 
     def form_valid(self, form: LoginPinRequestForm):
-        instance: LoginPinRequest = form.cleaned_data.get("instance")
-        if not str(instance.user.userprofile.phone).startswith("322"):
-            pass
-            # send_otp_sms.apply_async(
-            #     args=(instance.msg_body, str(instance.user.userprofile.phone))
-            # )
-        if is_ajax(self.request):
-            return JsonResponse(
-                {
-                    "status": 200,
-                    "otp_resend_time": instance.otp_resend_remaining_time,
-                }
-            )
-        return redirect(
-            reverse_lazy(
-                "common:login-pin-verify", kwargs={"uid": instance.uid}
-            )
-        )
+        login(self.request, form.cleaned_data.get("instance"))
+        return redirect(self.success_url)
 
     def form_invalid(self, form):
         if is_ajax(self.request):
@@ -97,52 +85,10 @@ class LoginPinRequestView(CreateView):
         return super(LoginPinRequestView, self).form_invalid(form)
 
 
-class LoginPinVerifyView(FormView):
-    form_class = LoginForm
-    template_name = "common/verify.html"
-    success_url = reverse_lazy("common:home")
-
-    @cached_property
-    def pin_request(self):
-        return get_object_or_404(LoginPinRequest, uid=self.kwargs.get("uid"))
-
-    def get_form(self, form_class=None):
-        if self.request.method.upper() == "POST":
-            data = self.request.POST.copy()
-            data["phone"] = self.pin_request.user.username
-            return self.form_class(data)
-        return self.form_class()
-
-    def get_context_data(self, **kwargs):
-        ctx = super(LoginPinVerifyView, self).get_context_data(**kwargs)
-        ctx["pin_request"] = self.pin_request
-        ctx[
-            "otp_resend_remaining_time"
-        ] = self.pin_request.otp_resend_remaining_time
-        return ctx
-
-    def form_valid(self, form: LoginForm):
-        login(self.request, form.cleaned_data["user"])
-        headers = {
-            k: v
-            for k, v in self.request.META.items()
-            if k.startswith(("HTTP_", "SERVER_", "REMOTE_", "REQUEST_"))
-        }
-        pin_req = self.pin_request
-        pin_req.used = True
-        pin_req.used_timestamp = now_time()
-        pin_req.save()
-        # data = LiteUserSerializer(instance=self.request.user).data
-        # send_to_jheel.apply_async(
-        #   args=(JheelMessageType.USER, JheelSubMessageType.USER_LOGIN, data)
-        # )
-        return redirect(self.success_url)
-
-
 class Logout(AuthMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         logout(request)
-        return redirect(reverse("common:home"))
+        return redirect(reverse("home"))
 
 
 class LoginAPIView(APIView):
@@ -176,7 +122,7 @@ class UserProfileViewSet(AuthMixin, ModelViewSet):
         return UserProfile.objects.all()
 
 
-class UserViewSet(ModelViewSet):
+class UserViewSet(AuthMixin, ModelViewSet):
     serializer_class = UserProfileSerializer
     http_method_names = ("get", "post", "patch")
 

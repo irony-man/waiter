@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "django_countries",
     # Internal
     "common.apps.CommonConfig",
+    "qr_code.apps.QrCodeConfig",
 ]
 
 MIDDLEWARE = [
@@ -230,9 +231,9 @@ MEDIAFILES_LOCATION = "media"
 
 REQUESTS_TIMEOUT = 10
 
-LOGIN_URL = reverse_lazy("common:login-pin-request")
-LOGIN_REDIRECT_URL = reverse_lazy("common:home")
-LOGOUT_URL = reverse_lazy("common:logout")
+LOGIN_URL = reverse_lazy("login-pin-request")
+LOGIN_REDIRECT_URL = reverse_lazy("dashboard")
+LOGOUT_URL = reverse_lazy("logout")
 
 
 import cloudinary

@@ -129,7 +129,7 @@
                         :alt="category.name">
                       <img
                         v-else
-                        src="../assets/images/plate.png"
+                        src="@/assets/images/plate.png"
                         :alt="category.name">
                     </div>
                     <div class="card-body">
@@ -167,14 +167,14 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import Loader from "../components/Loader.vue";
-import PageTitle from "../components/PageTitle.vue";
-import Empty from "../components/Empty.vue";
-import Breadcrumb from "../components/Breadcrumb.vue";
-import LoadingButton from "../components/LoadingButton.vue";
-import Button from "../components/Button.vue";
-import CategoryFormModal from "../components/CategoryFormModal.vue";
-import { HttpNotFound, HttpServerError } from "../store/network";
+import Loader from "@/components/Loader.vue";
+import PageTitle from "@/components/PageTitle.vue";
+import Empty from "@/components/Empty.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
+import Button from "@/components/Button.vue";
+import CategoryFormModal from "@/components/CategoryFormModal.vue";
+import { HttpNotFound, HttpServerError } from "@/store/network";
 
 export default {
   name: "RestaurantView",
@@ -210,7 +210,7 @@ export default {
     routerItems() {
       return [{
         name: this.user.chain_name,
-        to: { name: 'home' }
+        to: { name: 'dashboard' }
       }];
     }
   },
@@ -299,7 +299,7 @@ export default {
         this.deleting = true;
         await this.deleteRestaurant(this.restaurant.uid);
         this.$toast.success("Restaurant deleted!!");
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'dashboard' });
       } catch (error) {
         this.$toast.error("Error deleting Restaurant!!");
         console.error(error);

@@ -13,16 +13,3 @@ router.register("restaurant", views.RestaurantViewSet, basename="restaurant")
 router.register("table", views.TableViewSet, basename="table")
 router.register("category", views.CategoryViewSet, basename="category")
 router.register("menu-item", views.MenuItemViewSet, basename="menu-item")
-
-urlpatterns = [
-    path(
-        "login", views.LoginPinRequestView.as_view(), name="login-pin-request"
-    ),
-    path("logout", views.Logout.as_view(), name="logout"),
-    path(
-        "pin-verify/<str:uid>/",
-        views.LoginPinVerifyView.as_view(),
-        name="login-pin-verify",
-    ),
-    re_path(r"^", views.HomePage.as_view(), name="home"),
-]

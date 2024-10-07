@@ -52,6 +52,9 @@ async function execute(url, options) {
         data = response.text();
       }
     }
+    if(response.redirected) {
+      window.location = response.url;
+    }
   } catch (e) {
     alert(msg);
   }
@@ -78,7 +81,7 @@ async function execute(url, options) {
 const formDataRequest = async (method, url, formData = null) => {
   const options = {
     method: method,
-    redirect: 'manual',
+    redirect: 'follow',
     mode: 'same-origin',
     credentials: "same-origin",
     headers: {
@@ -115,7 +118,7 @@ export const getRequest = async (url, queryParams = null) => {
   const options = {
     method: "GET",
     mode: 'cors',
-    redirect: 'manual',
+    redirect: 'follow',
     credentials: "same-origin",
     headers: {
       Accept: "application/json",

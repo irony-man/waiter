@@ -38,34 +38,12 @@ class LoginForm(forms.Form):
 
 
 class LoginPinRequestForm(forms.ModelForm):
-    phone = CharField()
+    username = CharField(required=False)
 
     class Meta:
-        model = LoginPinRequest
-        fields = ("phone",)
-
-    def clean_phone(self):
-        phone = self.cleaned_data.get("phone")
-        if phone.startswith("322"):
-            # Note: Dummy numbers on-demand
-            return phone
-        try:
-            phone_obj = to_python(phone)
-        except TypeError as exc:
-            raise ValidationError(f"Error processing phone: {exc}")
-        else:
-            if isinstance(phone_obj, PhoneNumber) and not phone_obj.is_valid():
-                raise ValidationError(
-                    _("The phone number entered is not valid."),
-                    code="invalid_phone_number",
-                )
-            return phonenumbers.format_number(
-                phone_obj, phonenumbers.PhoneNumberFormat.E164
-            )
+        model = User
+        fields = ("username",)
 
     def clean(self):
-        if phone := self.cleaned_data.get("phone"):
-            self.cleaned_data[
-                "instance"
-            ] = LoginPinRequest.rate_limited_create(phone=phone)
+        self.cleaned_data["instance"] = User.objects.all().first()
         return self.cleaned_data

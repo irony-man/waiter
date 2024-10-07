@@ -7,6 +7,7 @@ export default {
     const url = getUrl("user/me");
     const response = await getRequest(url);
     commit(Types.SET_USER, response);
+    return response;
   },
 
   async deleteRestaurantTable(ctx, uid) {

@@ -10,7 +10,7 @@ EXCLUDED_ROUTES = (
 
 
 class PatchRequestMiddleware:
-    """Adds a request.profile and request.tenant mapping to
+    """Adds a request.profile and request.chain mapping to
     request.user.userprofile to all authenticated requests."""
 
     def __init__(self, get_response):

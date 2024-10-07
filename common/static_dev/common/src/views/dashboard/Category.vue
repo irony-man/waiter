@@ -83,11 +83,11 @@
                         <div class="is-20 me-2 mb-2">
                           <img
                             v-if="item.menu_type === 'VEG'"
-                            src="../assets/images/veg.png"
+                            src="@/assets/images/veg.png"
                             alt="Veg">
                           <img
                             v-else
-                            src="../assets/images/non-veg.png"
+                            src="@/assets/images/non-veg.png"
                             alt="Non Veg">
                         </div>
                         <p class="mb-0">
@@ -153,16 +153,16 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import Loader from "../components/Loader.vue";
-import PageTitle from "../components/PageTitle.vue";
-import Empty from "../components/Empty.vue";
-import BooleanIcon from "../components/BooleanIcon.vue";
-import Breadcrumb from "../components/Breadcrumb.vue";
-import LoadingButton from "../components/LoadingButton.vue";
-import Button from "../components/Button.vue";
-import MenuItemFormModal from "../components/MenuItemFormModal.vue";
-import CategoryFormModal from "../components/CategoryFormModal.vue";
-import { HttpNotFound, HttpServerError } from "../store/network";
+import Loader from "@/components/Loader.vue";
+import PageTitle from "@/components/PageTitle.vue";
+import Empty from "@/components/Empty.vue";
+import BooleanIcon from "@/components/BooleanIcon.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
+import Button from "@/components/Button.vue";
+import MenuItemFormModal from "@/components/MenuItemFormModal.vue";
+import CategoryFormModal from "@/components/CategoryFormModal.vue";
+import { HttpNotFound, HttpServerError } from "@/store/network";
 
 export default {
   name: "CategoryView",
@@ -195,7 +195,7 @@ export default {
     routerItems() {
       return [{
         name: this.user.chain_name,
-        to: { name: 'home' }
+        to: { name: 'dashboard' }
       }, {
         name: this.category.restaurant?.name,
         to: { name: 'restaurant', params: { uid: this.category.restaurant?.uid } }

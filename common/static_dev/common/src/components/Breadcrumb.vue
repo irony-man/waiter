@@ -1,11 +1,6 @@
 <template>
   <div class="breadcrumb mb-5">
     <router-link
-      :to="{ name: 'home' }"
-      class="breadcrumb-item">
-      Home
-    </router-link>
-    <router-link
       v-for="item in routerItems"
       :key="item.name"
       :to="item.to"
