@@ -13,3 +13,10 @@ router.register("restaurant", views.RestaurantViewSet, basename="restaurant")
 router.register("table", views.TableViewSet, basename="table")
 router.register("category", views.CategoryViewSet, basename="category")
 router.register("menu-item", views.MenuItemViewSet, basename="menu-item")
+
+urlpatterns = [
+    path("login/", views.LoginPinRequestView.as_view(), name="login"),
+    path("logout/", views.Logout.as_view(), name="logout"),
+    re_path("^dashboard/", views.DashboardPage.as_view(), name="dashboard"),
+    re_path("^", views.HomePage.as_view(), name="home"),
+]

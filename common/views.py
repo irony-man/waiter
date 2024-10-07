@@ -1,12 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.utils.functional import cached_property
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, TemplateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
@@ -20,16 +18,8 @@ from rest_framework.status import (
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from common.forms import LoginForm, LoginPinRequestForm
-from common.model_helpers import now_time
-from common.models import (
-    Category,
-    LoginPinRequest,
-    MenuItem,
-    Restaurant,
-    Table,
-    UserProfile,
-)
+from common.forms import LoginPinRequestForm
+from common.models import Category, MenuItem, Restaurant, Table, UserProfile
 from common.serializers import (
     CategorySerializer,
     LiteUserProfileSerializer,
@@ -64,7 +54,7 @@ class DashboardPage(AuthMixin, TemplateView):
 class LoginPinRequestView(CreateView):
     form_class = LoginPinRequestForm
     template_name = "common/login.html"
-    success_url = reverse_lazy("dashboard")
+    success_url = reverse_lazy("common:dashboard")
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -88,7 +78,7 @@ class LoginPinRequestView(CreateView):
 class Logout(AuthMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         logout(request)
-        return redirect(reverse("home"))
+        return redirect(reverse("common:home"))
 
 
 class LoginAPIView(APIView):
@@ -200,3 +190,6 @@ class MenuItemViewSet(AuthMixin, ModelViewSet):
         return MenuItem.objects.filter(
             category__restaurant__chain=self.request.chain
         )
+
+
+# class Qr
