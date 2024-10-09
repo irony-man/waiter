@@ -120,7 +120,7 @@
                 :key="category.uid"
                 class="col-6 col-md-4 col-lg-3 col-xl-2">
                 <router-link
-                  :to="{ name: 'category', params: { uid: category.uid } }">
+                  :to="{ name: 'dashboard-category', params: { uid: category.uid } }">
                   <div class="card bg-secondary text-center h-100">
                     <div class="icon-img-container">
                       <img

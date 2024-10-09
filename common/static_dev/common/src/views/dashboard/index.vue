@@ -2,10 +2,8 @@
   <Loader ref="loader">
     <div class="container">
       <!-- Router view -->
-      <router-view v-slot="{ Component, route }">
-        <div :key="route.meta.transitionKey">
-          <component :is="Component"/>
-        </div>
+      <router-view v-slot="{ Component }">
+        <component :is="Component"/>
       </router-view>
     </div>
   </Loader>

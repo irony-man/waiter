@@ -1,12 +1,15 @@
+import uuid
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, TemplateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -22,6 +25,7 @@ from common.forms import LoginPinRequestForm
 from common.models import Category, MenuItem, Restaurant, Table, UserProfile
 from common.serializers import (
     CategorySerializer,
+    LiteMenuItemSerializer,
     LiteUserProfileSerializer,
     LoginSerializer,
     MenuItemSerializer,
@@ -33,6 +37,14 @@ from common.serializers import (
 
 def is_ajax(request) -> bool:
     return request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+
+def is_valid_uid(uid, version=4) -> bool:
+    try:
+        uuid.UUID(uid, version=version)
+    except ValueError:
+        return False
+    return True
 
 
 class AuthMixin:
@@ -79,28 +91,6 @@ class Logout(AuthMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect(reverse("common:home"))
-
-
-class LoginAPIView(APIView):
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            username = serializer.validated_data["username"]
-            password = serializer.validated_data["password"]
-
-            user = authenticate(request, username=username, password=password)
-            if not user:
-                return Response(
-                    {"message": "Invalid login credentials!!"},
-                    status=HTTP_400_BAD_REQUEST,
-                )
-            login(request, user)
-            return Response(
-                UserProfileSerializer(instance=user.userprofile).data,
-                status=HTTP_200_OK,
-            )
-
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class UserProfileViewSet(AuthMixin, ModelViewSet):
@@ -187,9 +177,40 @@ class MenuItemViewSet(AuthMixin, ModelViewSet):
     serializer_class = MenuItemSerializer
 
     def get_queryset(self):
+        if self.request.method.upper() == "GET":
+            return MenuItem.objects.all()
         return MenuItem.objects.filter(
             category__restaurant__chain=self.request.chain
         )
 
 
-# class Qr
+class TableAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        uid = kwargs.get("uid", None)
+        if not uid or not is_valid_uid(uid):
+            raise Http404
+        try:
+            table = Table.objects.get(uid=uid)
+            data = dict(
+                table=TableSerializer(instance=table).data,
+            )
+            if category_uid := request.GET.get("category__uid"):
+                category = Category.objects.filter(uid=category_uid).first()
+                data["category"] = CategorySerializer(instance=category).data
+                data["menu_items"] = LiteMenuItemSerializer(
+                    instance=MenuItem.objects.filter(category=category),
+                    many=True,
+                ).data
+            else:
+                data["categories"] = CategorySerializer(
+                    instance=Category.objects.filter(
+                        restaurant=table.restaurant
+                    ).order_by("name"),
+                    many=True,
+                ).data
+            return Response(data=data, status=200)
+        except Table.DoesNotExist as e:
+            raise Http404(dict(detail=e))
+        except Exception as e:
+            raise ValidationError(dict(detail=e))
+        raise Http404

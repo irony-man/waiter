@@ -17,6 +17,11 @@ router.register("menu-item", views.MenuItemViewSet, basename="menu-item")
 urlpatterns = [
     path("login/", views.LoginPinRequestView.as_view(), name="login"),
     path("logout/", views.Logout.as_view(), name="logout"),
+    path(
+        "table-qr-code/<str:uid>/",
+        views.TableAPIView.as_view(),
+        name="qr-code",
+    ),
     re_path("^dashboard/", views.DashboardPage.as_view(), name="dashboard"),
     re_path("^", views.HomePage.as_view(), name="home"),
 ]

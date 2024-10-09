@@ -42,7 +42,7 @@
                   v-for="(restaurant, idx) in restaurantData.results"
                   :key="restaurant.uid">
                   <td>
-                    <router-link :to="{ name: 'restaurant', params: { uid: restaurant.uid } }">
+                    <router-link :to="{ name: 'dashboard-restaurant', params: { uid: restaurant.uid } }">
                       {{ restaurant.name }}
                     </router-link>
                   </td>

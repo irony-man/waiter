@@ -1,6 +1,6 @@
 <template>
   <div
-    id="restaurant-form"
+    id="cart-form"
     class="modal fade"
     tabindex="-1">
     <div class="modal-dialog">
@@ -8,32 +8,29 @@
         <form
           method="post"
           class="modal-content"
-          @submit.prevent="submitRestaurant">
+          @submit.prevent="submitItem">
           <div class="modal-header">
             <h1
               class="modal-title fs-5">
-              Restaurant Form
+              Customise your item
             </h1>
             <Button
               class="btn-close"
               data-bs-dismiss="modal"/>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <Input
-                v-model="instance.name"
-                label="Name"
-                name="name"
-                required
-                :error="errors.name"/>
+            <div>
+              <h2
+                class="border-bottom pb-3 mb-4 fw-bold fs-6 text-uppercase">
+                {{ item.name }}
+              </h2>
             </div>
             <div class="mb-3">
-              <Input
-                v-model="user.chain_name"
-                label="Chain"
-                name="chain"
-                disabled
-                :error="errors.chain"/>
+              <Radio
+                v-model="instance.price_type"
+                name="price_type"
+                required
+                :choices="choices"/>
             </div>
           </div>
           <div class="modal-footer justify-content-start">
@@ -41,7 +38,7 @@
               :is-loading="!!instance.submitting"
               class="btn-primary"
               btn-type="submit">
-              Save Restaurant
+              Save
             </LoadingButton>
             <LoadingButton
               :is-loading="!!instance.submitting"
@@ -60,16 +57,16 @@
 import { mapActions, mapState } from "vuex";
 import Button from './Button.vue';
 import LoadingButton from './LoadingButton.vue';
-import Input from './Input.vue';
-import Select from './Select.vue';
 import Loader from './Loader.vue';
+import PageTitle from './PageTitle.vue';
+import Radio from './Radio.vue';
 import { HttpBadRequestError } from "../store/network";
 
 export default {
-  name: "RestaurantFormModal",
-  components: { Input, Button, LoadingButton, Select, Loader },
+  name: "CartFormModal",
+  components: { Button, LoadingButton, Loader, PageTitle, Radio },
   props: {
-    restaurant: {
+    item: {
       type: Object,
       required: false,
       default: () => { }
@@ -77,20 +74,34 @@ export default {
   },
   emits: ['closed', 'saved',],
   data() {
-    return { modalEl: null, instance: {}, errors: {} };
+    return { modalEl: null, instance: {price_type: 'FULL'}, errors: {} };
   },
   computed: {
     ...mapState(["user"]),
+    choices() {
+      return [
+        {
+          value: 'HALF',
+          start: 'Half: ',
+          end: this.$filters.formatCurrency(this.item.half_price),
+        },
+        {
+          value: 'FULL',
+          start: 'Full: ',
+          end: this.$filters.formatCurrency(this.item.full_price),
+        }
+      ];
+    }
   },
   mounted() {
     this.$refs.loader.complete();
-    this.modalEl = document.getElementById('restaurant-form');
+    this.modalEl = document.getElementById('cart-form');
     this.modal = new window.bootstrap.Modal(this.modalEl, { backdrop: 'static', keyboard: true });
     this.modalEl.addEventListener('hidden.bs.modal', () => this.$emit('closed'));
     if (this.modal) {
       this.modal.show();
     }
-    this.instance = { ...this.instance, ...this.restaurant };
+    this.instance = { ...this.instance, ...this.item };
   },
   beforeUnmount() {
     if (this.modal) {
@@ -98,22 +109,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createRestaurant', 'updateRestaurant']),
-    async submitRestaurant() {
+    ...mapActions(['listRestaurant', 'createCategory', 'updateCategory']),
+    async submitItem() {
       try {
         this.instance.submitting = true;
-        if (this.instance.uid) {
-          this.instance = await this.updateRestaurant({ uid: this.instance.uid, formData: this.instance });
-        } else {
-          this.instance = await this.createRestaurant(this.instance);
-        }
-        this.$toast.success("Restaurant saved!!");
-        this.$emit('saved', this.instance);
+        this.$emit('saved', {
+          uid: this.instance.uid,
+          name: this.instance.name,
+          price: this.instance.price_type === 'FULL' ? this.instance.full_price:this.instance.half_price,
+          type: this.instance.price_type,
+        });
       } catch (error) {
         if (error instanceof HttpBadRequestError) {
           this.errors = error.data;
         }
-        this.$toast.error("Error saving Restaurant!!");
+        this.$toast.error("Error saving Item!!");
         console.error(error);
       } finally {
         this.instance.submitting = false;

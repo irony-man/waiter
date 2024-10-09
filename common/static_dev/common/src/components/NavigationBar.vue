@@ -7,7 +7,7 @@
           :to="{ name: 'home' }">
           <img
             src="@/assets/images/logo.png"
-            alt="Saasu"
+            alt="Waiter"
             style="max-width: 80px;">
         </router-link>
         <router-link
@@ -15,30 +15,13 @@
           :to="{ name: 'home' }">
           <img
             src="@/assets/images/logo.png"
-            alt="Saasu"
+            alt="Waiter"
             style="max-width: 60px;">
         </router-link>
-        <div
-          v-if="!!user.uid"
-          class="navbar-toolbar d-flex gap-3 align-items-center">
-          <a
-            class="navbar-tool fw-bold ms-1 ms-lg-0 me-n1 me-lg-2"
-            href="/wtr-adm/"
-            target="_blank">
-            <div class="navbar-tool-icon-box">
-              <i class="navbar-tool-icon ci-user"/>
-            </div>
-            <div class="navbar-tool-text ms-n2">Admin</div>
-          </a>
-          <a
-            class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2"
-            href="/logout/">
-            <div class="navbar-tool-icon-box mt-2">
-              <i class="navbar-tool-icon fas fa-right-from-bracket"/>
-            </div>
-            <div class="navbar-tool-text ms-n2"><small>Hello, {{ user.username }}
-            </small>Logout</div>
-          </a>
+        <div class="navbar-toolbar d-flex gap-3 align-items-center">
+          <div class="btn btn-outline-dark">
+            {{ $filters.formatCurrency(totalPrice) }}
+          </div>
         </div>
       </div>
     </div>
@@ -52,7 +35,17 @@ import { mapState } from "vuex";
 export default {
   name: "NavigationBar",
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user", "cart"]),
+    totalPrice() {
+      let sum = 0;
+      Object.keys(this.cart).map(key => {
+        sum += this.cart[key].reduce(
+          (s, a) => s + parseFloat(a.price),
+          0,
+        );
+      });
+      return sum;
+    }
   },
 };
 </script>

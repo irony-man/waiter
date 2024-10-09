@@ -3,7 +3,7 @@
     <label
       :for="name"
       class="d-block form-label">{{ label }}<span
-        v-if="required"
+        v-if="required && label"
         class="ms-1">*</span></label>
     <div class="input-group">
       <div
@@ -29,9 +29,9 @@
         @input="onInput">
     </div>
     <div
-      v-if="msg"
+      v-if="helpText"
       class="small text-muted mt-1">
-      {{ msg }}
+      {{ helpText }}
     </div>
     <Error :error="error"/>
   </div>
@@ -124,23 +124,6 @@ export default {
     },
   },
   emits: ['update:modelValue', 'blur'],
-  computed: {
-    msg() {
-      if (this.helpText) {
-        if (!this.required) {
-          return `Optional - ${this.helpText}`;
-        } else {
-          return this.helpText;
-        }
-      }
-
-      if (!this.required) {
-        return "Optional";
-      }
-
-      return null;
-    }
-  },
   methods: {
     focus() {
       this.$refs.input.focus();

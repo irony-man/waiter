@@ -200,9 +200,18 @@ class CategorySerializer(serializers.ModelSerializer):
         ]
 
 
+class LiteCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            "uid",
+            "name",
+        ]
+
+
 class MenuItemSerializer(serializers.ModelSerializer):
     category = SerializedRelationField(
-        "uid", Category.objects, CategorySerializer
+        "uid", Category.objects, LiteCategorySerializer
     )
 
     class Meta:
@@ -218,4 +227,18 @@ class MenuItemSerializer(serializers.ModelSerializer):
             "description",
             "created",
             "updated",
+        ]
+
+
+class LiteMenuItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = [
+            "uid",
+            "name",
+            "image",
+            "menu_type",
+            "half_price",
+            "full_price",
+            "description",
         ]

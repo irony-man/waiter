@@ -4,7 +4,7 @@
       v-if="label"
       :for="name"
       class="d-block form-label">{{ label }}<span
-        v-if="required"
+        v-if="required && label"
         class="ms-1">*</span></label>
     <textarea
       :id="name"

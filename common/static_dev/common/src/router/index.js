@@ -7,8 +7,20 @@ const routes = [
     component: () => import("../views/Home.vue"),
   },
   {
+    path: "/table/:uid",
+    name: "table",
+    meta: { title: "Table" },
+    component: () => import("../views/table/TableView.vue"),
+  },
+  {
+    path: "/table/:tableUid/category/:categoryUid",
+    name: "table-category",
+    meta: { title: "Category" },
+    component: () => import("../views/table/CategoryView.vue"),
+  },
+  {
     path: "/dashboard",
-    meta: { transitionKey: "home", title: "Dashboard" },
+    meta: { userNavigationBar: true, title: "Dashboard" },
     name: "dashboard-root",
     component: () => import("../views/dashboard/index.vue"),
     children: [
@@ -20,13 +32,13 @@ const routes = [
       },
       {
         path: "restaurant/:uid",
-        name: "restaurant",
+        name: "dashboard-restaurant",
         meta: { title: "Restaurant" },
         component: () => import("../views/dashboard/Restaurant.vue"),
       },
       {
         path: "category/:uid",
-        name: "category",
+        name: "dashboard-category",
         meta: { title: "Category" },
         component: () => import("../views/dashboard/Category.vue"),
       },

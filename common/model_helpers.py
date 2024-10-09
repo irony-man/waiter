@@ -8,7 +8,7 @@ from django.utils import timezone
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import CircleModuleDrawer
 
-qr_base_url = f"{settings.BASE_URL}/qr-code/"
+qr_base_url = f"{settings.BASE_URL}/table/"
 
 
 def random_pin() -> int:

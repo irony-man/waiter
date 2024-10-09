@@ -2,7 +2,7 @@
   <button
     :type="btnType"
     class="btn btn-icon"
-    :disabled="isLoading">
+    :disabled="isLoading || disabled">
     <span v-if="isLoading">
       <span class="spinner-border spinner-border-sm me-1"/>&nbsp;
     </span>
@@ -34,6 +34,11 @@ export default {
       required: false,
       default: ""
     },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
 };
 </script>

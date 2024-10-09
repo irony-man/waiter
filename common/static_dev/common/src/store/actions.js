@@ -10,9 +10,25 @@ export default {
     return response;
   },
 
+  async getCart({ commit }) {
+    const cart = await JSON.parse(localStorage.getItem('cart')) || {};
+    commit(Types.SET_CART, cart);
+    return cart;
+  },
+
+  setCart({ commit }, cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    commit(Types.SET_CART, cart);
+  },
+
   async deleteRestaurantTable(ctx, uid) {
     const url = getUrl(`restaurant/${uid}/table`);
     return await deleteRequest(url);
+  },
+
+  async getTableQRCode(ctx, {uid, query}) {
+    const url = `/table-qr-code/${uid}/`;
+    return await getRequest(url, query);
   },
 
   ...GeneratedActions,

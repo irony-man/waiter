@@ -11,7 +11,6 @@
           @submit.prevent="submitItem">
           <div class="modal-header">
             <h1
-              id="exampleModalLabel"
               class="modal-title fs-5">
               Category Form
             </h1>

@@ -45,13 +45,13 @@ $primary: #4b566b;
 
 .btn-icon {
   i:not(.fa-spinner)::after {
-    content: '\00a0';
+    content: "\00a0";
   }
 }
 
 .btn-icon-left {
   span::after {
-    content: '\00a0';
+    content: "\00a0";
   }
 }
 
@@ -85,7 +85,8 @@ $primary: #4b566b;
 }
 
 .blur-text {
-  h6, .small {
+  h6,
+  .small {
     filter: blur(4px);
   }
   i {
@@ -100,20 +101,20 @@ $primary: #4b566b;
   }
 }
 
-.table>:not(:first-child) {
+.table > :not(:first-child) {
   border-top: none !important;
 }
 
-.table>:not(:last-child)>:last-child>* {
+.table > :not(:last-child) > :last-child > * {
   border-bottom-color: transparent;
 }
 
 .table {
-  border: 1px solid #E5EAF0;
+  border: 1px solid #e5eaf0;
 
   thead {
     th {
-      border-bottom: 1px solid #E5EAF0 !important;
+      border-bottom: 1px solid #e5eaf0 !important;
     }
   }
 }
@@ -123,4 +124,33 @@ $primary: #4b566b;
   right: 2.5em;
   top: 10px;
   z-index: 99;
+}
+
+#qr-code-full-region__scan_region {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#html5-qrcode-button-camera-permission,
+#html5-qrcode-button-camera-start,
+#html5-qrcode-button-camera-stop,
+#html5-qrcode-button-file-selection {
+  color: #ffffff;
+  background-color: #4b566b;
+  border: 1px solid transparent;
+  padding: 0.625rem 1.375rem;
+  font-size: 0.9375rem;
+  border-radius: 0.3125rem;
+  margin: 15px 0;
+}
+
+#qr-code-full-region__scan_region {
+  aspect-ratio: 1;
+}
+
+.w-450 {
+  max-width: 450px;
+  width: 100%;
 }

@@ -198,7 +198,7 @@ export default {
         to: { name: 'dashboard' }
       }, {
         name: this.category.restaurant?.name,
-        to: { name: 'restaurant', params: { uid: this.category.restaurant?.uid } }
+        to: { name: 'dashboard-restaurant', params: { uid: this.category.restaurant?.uid } }
       }];
     }
   },
@@ -265,7 +265,7 @@ export default {
       try {
         this.deleting = true;
         await this.deleteCategory(this.category.uid);
-        this.$router.push({ name: 'restaurant', params: { uid: this.category.restaurant?.uid } });
+        this.$router.push({ name: 'dashboard-restaurant', params: { uid: this.category.restaurant?.uid } });
       } catch (error) {
         this.$toast.error("Error deleting Category!!");
         console.error(error);

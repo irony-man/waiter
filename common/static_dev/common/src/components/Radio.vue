@@ -1,35 +1,44 @@
 <template>
-  <div>
+  <div class="form-group">
+    <label
+      :for="name"
+      class="d-block form-label">{{ label }}<span
+        v-if="required && label"
+        class="ms-1">*</span></label>
     <div
       v-for="(choice, i) in choices"
-      :key="choice.value"
-      class="form-check">
+      :key="choice.value">
       <input
         :id="`${name}_${i}`"
         :value="choice.value.trim()"
         :name="name"
         :checked="choice.value.trim() === modelValue"
         :required="required"
-        class="form-check-input"
+        class="btn-check"
         type="radio"
         @input="$emit('update:modelValue', $event.target.value)">
       <label
         :for="`${name}_${i}`"
-        class="form-label onboarding-radio-label mb-2">
-        {{ choice.name }}
+        class="btn d-flex gap-3 justify-content-between btn-outline-dark text-start w-100 mb-3">
+        <div>{{ choice.start }}</div>
+        <div>{{ choice.end }}</div>
       </label>
     </div>
     <div
-      v-if="error && error.length"
-      class="small text-danger mt-2">
-      {{ error }}
+      v-if="helpText"
+      class="small text-muted mt-1">
+      {{ helpText }}
     </div>
+    <Error :error="error"/>
   </div>
 </template>
 
 <script>
+import Error from './Error.vue';
+
 export default {
   name: "Radio",
+  components: { Error },
   props: {
     name: {
       type: String,
@@ -37,7 +46,8 @@ export default {
     },
     label: {
       type: String,
-      required: true,
+      required: false,
+      default: null
     },
     error: {
       type: String,
@@ -56,6 +66,11 @@ export default {
     modelValue: {
       type: String,
       required: true,
+    },
+    helpText: {
+      type: String,
+      required: false,
+      default: () => null,
     },
   },
   emits: ['update:modelValue'],
