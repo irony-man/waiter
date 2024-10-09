@@ -80,16 +80,7 @@
                     :key="item.uid">
                     <td colspan="auto">
                       <div class="d-flex align-items-center">
-                        <div class="is-20 me-2 mb-2">
-                          <img
-                            v-if="item.menu_type === 'VEG'"
-                            src="@/assets/images/veg.png"
-                            alt="Veg">
-                          <img
-                            v-else
-                            src="@/assets/images/non-veg.png"
-                            alt="Non Veg">
-                        </div>
+                        <ItemIcon :menu-type="item.menu_type"/>
                         <p class="mb-0">
                           {{ item.name }}
                         </p>
@@ -163,10 +154,11 @@ import Button from "@/components/Button.vue";
 import MenuItemFormModal from "@/components/MenuItemFormModal.vue";
 import CategoryFormModal from "@/components/CategoryFormModal.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
+import ItemIcon from "@/components/ItemIcon.vue";
 
 export default {
   name: "CategoryView",
-  components: { PageTitle, Loader, Empty, BooleanIcon, Breadcrumb, LoadingButton, Button, MenuItemFormModal, CategoryFormModal },
+  components: { PageTitle, Loader, Empty, BooleanIcon, Breadcrumb, LoadingButton, Button, MenuItemFormModal, CategoryFormModal, ItemIcon },
   data() {
     return {
       category: {},

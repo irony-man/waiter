@@ -121,23 +121,7 @@
                 class="col-6 col-md-4 col-lg-3 col-xl-2">
                 <router-link
                   :to="{ name: 'dashboard-category', params: { uid: category.uid } }">
-                  <div class="card bg-secondary text-center h-100">
-                    <div class="icon-img-container">
-                      <img
-                        v-if="category.image"
-                        :src="category.image"
-                        :alt="category.name">
-                      <img
-                        v-else
-                        src="@/assets/images/plate.png"
-                        :alt="category.name">
-                    </div>
-                    <div class="card-body">
-                      <div class="card-text fw-normal">
-                        {{ category.name }}
-                      </div>
-                    </div>
-                  </div>
+                  <CategoryCard :category="category"/>
                 </router-link>
               </div>
             </div>
@@ -175,10 +159,11 @@ import LoadingButton from "@/components/LoadingButton.vue";
 import Button from "@/components/Button.vue";
 import CategoryFormModal from "@/components/CategoryFormModal.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
+import CategoryCard from "../../components/CategoryCard.vue";
 
 export default {
   name: "RestaurantView",
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal, CategoryCard },
   data() {
     return {
       restaurant: {},
