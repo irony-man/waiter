@@ -58,13 +58,15 @@ export default {
   },
   formatCurrency(
     value = 0,
+    blank = false,
     currency = 'INR',
     locale = 'en-IN',
     minDecimal = 2,
     maxDecimal = 4
   ) {
-    // TODO: Why does not this work with Google Fonts
-
+    if (blank && value == 0) {
+      return "";
+    }
     return new Intl.NumberFormat(locale, {
       minimumFractionDigits: minDecimal,
       maximumFractionDigits: maxDecimal,

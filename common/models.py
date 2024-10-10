@@ -111,6 +111,7 @@ class MenuItem(CreateUpdate):
     menu_type = CharField(
         max_length=8, choices=MenuType.choices, default=MenuType.VEG
     )
+    available = BooleanField(default=True)
     half_price = DecimalField(max_digits=10, decimal_places=2, default=0)
     full_price = DecimalField(max_digits=10, decimal_places=2, default=0)
     description = TextField(blank=True)

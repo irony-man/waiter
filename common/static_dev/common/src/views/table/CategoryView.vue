@@ -61,16 +61,20 @@
                     <td
                       v-if="showHalfPrice"
                       class="text-end">
-                      {{ $filters.formatCurrency(item.half_price) }}
+                      {{ $filters.formatCurrency(item.half_price, true) }}
                     </td>
                     <td class="text-end">
                       {{ $filters.formatCurrency(item.full_price) }}
                     </td>
-                    <td class="text-end d-flex justify-content-end">
+                    <td class="text-end">
                       <CartButtons
+                        v-if="item.available"
                         :value="getQuantity(item)"
                         @add="() => preAddItem(item)"
                         @remove="() => removeItem(item)"/>
+                      <div v-else>
+                        Not Available right now
+                      </div>
                     </td>
                   </tr>
                 </tbody>

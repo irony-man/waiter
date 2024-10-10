@@ -80,6 +80,13 @@
                 :error="errors.category"/>
             </div>
             <div class="mb-3">
+              <Switch
+                v-model="instance.available"
+                label="Available"
+                name="available"
+                :error="errors.available"/>
+            </div>
+            <div class="mb-3">
               <TextArea
                 v-model="instance.description"
                 label="Description"
@@ -130,12 +137,14 @@ export default {
   },
   emits: ['closed', 'saved',],
   data() {
-    return { modalEl: null, instance: { menu_type: 'VEG' }, errors: {} };
+    return { modalEl: null, instance: { menu_type: 'VEG', available: true }, errors: {} };
   },
   computed: {
     ...mapState(["user"]),
   },
   mounted() {
+    this.instance = { ...this.instance, ...this.menuItem };
+    this.instance.has_half_price = parseFloat(this.instance.half_price) != 0;
     this.$refs.loader.complete();
     this.modalEl = document.getElementById('menu-item-form');
     this.modal = new window.bootstrap.Modal(this.modalEl, { backdrop: 'static', keyboard: true });
@@ -143,7 +152,6 @@ export default {
     if (this.modal) {
       this.modal.show();
     }
-    this.instance = { ...this.instance, ...this.menuItem };
   },
   beforeUnmount() {
     if (this.modal) {

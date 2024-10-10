@@ -11,6 +11,7 @@
       :disabled="disabled"
       class="form-check-input"
       :value="modelValue"
+      :checked="modelValue"
       @blur="$emit('blur')"
       @input="onInput">
     <label

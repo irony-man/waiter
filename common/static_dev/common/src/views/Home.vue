@@ -20,7 +20,7 @@
           <div class="d-flex justify-content-center gap-4">
             <Button
               class="btn-outline-dark"
-              btn-icon="fas fa-qrcode"
+              btn-icon="fas fa-qrcode me-2"
               @click="showScanner = true">
               Open Scanner
             </Button>

@@ -91,7 +91,7 @@
                     <td
                       v-if="showHalfPrice"
                       class="text-end">
-                      {{ $filters.formatCurrency(item.half_price) }}
+                      {{ $filters.formatCurrency(item.half_price, true) }}
                     </td>
                     <td class="text-end">
                       {{ $filters.formatCurrency(item.full_price) }}
