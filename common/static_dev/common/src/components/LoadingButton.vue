@@ -9,7 +9,6 @@
     <span v-else>
       <i
         v-if="btnIcon"
-        class="me-2"
         :class="btnIcon"/>
     </span>
     <slot/>

@@ -67,22 +67,10 @@
                       {{ $filters.formatCurrency(item.full_price) }}
                     </td>
                     <td class="text-end d-flex justify-content-end">
-                      <div class="border d-flex justify-content-center align-items-center">
-                        <LoadingButton
-                          :is-loading="!!item.deleting"
-                          btn-icon="fas fa-minus ms02"
-                          @click="() => removeItem(item)"/>
-
-                        <div class="border bg-secondary p-3 is-20 d-flex justify-content-center align-items-center">
-                          {{ (cart[item.uid] || []).length }}
-                        </div>
-
-                        <LoadingButton
-                          :is-loading="!!item.adding"
-                          btn-type="button"
-                          btn-icon="fas fa-plus ms-2"
-                          @click="() => preAddItem(item)"/>
-                      </div>
+                      <CartButtons
+                        :value="getQuantity(item)"
+                        @add="() => preAddItem(item)"
+                        @remove="() => removeItem(item)"/>
                     </td>
                   </tr>
                 </tbody>
@@ -112,10 +100,11 @@ import Button from "@/components/Button.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
 import CartFormModal from "../../components/CartFormModal.vue";
 import ItemIcon from "../../components/ItemIcon.vue";
+import CartButtons from "../../components/CartButtons.vue";
 
 export default {
   name: "CategoryView",
-  components: { PageTitle, Loader, Empty, BooleanIcon, Breadcrumb, LoadingButton, Button, CartFormModal, ItemIcon },
+  components: { PageTitle, Loader, Empty, BooleanIcon, Breadcrumb, LoadingButton, Button, CartFormModal, ItemIcon, CartButtons },
   data() {
     return {
       instance: {},
@@ -163,8 +152,15 @@ export default {
   },
   methods: {
     ...mapActions(['getTableQRCode', 'getCart', 'setCart']),
+    getQuantity(item, types = ['HALF', 'FULL']) {
+      return types.reduce((sum, t) => {
+        const key = `${item.uid}/${t}`;
+        return key in this.cart ? sum + this.cart[key].quantity : sum;
+      }, 0);
+
+    },
     preAddItem(item) {
-      if(item.half_price == 0) {
+      if(item.half_price == parseFloat(0)) {
         const data = {
           uid: item.uid,
           name: item.name,
@@ -183,11 +179,9 @@ export default {
     },
     addItem(data) {
       try {
-        if(data.uid in this.cart) {
-          this.cart[data.uid].push(data);
-        } else {
-          this.cart[data.uid] = [data];
-        }
+        const key = `${data.uid}/${data.type}`;
+        const quantity = key in this.cart ? this.cart[key].quantity + 1 : 1;
+        this.cart[key] = { ...data, quantity };
         this.setCart(this.cart);
       } catch (error) {
         this.$toast.error("Error adding Menu Item!!");
@@ -197,10 +191,13 @@ export default {
     removeItem(item) {
       try {
         item.removing = true;
-        if(item.uid in this.cart && this.cart[item.uid].length) {
-          this.cart[item.uid].pop();
-        } else {
-          this.cart[item.uid] = [];
+        const types = ['HALF', 'FULL'];
+        for (const type of types) {
+          const key = `${item.uid}/${type}`;
+          if (key in this.cart && this.cart[key].quantity) {
+            this.cart[key].quantity -= 1;
+            break;
+          }
         }
         this.setCart(this.cart);
       } catch (error) {

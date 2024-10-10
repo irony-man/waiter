@@ -4,7 +4,6 @@
     class="btn">
     <i
       v-if="btnIcon"
-      class="me-2"
       :class="btnIcon"/>
     <slot/>
   </button>

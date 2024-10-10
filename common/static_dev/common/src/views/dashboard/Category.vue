@@ -18,7 +18,7 @@
             <div class="d-flex gap-3 flex-wrap align-items-center">
               <Button
                 class="btn-warning"
-                btn-icon="fas fa-pen"
+                btn-icon="fas fa-pen me-2"
                 @click="showCategoryForm = true">
                 Edit Category
               </Button>
@@ -26,14 +26,13 @@
                 v-if="!menuItemData.results.length"
                 class="btn-outline-danger"
                 :is-loading="!!deleting"
-                btn-icon="fas fa-trash"
+                btn-icon="fas fa-trash me-2"
                 @click="removeCategory">
                 Delete Category
               </LoadingButton>
             </div>
           </template>
         </PageTitle>
-
 
         <div class="mb-5">
           <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
@@ -45,7 +44,7 @@
 
             <Button
               class="btn-primary"
-              btn-icon="fas fa-plus"
+              btn-icon="fas fa-plus me-2"
               @click="() => startEditing(-1)">
               Add Item
             </Button>

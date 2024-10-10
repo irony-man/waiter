@@ -20,7 +20,7 @@
             <LoadingButton
               class="btn-outline-danger"
               :is-loading="!!deleting"
-              btn-icon="fas fa-trash"
+              btn-icon="fas fa-trash me-2"
               @click="removeRestaurant">
               Delete Restaurant
             </LoadingButton>
@@ -40,7 +40,7 @@
               <LoadingButton
                 :is-loading="tableCreating"
                 class="btn-primary"
-                btn-icon="fas fa-plus"
+                btn-icon="fas fa-plus me-2"
                 @click="saveTable">
                 Add Table
               </LoadingButton>
@@ -48,7 +48,7 @@
                 v-if="tableData.results.length"
                 class="btn-outline-danger"
                 :is-loading="!!deletingTable"
-                btn-icon="fas fa-trash"
+                btn-icon="fas fa-trash me-2"
                 @click="removeTable">
                 Delete Table
               </LoadingButton>
@@ -101,7 +101,7 @@
 
             <Button
               class="btn-primary"
-              btn-icon="fas fa-plus"
+              btn-icon="fas fa-plus me-2"
               @click="showModal = true">
               Add Category
             </Button>

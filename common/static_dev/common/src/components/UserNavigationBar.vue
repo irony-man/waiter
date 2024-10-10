@@ -7,7 +7,7 @@
           :to="{ name: 'home' }">
           <img
             src="@/assets/images/logo.png"
-            alt="Saasu"
+            alt="Waiter"
             style="max-width: 80px;">
         </router-link>
         <router-link
@@ -15,7 +15,7 @@
           :to="{ name: 'home' }">
           <img
             src="@/assets/images/logo.png"
-            alt="Saasu"
+            alt="Waiter"
             style="max-width: 60px;">
         </router-link>
         <div

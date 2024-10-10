@@ -37,14 +37,7 @@ export default {
   computed: {
     ...mapState(["user", "cart"]),
     totalPrice() {
-      let sum = 0;
-      Object.keys(this.cart).map(key => {
-        sum += this.cart[key].reduce(
-          (s, a) => s + parseFloat(a.price),
-          0,
-        );
-      });
-      return sum;
+      return Object.values(this.cart).reduce((sum, { quantity, price }) => sum + quantity * price, 0);
     }
   },
 };
