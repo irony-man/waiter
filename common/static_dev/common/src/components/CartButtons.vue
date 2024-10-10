@@ -1,25 +1,38 @@
 <template>
   <div
-    class="btn-group btn-group-sm"
+    class="btn-group max-w-150"
     role="group">
     <LoadingButton
+      v-if="value && available"
       :is-loading="!!removing"
       class="btn-outline-dark"
-      btn-icon="fas fa-minus fs-7"
+      btn-icon="fas fa-minus"
       :disabled="!value"
       @click="$emit('remove')"/>
 
     <Button
+      v-if="value && available"
       class="btn-outline-dark"
       disabled>
       {{ value }}
     </Button>
 
     <LoadingButton
+      v-if="available"
       :is-loading="!!adding"
-      class="btn-outline-dark fs-7"
+      class="btn-outline-dark"
       btn-icon="fas fa-plus"
-      @click="$emit('add')"/>
+      @click="$emit('add')">
+      <span
+        v-if="!value"
+        class="ms-3 text-uppercase fw-bold">Add</span>
+    </LoadingButton>
+    <Button
+      v-else
+      class="btn-outline-danger"
+      disabled>
+      Unavailable
+    </Button>
   </div>
 </template>
 
@@ -34,6 +47,11 @@ export default {
     value: {
       type: Number,
       required: true
+    },
+    available: {
+      type: Boolean,
+      required: false,
+      default: true
     },
     adding: {
       type: Boolean,

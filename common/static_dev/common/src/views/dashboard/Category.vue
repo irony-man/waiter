@@ -209,7 +209,7 @@ export default {
         this.category = await this.getCategory(this.categoryUid);
       } catch (error) {
         console.error(error);
-        let message = "Error fetching Category!!";
+        let message = error?.data?.detail ?? "Error fetching Category!!";
         if(error instanceof HttpNotFound) {
           this.category.notFound = true;
           message = error.data?.detail ?? "Category not found!!";

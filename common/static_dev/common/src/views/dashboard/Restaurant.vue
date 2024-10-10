@@ -214,7 +214,7 @@ export default {
         this.restaurant = await this.getRestaurant(this.restaurantUid);
       } catch (error) {
         console.error(error);
-        let message = "Error fetching Restaurant!!";
+        let message = error?.data?.detail ?? "Error fetching Restaurant!!";
         if(error instanceof HttpNotFound) {
           this.restaurant.notFound = true;
           message = error.data?.detail ?? "Restaurant not found!!";

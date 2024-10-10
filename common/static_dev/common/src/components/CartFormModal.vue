@@ -113,12 +113,7 @@ export default {
     async submitItem() {
       try {
         this.instance.submitting = true;
-        this.$emit('saved', {
-          uid: this.instance.uid,
-          name: this.instance.name,
-          price: this.instance.price_type === 'FULL' ? this.instance.full_price:this.instance.half_price,
-          type: this.instance.price_type,
-        });
+        this.$emit('saved', this.instance);
       } catch (error) {
         if (error instanceof HttpBadRequestError) {
           this.errors = error.data;

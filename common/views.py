@@ -217,12 +217,13 @@ class TableAPIView(APIView):
                         ).first()
                     ) and (quantity := val.get("quantity", 0)):
                         response[key] = dict(
-                            uid=uid,
-                            name=menu_item.name,
+                            menu_item=LiteMenuItemSerializer(
+                                instance=menu_item
+                            ).data,
                             price=menu_item.half_price
                             if price_type == "HALF"
                             else menu_item.full_price,
-                            type=price_type,
+                            price_type=price_type,
                             quantity=quantity,
                         )
                 data["cart"] = response

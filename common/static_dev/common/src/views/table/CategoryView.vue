@@ -68,13 +68,10 @@
                     </td>
                     <td class="text-end">
                       <CartButtons
-                        v-if="item.available"
                         :value="getQuantity(item)"
+                        :available="item.available"
                         @add="() => preAddItem(item)"
                         @remove="() => removeItem(item)"/>
-                      <div v-else>
-                        Not Available right now
-                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -111,9 +108,7 @@ export default {
   data() {
     return {
       instance: {},
-      cartItem:{},
-      localStorage: localStorage,
-      localCart: {},
+      cartItem: {},
       showCartModal: false,
     };
   },
@@ -138,10 +133,9 @@ export default {
   async mounted() {
     try {
       this.instance = await this.getTableQRCode({ uid: this.tableUid, query: { category__uid: this.categoryUid } });
-      this.localCart = this.cart;
     } catch (error) {
       console.error(error);
-      let message = "Error fetching Table!!";
+      let message = error?.data?.detail ?? "Error fetching Table!!";
       if (error instanceof HttpNotFound) {
         this.instance.notFound = true;
         message = error.data?.detail ?? "Category not found!!";
@@ -154,38 +148,29 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTableQRCode', 'getLocalCart', 'setCart']),
-    getQuantity(item, types = ['HALF', 'FULL']) {
-      return types.reduce((sum, t) => {
+    ...mapActions(['getTableQRCode', 'setCart', 'addCartItem', 'removeCartItem']),
+    getQuantity(item) {
+      return ['HALF', 'FULL'].reduce((sum, t) => {
         const key = `${item.uid}/${t}`;
-        return key in this.localCart ? sum + this.localCart[key].quantity : sum;
+        return key in this.cart ? sum + this.cart[key].quantity : sum;
       }, 0);
-
     },
     preAddItem(item) {
-      if(item.half_price == parseFloat(0)) {
-        const data = {
-          uid: item.uid,
-          name: item.name,
-          price: item.full_price,
-          type: 'FULL',
-        };
-        this.addItem(data);
+      if (item.half_price == parseFloat(0)) {
+        item.price_type = 'FULL';
+        this.addItem(item);
       } else {
         this.cartItem = item;
         this.showCartModal = true;
       }
     },
-    saveItem(data) {
-      this.addItem(data);
+    saveItem(item) {
+      this.addItem(item);
       this.showCartModal = false;
     },
-    addItem(data) {
+    addItem(item) {
       try {
-        const key = `${data.uid}/${data.type}`;
-        const quantity = key in this.localCart ? this.localCart[key].quantity + 1 : 1;
-        this.localCart[key] = { ...data, quantity };
-        this.setCart(this.localCart);
+        this.addCartItem(item);
       } catch (error) {
         this.$toast.error("Error adding Menu Item!!");
         console.error(error);
@@ -193,16 +178,7 @@ export default {
     },
     removeItem(item) {
       try {
-        item.removing = true;
-        const types = ['HALF', 'FULL'];
-        for (const type of types) {
-          const key = `${item.uid}/${type}`;
-          if (key in this.localCart && this.localCart[key].quantity) {
-            this.localCart[key].quantity -= 1;
-            break;
-          }
-        }
-        this.setCart(this.localCart);
+        this.removeCartItem({item});
       } catch (error) {
         this.$toast.error("Error removing Menu Item!!");
         console.error(error);
