@@ -79,7 +79,7 @@
                     v-for="(item, idx) in menuItemData.results"
                     :key="item.uid">
                     <td colspan="auto">
-                      <div class="d-flex align-items-center">
+                      <div class="d-flex align-items-center min-w-200">
                         <ItemIcon :menu-type="item.menu_type"/>
                         <p class="mb-0">
                           {{ item.name }}

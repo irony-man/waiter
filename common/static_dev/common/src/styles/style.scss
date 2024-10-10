@@ -156,3 +156,12 @@ $primary: #4b566b;
   max-width: 450px;
   width: 100%;
 }
+
+.fas, .svg-inline--fa {
+  min-width: 12px;
+  min-height: 12px;
+}
+
+.min-w-200 {
+  min-width: 200px;
+}

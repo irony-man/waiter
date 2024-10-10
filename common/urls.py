@@ -22,11 +22,6 @@ urlpatterns = [
         views.TableAPIView.as_view(),
         name="qr-code",
     ),
-    path(
-        "get-cart/",
-        views.CartAPIView.as_view(),
-        name="get-cart",
-    ),
     re_path("^dashboard/", views.DashboardPage.as_view(), name="dashboard"),
     re_path("^", views.HomePage.as_view(), name="home"),
 ]

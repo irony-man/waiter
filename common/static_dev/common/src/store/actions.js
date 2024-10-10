@@ -10,19 +10,6 @@ export default {
     return response;
   },
 
-  async getCart({ commit }) {
-    const cart = localStorage.getItem('cart') || '{}';
-    const response = await getRequest('/get-cart/', {cart});
-    commit(Types.SET_CART, response);
-    return response;
-  },
-
-  async getLocalCart({ commit }) {
-    const cart = await JSON.parse(localStorage.getItem('cart')) || {};
-    commit(Types.SET_CART, cart);
-    return cart;
-  },
-
   setCart({ commit }, cart) {
     localStorage.setItem('cart', JSON.stringify(cart));
     commit(Types.SET_CART, cart);
@@ -36,6 +23,12 @@ export default {
   async getTableQRCode(ctx, {uid, query}) {
     const url = `/table-qr-code/${uid}/`;
     return await getRequest(url, query);
+  },
+
+  async getCart(ctx, uid) {
+    const response =  await getRequest(`/table-qr-code/${uid}/`, {cart: localStorage.getItem('cart') || '{}'});
+    ctx.commit(Types.SET_CART, response.cart);
+    return response;
   },
 
   ...GeneratedActions,

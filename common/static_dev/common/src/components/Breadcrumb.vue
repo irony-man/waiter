@@ -1,5 +1,5 @@
 <template>
-  <div class="breadcrumb mb-5">
+  <div class="breadcrumb mb-4">
     <router-link
       v-for="item in routerItems"
       :key="item.name"

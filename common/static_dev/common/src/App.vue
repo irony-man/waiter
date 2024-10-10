@@ -15,16 +15,9 @@
 import NavigationBar from "./components/NavigationBar.vue";
 import UserNavigationBar from "./components/UserNavigationBar.vue";
 import Footer from "./components/Footer.vue";
-import { mapActions } from "vuex";
 
 export default {
   name: "App",
   components: {NavigationBar, UserNavigationBar, Footer},
-  async mounted() {
-    await this.getCart();
-  },
-  methods: {
-    ...mapActions(['getCart']),
-  },
 };
 </script>

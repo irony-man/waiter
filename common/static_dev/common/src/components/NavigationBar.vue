@@ -19,9 +19,12 @@
             style="max-width: 60px;">
         </router-link>
         <div class="navbar-toolbar d-flex gap-3 align-items-center">
-          <div class="btn btn-outline-dark">
-            {{ $filters.formatCurrency(totalPrice) }}
-          </div>
+          <router-link
+            v-if="totalPrice && $route.meta.showNavCart"
+            class="btn btn-outline-dark"
+            :to="{ name: 'table-cart', params: { tableUid: $route.params.tableUid } }">
+            <i class="fas fa-cart-shopping me-3"/> {{ $filters.formatCurrency(totalPrice) }}
+          </router-link>
         </div>
       </div>
     </div>
@@ -35,7 +38,7 @@ import { mapState } from "vuex";
 export default {
   name: "NavigationBar",
   computed: {
-    ...mapState(["user", "cart"]),
+    ...mapState(["cart"]),
     totalPrice() {
       return Object.values(this.cart).reduce((sum, { quantity, price }) => sum + quantity * price, 0);
     }

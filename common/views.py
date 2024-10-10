@@ -196,13 +196,37 @@ class TableAPIView(APIView):
                 table=TableSerializer(instance=table).data,
             )
             if category_uid := request.GET.get("category__uid"):
+                if not is_valid_uid(category_uid):
+                    raise Http404("Category not found!!")
                 category = Category.objects.filter(uid=category_uid).first()
                 data["category"] = CategorySerializer(instance=category).data
                 data["menu_items"] = LiteMenuItemSerializer(
                     instance=MenuItem.objects.filter(category=category),
                     many=True,
                 ).data
-            else:
+            if "cart" in request.GET:
+                cart = json.loads(request.GET.get("cart"))
+                response = {}
+                for key, val in cart.items():
+                    uid, price_type = key.split("/", 1)
+                    if (
+                        menu_item := MenuItem.objects.filter(
+                            uid=uid,
+                            available=True,
+                            category__restaurant=table.restaurant,
+                        ).first()
+                    ) and (quantity := val.get("quantity", 0)):
+                        response[key] = dict(
+                            uid=uid,
+                            name=menu_item.name,
+                            price=menu_item.half_price
+                            if price_type == "HALF"
+                            else menu_item.full_price,
+                            type=price_type,
+                            quantity=quantity,
+                        )
+                data["cart"] = response
+            if "categories" in request.GET:
                 data["categories"] = CategorySerializer(
                     instance=Category.objects.filter(
                         restaurant=table.restaurant
@@ -212,31 +236,7 @@ class TableAPIView(APIView):
             return Response(data=data, status=200)
         except Table.DoesNotExist as e:
             raise Http404(dict(detail=e))
-        except Exception as e:
-            raise ValidationError(dict(detail=e))
-
-
-class CartAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        try:
-            cart = json.loads(request.GET.get("cart"))
-            response = {}
-            for key, val in cart.items():
-                uid, price_type = key.split("/", 1)
-                if (
-                    menu_item := MenuItem.objects.filter(
-                        uid=uid, available=True
-                    ).first()
-                ) and (quantity := val.get("quantity", 0)):
-                    response[key] = dict(
-                        uid=uid,
-                        name=menu_item.name,
-                        price=menu_item.half_price
-                        if price_type == "HALF"
-                        else menu_item.full_price,
-                        type=price_type,
-                        quantity=quantity,
-                    )
-            return Response(data=response)
+        except Http404 as e:
+            raise Http404(dict(detail=e))
         except Exception as e:
             raise ValidationError(dict(detail=e))

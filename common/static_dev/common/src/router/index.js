@@ -7,16 +7,30 @@ const routes = [
     component: () => import("../views/Home.vue"),
   },
   {
-    path: "/table/:uid",
-    name: "table",
+    path: "/table/:tableUid",
+    name: "table-root",
     meta: { title: "Table" },
-    component: () => import("../views/table/TableView.vue"),
-  },
-  {
-    path: "/table/:tableUid/category/:categoryUid",
-    name: "table-category",
-    meta: { title: "Category" },
-    component: () => import("../views/table/CategoryView.vue"),
+    component: () => import("../views/table/index.vue"),
+    children: [
+      {
+        path: "",
+        name: "table",
+        meta: { showNavCart: true, title: "Table" },
+        component: () => import("../views/table/TableView.vue"),
+      },
+      {
+        path: "cart",
+        name: "table-cart",
+        meta: { title: "Cart" },
+        component: () => import("../views/table/CartView.vue"),
+      },
+      {
+        path: "category/:categoryUid",
+        name: "table-category",
+        meta: { showNavCart: true, title: "Category" },
+        component: () => import("../views/table/CategoryView.vue"),
+      },
+    ]
   },
   {
     path: "/dashboard",

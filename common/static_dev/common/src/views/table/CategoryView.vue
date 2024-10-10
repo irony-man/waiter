@@ -48,7 +48,7 @@
                     v-for="item in instance.menu_items"
                     :key="item.uid">
                     <td colspan="auto">
-                      <div class="d-flex align-items-center">
+                      <div class="d-flex align-items-center min-w-200">
                         <ItemIcon :menu-type="item.menu_type"/>
                         <p class="mb-0">
                           {{ item.name }}
@@ -86,7 +86,6 @@
           v-if="showCartModal"
           :item="cartItem"
           @saved="saveItem"/>
-        <pre>{{ localCart }}</pre>
       </div>
     </div>
   </Loader>
@@ -102,9 +101,9 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import LoadingButton from "@/components/LoadingButton.vue";
 import Button from "@/components/Button.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
-import CartFormModal from "../../components/CartFormModal.vue";
-import ItemIcon from "../../components/ItemIcon.vue";
-import CartButtons from "../../components/CartButtons.vue";
+import CartFormModal from "@/components/CartFormModal.vue";
+import ItemIcon from "@/components/ItemIcon.vue";
+import CartButtons from "@/components/CartButtons.vue";
 
 export default {
   name: "CategoryView",
@@ -145,7 +144,7 @@ export default {
       let message = "Error fetching Table!!";
       if (error instanceof HttpNotFound) {
         this.instance.notFound = true;
-        message = error.data?.detail ?? "Table not found!!";
+        message = error.data?.detail ?? "Category not found!!";
       } else if (error instanceof HttpServerError) {
         message = this.error.message;
       }

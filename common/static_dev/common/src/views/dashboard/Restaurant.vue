@@ -159,7 +159,7 @@ import LoadingButton from "@/components/LoadingButton.vue";
 import Button from "@/components/Button.vue";
 import CategoryFormModal from "@/components/CategoryFormModal.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
-import CategoryCard from "../../components/CategoryCard.vue";
+import CategoryCard from "@/components/CategoryCard.vue";
 
 export default {
   name: "RestaurantView",

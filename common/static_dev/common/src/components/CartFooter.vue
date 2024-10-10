@@ -5,7 +5,7 @@
     <LoadingButton
       :is-loading="!!removing"
       class="btn-outline-dark"
-      btn-icon="fas fa-minus fs-7"
+      btn-icon="fas fa-minus"
       :disabled="!value"
       @click="$emit('remove')"/>
 
@@ -17,7 +17,7 @@
 
     <LoadingButton
       :is-loading="!!adding"
-      class="btn-outline-dark fs-7"
+      class="btn-outline-dark"
       btn-icon="fas fa-plus"
       @click="$emit('add')"/>
   </div>
@@ -28,7 +28,7 @@ import Button from "./Button.vue";
 import LoadingButton from "./LoadingButton.vue";
 
 export default {
-  name: "CartButtons",
+  name: "CartFooter",
   components: { LoadingButton, Button },
   props: {
     value: {
