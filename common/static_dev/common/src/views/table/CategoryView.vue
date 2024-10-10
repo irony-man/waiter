@@ -86,7 +86,7 @@
           v-if="showCartModal"
           :item="cartItem"
           @saved="saveItem"/>
-        <pre>{{ cart }}</pre>
+        <pre>{{ localCart }}</pre>
       </div>
     </div>
   </Loader>
@@ -114,12 +114,12 @@ export default {
       instance: {},
       cartItem:{},
       localStorage: localStorage,
-      cart: {},
+      localCart: {},
       showCartModal: false,
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user", "cart"]),
     categoryUid() {
       return this.$route.params.categoryUid;
     },
@@ -139,7 +139,7 @@ export default {
   async mounted() {
     try {
       this.instance = await this.getTableQRCode({ uid: this.tableUid, query: { category__uid: this.categoryUid } });
-      this.cart = await this.getCart();
+      this.localCart = this.cart;
     } catch (error) {
       console.error(error);
       let message = "Error fetching Table!!";
@@ -155,11 +155,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTableQRCode', 'getCart', 'setCart']),
+    ...mapActions(['getTableQRCode', 'getLocalCart', 'setCart']),
     getQuantity(item, types = ['HALF', 'FULL']) {
       return types.reduce((sum, t) => {
         const key = `${item.uid}/${t}`;
-        return key in this.cart ? sum + this.cart[key].quantity : sum;
+        return key in this.localCart ? sum + this.localCart[key].quantity : sum;
       }, 0);
 
     },
@@ -184,9 +184,9 @@ export default {
     addItem(data) {
       try {
         const key = `${data.uid}/${data.type}`;
-        const quantity = key in this.cart ? this.cart[key].quantity + 1 : 1;
-        this.cart[key] = { ...data, quantity };
-        this.setCart(this.cart);
+        const quantity = key in this.localCart ? this.localCart[key].quantity + 1 : 1;
+        this.localCart[key] = { ...data, quantity };
+        this.setCart(this.localCart);
       } catch (error) {
         this.$toast.error("Error adding Menu Item!!");
         console.error(error);
@@ -198,12 +198,12 @@ export default {
         const types = ['HALF', 'FULL'];
         for (const type of types) {
           const key = `${item.uid}/${type}`;
-          if (key in this.cart && this.cart[key].quantity) {
-            this.cart[key].quantity -= 1;
+          if (key in this.localCart && this.localCart[key].quantity) {
+            this.localCart[key].quantity -= 1;
             break;
           }
         }
-        this.setCart(this.cart);
+        this.setCart(this.localCart);
       } catch (error) {
         this.$toast.error("Error removing Menu Item!!");
         console.error(error);

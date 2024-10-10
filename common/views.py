@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from django.contrib.auth import authenticate, login, logout
@@ -213,4 +214,29 @@ class TableAPIView(APIView):
             raise Http404(dict(detail=e))
         except Exception as e:
             raise ValidationError(dict(detail=e))
-        raise Http404
+
+
+class CartAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            cart = json.loads(request.GET.get("cart"))
+            response = {}
+            for key, val in cart.items():
+                uid, price_type = key.split("/", 1)
+                if (
+                    menu_item := MenuItem.objects.filter(
+                        uid=uid, available=True
+                    ).first()
+                ) and (quantity := val.get("quantity", 0)):
+                    response[key] = dict(
+                        uid=uid,
+                        name=menu_item.name,
+                        price=menu_item.half_price
+                        if price_type == "HALF"
+                        else menu_item.full_price,
+                        type=price_type,
+                        quantity=quantity,
+                    )
+            return Response(data=response)
+        except Exception as e:
+            raise ValidationError(dict(detail=e))

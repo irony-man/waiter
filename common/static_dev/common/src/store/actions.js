@@ -11,6 +11,13 @@ export default {
   },
 
   async getCart({ commit }) {
+    const cart = localStorage.getItem('cart') || '{}';
+    const response = await getRequest('/get-cart/', {cart});
+    commit(Types.SET_CART, response);
+    return response;
+  },
+
+  async getLocalCart({ commit }) {
     const cart = await JSON.parse(localStorage.getItem('cart')) || {};
     commit(Types.SET_CART, cart);
     return cart;

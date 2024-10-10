@@ -62,6 +62,7 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Available</th>
                     <th
                       v-if="showHalfPrice"
                       class="text-end">
@@ -88,6 +89,7 @@
                         v-if="item.description"
                         class="mt-2 fw-light">{{ item.description }}</small>
                     </td>
+                    <td><BooleanIcon :value="item.available"/></td>
                     <td
                       v-if="showHalfPrice"
                       class="text-end">
