@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     # Third Party
     "rest_framework",
     "cloudinary",
-    "django_countries",
+    "phonenumber_field",
     # Internal
     "common.apps.CommonConfig",
 ]

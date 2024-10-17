@@ -21,7 +21,7 @@
         <div class="navbar-toolbar d-flex gap-3 align-items-center">
           <router-link
             v-if="totalPrice && $route.meta.showNavCart"
-            class="btn btn-outline-dark"
+            class="btn btn-primary"
             :to="{ name: 'table-cart', params: { tableUid: $route.params.tableUid } }">
             <i class="fas fa-cart-shopping me-3"/> {{ $filters.formatCurrency(totalPrice) }}
           </router-link>

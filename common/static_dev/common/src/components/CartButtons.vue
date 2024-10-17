@@ -1,6 +1,6 @@
 <template>
   <div
-    class="btn-group max-w-150"
+    class="btn-group btn-group-sm max-w-150"
     role="group">
     <LoadingButton
       v-if="value && available"

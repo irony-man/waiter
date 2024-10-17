@@ -87,15 +87,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         ]
 
     def get_choices(self, instance):
-        from django_countries import countries
-
-        serialized_countries = []
-        for country in countries:
-            serialized_countries.append(
-                {"value": country.code.upper(), "name": country.name}
-            )
         choices = {
-            "country": serialized_countries,
             "menu_type": serialize(MenuType),
         }
         return choices
