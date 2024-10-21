@@ -132,7 +132,7 @@ export default {
   },
   async mounted() {
     try {
-      this.instance = await this.getTableQRCode({ uid: this.tableUid, query: { category__uid: this.categoryUid } });
+      this.instance = await this.getTableCategory(this.tableUid);
     } catch (error) {
       console.error(error);
       let message = error?.data?.detail ?? "Error fetching Table!!";
@@ -148,7 +148,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTableQRCode', 'setCart', 'addCartItem', 'removeCartItem']),
+    ...mapActions(['getTableCategory', 'setCart', 'addCartItem', 'removeCartItem']),
     getQuantity(item) {
       return ['HALF', 'FULL'].reduce((sum, t) => {
         const key = `${item.uid}/${t}`;

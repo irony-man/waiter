@@ -13,14 +13,15 @@ router.register("restaurant", views.RestaurantViewSet, basename="restaurant")
 router.register("table", views.TableViewSet, basename="table")
 router.register("category", views.CategoryViewSet, basename="category")
 router.register("menu-item", views.MenuItemViewSet, basename="menu-item")
+router.register("order", views.OrderViewSet, basename="order")
 
 urlpatterns = [
     path("login/", views.LoginPinRequestView.as_view(), name="login"),
     path("logout/", views.Logout.as_view(), name="logout"),
     path(
-        "table-qr-code/<str:uid>/",
-        views.TableAPIView.as_view(),
-        name="qr-code",
+        "order/<str:uid>/",
+        views.OrderAPIView.as_view(),
+        name="order",
     ),
     re_path("^dashboard/", views.DashboardPage.as_view(), name="dashboard"),
     re_path("^", views.HomePage.as_view(), name="home"),

@@ -7,6 +7,7 @@ from common.models import (
     Category,
     Chain,
     MenuItem,
+    Order,
     Restaurant,
     Table,
     UserProfile,
@@ -236,3 +237,31 @@ class LiteMenuItemSerializer(serializers.ModelSerializer):
             "full_price",
             "description",
         ]
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    menu_item = SerializedRelationField(
+        "uid", MenuItem.objects.filter(available=True), LiteMenuItemSerializer
+    )
+    table = SerializedRelationField(
+        "uid", Table.objects, TableSerializer, write_only=True
+    )
+
+    class Meta:
+        model = Order
+        fields = [
+            "uid",
+            "menu_item",
+            "table",
+            "price",
+            "total_price",
+            "price_type",
+            "quantity",
+            "status",
+            "session_uid",
+        ]
+
+    def validate(self, attrs):
+        instance = Order(**attrs)
+        instance.clean()
+        return super(OrderSerializer, self).validate(attrs)

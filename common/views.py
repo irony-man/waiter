@@ -1,8 +1,9 @@
 import json
 import uuid
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Case, F, Sum, When
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -15,25 +16,34 @@ from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
+    HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
 )
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from common.forms import LoginPinRequestForm
-from common.models import Category, MenuItem, Restaurant, Table, UserProfile
+from common.models import (
+    Category,
+    MenuItem,
+    Order,
+    Restaurant,
+    Table,
+    UserProfile,
+)
 from common.serializers import (
     CategorySerializer,
+    LiteCategorySerializer,
     LiteMenuItemSerializer,
     LiteUserProfileSerializer,
-    LoginSerializer,
     MenuItemSerializer,
+    OrderSerializer,
     RestaurantSerializer,
     TableSerializer,
     UserProfileSerializer,
 )
+from common.taxonomies import PriceType
 
 
 def is_ajax(request) -> bool:
@@ -145,7 +155,7 @@ class RestaurantViewSet(AuthMixin, ModelViewSet):
         return Response(status=HTTP_204_NO_CONTENT)
 
 
-class TableViewSet(AuthMixin, ModelViewSet):
+class TableViewSet(ModelViewSet):
     lookup_field = "uid"
     serializer_class = TableSerializer
     filter_backends = (DjangoFilterBackend,)
@@ -153,9 +163,70 @@ class TableViewSet(AuthMixin, ModelViewSet):
     http_method_names = ("get", "post", "delete")
 
     def get_queryset(self):
+        if self.request.method.upper() == "GET":
+            return Table.objects.all()
         return Table.objects.filter(
             restaurant__chain=self.request.chain
         ).order_by("number")
+
+    @action(methods=["GET"], detail=True)
+    def categories(self, request, *args, **kwargs):
+        try:
+            instance: Table = self.get_object()
+            data = dict(
+                table=TableSerializer(instance=instance).data, categories=[]
+            )
+            for category in Category.objects.filter(
+                restaurant=instance.restaurant
+            ).order_by("name"):
+                items = MenuItem.objects.filter(category=category)
+                data["categories"].append(
+                    dict(
+                        category=LiteCategorySerializer(
+                            instance=category,
+                        ).data,
+                        has_half_price=items.aggregate(
+                            total_half_price=Sum("half_price", default=0)
+                        ).get("total_half_price", 0)
+                        > 0,
+                        menu_items=LiteMenuItemSerializer(
+                            instance=items,
+                            many=True,
+                        ).data,
+                    )
+                )
+            return Response(data=data, status=HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError(dict(detail=e))
+
+    @action(methods=["GET"], detail=True)
+    def cart(self, request, *args, **kwargs):
+        try:
+            instance: Table = self.get_object()
+            data = dict(table=TableSerializer(instance=instance).data, cart={})
+            cart = json.loads(request.COOKIES.get("cart", "{}"))
+            for key, val in cart.items():
+                uid, price_type = key.split("/", 1)
+                if (
+                    menu_item := MenuItem.objects.filter(
+                        uid=uid,
+                        available=True,
+                        category__restaurant=instance.restaurant,
+                    ).first()
+                ) and (quantity := val.get("quantity", 0)):
+                    data["cart"][key] = dict(
+                        menu_item=LiteMenuItemSerializer(
+                            instance=menu_item
+                        ).data,
+                        price=menu_item.half_price
+                        if price_type == PriceType.HALF
+                        else menu_item.full_price,
+                        price_type=price_type,
+                        quantity=quantity,
+                    )
+            return Response(data=data, status=HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError(dict(detail=e))
 
 
 class CategoryViewSet(AuthMixin, ModelViewSet):
@@ -185,59 +256,79 @@ class MenuItemViewSet(AuthMixin, ModelViewSet):
         )
 
 
-class TableAPIView(APIView):
+class OrderViewSet(AuthMixin, ModelViewSet):
+    lookup_field = "uid"
+    serializer_class = OrderSerializer
+    http_method_names = ("get",)
+
+    def get_queryset(self):
+        return Order.objects.filter(
+            session_uid=self.request.session.get("uid", None)
+        )
+
+
+class OrderAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        uid = kwargs.get("uid", None)
-        if not uid or not is_valid_uid(uid):
-            raise Http404
         try:
-            table = Table.objects.get(uid=uid)
-            data = dict(
-                table=TableSerializer(instance=table).data,
+            uid = kwargs.get("uid", None)
+            if not uid or not is_valid_uid(uid):
+                raise Http404
+            request.session["uid"] = request.session.get(
+                "uid", str(uuid.uuid4())
             )
-            if category_uid := request.GET.get("category__uid"):
-                if not is_valid_uid(category_uid):
-                    raise Http404("Category not found!!")
-                category = Category.objects.filter(uid=category_uid).first()
-                data["category"] = CategorySerializer(instance=category).data
-                data["menu_items"] = LiteMenuItemSerializer(
-                    instance=MenuItem.objects.filter(category=category),
-                    many=True,
-                ).data
-            if "cart" in request.GET:
-                cart = json.loads(request.GET.get("cart"))
-                response = {}
-                for key, val in cart.items():
-                    uid, price_type = key.split("/", 1)
-                    if (
-                        menu_item := MenuItem.objects.filter(
-                            uid=uid,
-                            available=True,
-                            category__restaurant=table.restaurant,
-                        ).first()
-                    ) and (quantity := val.get("quantity", 0)):
-                        response[key] = dict(
-                            menu_item=LiteMenuItemSerializer(
-                                instance=menu_item
-                            ).data,
-                            price=menu_item.half_price
-                            if price_type == "HALF"
-                            else menu_item.full_price,
-                            price_type=price_type,
-                            quantity=quantity,
-                        )
-                data["cart"] = response
-            if "categories" in request.GET:
-                data["categories"] = CategorySerializer(
-                    instance=Category.objects.filter(
-                        restaurant=table.restaurant
-                    ).order_by("name"),
-                    many=True,
-                ).data
-            return Response(data=data, status=200)
-        except Table.DoesNotExist as e:
-            raise Http404(dict(detail=e))
-        except Http404 as e:
-            raise Http404(dict(detail=e))
+            instance = Table.objects.get(uid=uid)
+            orders = Order.objects.filter(
+                table=instance, session_uid=request.session["uid"]
+            )
+            total_price = orders.aggregate(
+                total_price=Sum(
+                    Case(
+                        When(
+                            price_type=PriceType.FULL,
+                            then=F("menu_item__full_price") * F("quantity"),
+                        ),
+                        When(
+                            price_type=PriceType.HALF,
+                            then=F("menu_item__half_price") * F("quantity"),
+                        ),
+                    )
+                )
+            ).get("total_price", 0)
+            data = dict(
+                table=TableSerializer(instance=instance).data,
+                orders=OrderSerializer(instance=orders, many=True).data,
+                session_uid=request.session["uid"],
+                total_price=total_price,
+            )
+            return Response(data=data, status=HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError(dict(detail=e))
+
+    def post(self, request, *args, **kwargs):
+        try:
+            uid = kwargs.get("uid", None)
+            if not uid or not is_valid_uid(uid):
+                raise Http404
+            instance = Table.objects.get(uid=uid)
+            request.session["table"] = str(instance.uid)
+            request.session["uid"] = request.session.get(
+                "uid", str(uuid.uuid4())
+            )
+            orders = []
+            cart = json.loads(request.COOKIES.get("cart", "{}"))
+            for key, val in cart.items():
+                uid, price_type = key.split("/", 1)
+                order_ser = OrderSerializer(
+                    data=dict(
+                        menu_item=uid,
+                        table=instance.uid,
+                        price_type=price_type,
+                        quantity=val.get("quantity", 0),
+                        session_uid=request.session["uid"],
+                    )
+                )
+                if order_ser.is_valid():
+                    orders.append(order_ser.save())
+            return Response(status=HTTP_201_CREATED)
         except Exception as e:
             raise ValidationError(dict(detail=e))

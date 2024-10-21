@@ -1,6 +1,7 @@
-import { getRequest, getUrl, deleteRequest } from "./network";
+import { getRequest, getUrl, deleteRequest, postRequest } from "./network";
 import Types from "./types.js";
 import GeneratedActions from "./actions.gen.js";
+import cookiesLib from "../cookiesLib.js";
 
 export default {
   async getUser({ commit }) {
@@ -18,7 +19,7 @@ export default {
     let quantity = (key in cart ? cart[key].quantity : 0) + 1;
     cart[key] = { price, quantity, price_type, menu_item: item };
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    cookiesLib.setCookie("cart", JSON.stringify(cart));
     commit(Types.SET_CART, cart);
   },
 
@@ -34,12 +35,12 @@ export default {
         break;
       }
     }
-    localStorage.setItem("cart", JSON.stringify(cart));
+    cookiesLib.setCookie("cart", JSON.stringify(cart));
     commit(Types.SET_CART, cart);
   },
 
   setCart({ commit }, cart) {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    cookiesLib.setCookie("cart", JSON.stringify(cart));
     commit(Types.SET_CART, cart);
   },
 
@@ -48,17 +49,24 @@ export default {
     return await deleteRequest(url);
   },
 
-  async getTableQRCode(ctx, { uid, query }) {
-    const url = `/table-qr-code/${uid}/`;
-    return await getRequest(url, query);
-  },
-
   async getCart(ctx, uid) {
-    const response = await getRequest(`/table-qr-code/${uid}/`, {
-      cart: localStorage.getItem("cart") || "{}",
-    });
+    const url = getUrl(`table/${uid}/cart`);
+    const response = await getRequest(url);
     ctx.commit(Types.SET_CART, response.cart);
     return response;
+  },
+
+  async getTableCategory(ctx, uid) {
+    const url = getUrl(`table/${uid}/categories`);
+    return await getRequest(url);
+  },
+
+  async getOrder(ctx, uid) {
+    return await getRequest(`/order/${uid}/`);
+  },
+
+  async createOrder(ctx, uid) {
+    return await postRequest(`/order/${uid}/`);
   },
 
   ...GeneratedActions,

@@ -7,9 +7,9 @@
         :primary="`Ordering from Table: <strong>#${instance.table.number}</strong>`"/>
 
       <div class="mt-5">
-        <h6 class="fw-bold mb-3 text-uppercase">
-          Categories
-        </h6>
+        <h5 class="fw-bold mb-0 text-uppercase">
+          Items
+        </h5>
 
         <Empty
           v-if="!instance.categories.length"
@@ -18,19 +18,72 @@
           icon="fas fa-face-frown"/>
 
         <div v-else>
-          <div class="row justify-content-center g-5">
+          <div class="table-responsive">
             <div
               v-for="category in instance.categories"
               :key="category.uid"
-              class="col-6 col-md-4 col-lg-3 col-xl-2">
-              <router-link
-                :to="{ name: 'table-category', params: { categoryUid: category.uid, tableUid: tableUid, } }">
-                <CategoryCard :category="category"/>
-              </router-link>
+              class="mt-5">
+              <h6 class="fw-bold mb-3 text-uppercase">
+                {{ category.category?.name }}
+              </h6>
+              <table
+                class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th
+                      v-if="category.has_half_price"
+                      class="text-end">
+                      Half Price
+                    </th>
+                    <th class="text-end">
+                      {{ category.has_half_price ? 'Full' : '' }} Price
+                    </th>
+                    <th class="text-end"/>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in category.menu_items"
+                    :key="item.uid">
+                    <td>
+                      <div class="d-flex align-items-center min-w-200">
+                        <ItemIcon :menu-type="item.menu_type"/>
+                        <p class="mb-0">
+                          {{ item.name }}
+                        </p>
+                      </div>
+                      <small
+                        v-if="item.description"
+                        class="mt-2 fw-light">{{ item.description }}</small>
+                    </td>
+                    <td
+                      v-if="category.has_half_price"
+                      class="text-end w-150">
+                      {{ $filters.formatCurrency(item.half_price, true) }}
+                    </td>
+                    <td class="text-end w-150">
+                      {{ $filters.formatCurrency(item.full_price) }}
+                    </td>
+                    <td class="text-end min-w-200">
+                      <CartButtons
+                        class="w-100"
+                        :value="getQuantity(item)"
+                        :available="item.available"
+                        @add="() => preAddItem(item)"
+                        @remove="() => removeItem(item)"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
+      <CartFormModal
+        v-if="showCartModal"
+        :item="cartItem"
+        @saved="saveItem"/>
     </div>
   </Loader>
 </template>
@@ -46,16 +99,21 @@ import Button from "@/components/Button.vue";
 import CategoryFormModal from "@/components/CategoryFormModal.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
 import CategoryCard from "@/components/CategoryCard.vue";
+import CartFormModal from "@/components/CartFormModal.vue";
+import ItemIcon from "@/components/ItemIcon.vue";
+import CartButtons from "@/components/CartButtons.vue";
 
 export default {
   name: "TableView",
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal, CategoryCard },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal, CategoryCard, CartFormModal, ItemIcon, CartButtons },
   data() {
     return {
       instance: {
         categories: [],
         table: {}
       },
+      showCartModal: false,
+      cartItem: {},
     };
   },
   computed: {
@@ -66,7 +124,7 @@ export default {
   },
   async mounted() {
     try {
-      this.instance = await this.getTableQRCode({ uid: this.tableUid, query: {categories: true} });
+      this.instance = await this.getTableCategory(this.tableUid);
     } catch (error) {
       console.error(error);
       let message = "Error fetching Table!!";
@@ -82,7 +140,44 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTableQRCode',]),
+    ...mapActions(['getTableCategory', 'setCart', 'addCartItem', 'removeCartItem']),
+    getQuantity(item) {
+      return ['HALF', 'FULL'].reduce((sum, t) => {
+        const key = `${item.uid}/${t}`;
+        return key in this.cart ? sum + this.cart[key].quantity : sum;
+      }, 0);
+    },
+    preAddItem(item) {
+      if (item.half_price == parseFloat(0)) {
+        item.price_type = 'FULL';
+        this.addItem(item);
+      } else {
+        this.cartItem = item;
+        this.showCartModal = true;
+      }
+    },
+    saveItem(item) {
+      this.addItem(item);
+      this.showCartModal = false;
+    },
+    addItem(item) {
+      try {
+        this.addCartItem(item);
+      } catch (error) {
+        this.$toast.error("Error adding Menu Item!!");
+        console.error(error);
+      }
+    },
+    removeItem(item) {
+      try {
+        this.removeCartItem({item});
+      } catch (error) {
+        this.$toast.error("Error removing Menu Item!!");
+        console.error(error);
+      } finally {
+        item.removing = false;
+      }
+    }
   }
 };
 </script>

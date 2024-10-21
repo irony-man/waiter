@@ -25,6 +25,12 @@ const routes = [
         component: () => import("../views/table/CartView.vue"),
       },
       {
+        path: "order",
+        name: "table-order",
+        meta: { title: "Order" },
+        component: () => import("../views/table/OrderView.vue"),
+      },
+      {
         path: "category/:categoryUid",
         name: "table-category",
         meta: { showNavCart: true, title: "Category" },

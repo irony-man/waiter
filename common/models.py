@@ -15,12 +15,13 @@ from django.db.models import (
     OneToOneField,
     PositiveIntegerField,
     TextField,
+    UUIDField,
 )
 from loguru import logger
 
 from common.abstract_models import CreateUpdate
 from common.model_helpers import attach_qr, now_time, random_pin
-from common.taxonomies import MenuType
+from common.taxonomies import MenuType, OrderStatus, PriceType
 
 
 class Chain(CreateUpdate):
@@ -118,6 +119,38 @@ class MenuItem(CreateUpdate):
 
     def __str__(self):
         return f"{self.name} / {self.category}"
+
+
+class Order(CreateUpdate):
+    session_uid = UUIDField()
+    table = ForeignKey(Table, on_delete=PROTECT)
+    menu_item = ForeignKey(MenuItem, on_delete=PROTECT)
+    price_type = CharField(
+        choices=PriceType.choices, default=PriceType.FULL, max_length=8
+    )
+    quantity = PositiveIntegerField()
+    status = CharField(
+        choices=OrderStatus.choices, default=OrderStatus.PENDING, max_length=32
+    )
+
+    @property
+    def price(self):
+        return (
+            self.menu_item.full_price
+            if self.price_type == PriceType.FULL
+            else self.menu_item.half_price
+        )
+
+    @property
+    def total_price(self):
+        return self.price * self.quantity
+
+    def __str__(self):
+        return f"{self.table} / {self.status} / {self.quantity}"
+
+    def clean(self):
+        if self.table.restaurant != self.menu_item.category.restaurant:
+            raise ValidationError({"table": "Table not found."})
 
 
 class LoginPinRequest(CreateUpdate):

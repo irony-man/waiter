@@ -10,7 +10,7 @@
         :primary="`Ordering from Table: <strong>#${instance.table.number}</strong>`"/>
 
       <div class="row g-5">
-        <div class="col-12 col-lg-8">
+        <div class="col">
           <h6 class="fw-bold mb-4 text-uppercase">
             Cart Items <span class="ms-1">({{ totalItems }})</span>
           </h6>
@@ -26,6 +26,7 @@
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Type</th>
                   <th class="text-end">
                     Price
                   </th>
@@ -50,6 +51,9 @@
                       v-if="menu_item.description"
                       class="mt-2 fw-light">{{ menu_item.description }}</small>
                   </td>
+                  <td>
+                    {{ price_type.toTitleCase() }}
+                  </td>
                   <td class="text-end">
                     {{ $filters.formatCurrency(price) }}
                   </td>
@@ -68,7 +72,9 @@
             </table>
           </div>
         </div>
-        <div class="col-12 col-lg-4">
+        <div
+          v-if="totalItems"
+          class="col-12 col-lg-4">
           <h6 class="fw-bold mb-4 text-uppercase">
             Cart Summary
           </h6>
@@ -80,10 +86,12 @@
               <h2 class="fw-normal mb-4">
                 {{ $filters.formatCurrency(totalPrice) }}
               </h2>
-              <Button
-                class="btn-primary">
+              <LoadingButton
+                class="btn-primary"
+                :is-loading="creatingOrder"
+                @click="placeOrder">
                 Place Order
-              </Button>
+              </LoadingButton>
             </div>
           </div>
         </div>
@@ -113,6 +121,7 @@ export default {
         table: {}
       },
       localCart: {},
+      creatingOrder: false,
     };
   },
   computed: {
@@ -152,7 +161,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getCart', 'addCartItem', 'removeCartItem',]),
+    ...mapActions(['getCart', 'addCartItem', 'removeCartItem', 'createOrder']),
     addItem(item, price_type = 'FULL') {
       try {
         item.price_type = price_type;
@@ -170,6 +179,21 @@ export default {
         console.error(error);
       } finally {
         item.removing = false;
+      }
+    },
+    async placeOrder() {
+      try {
+        this.creatingOrder = true;
+        await this.createOrder(this.tableUid);
+        this.$toast.success("Order placed!!");
+        this.$filters.deleteCookie("cart");
+        this.$router.push({name: "table-order", params: { tableUid: this.tableUid } });
+      } catch (error) {
+        const message = error?.data?.detail ?? "Error placing Order!!";
+        this.$toast.error(message);
+        console.error(error);
+      } finally {
+        this.creatingOrder = false;
       }
     }
   },

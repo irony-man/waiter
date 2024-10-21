@@ -13,3 +13,17 @@ def serialize(klass) -> List[Dict[str, Any]]:
 class MenuType(TextChoices):
     VEG = "VEG", _("Veg")
     NON_VEG = "NON_VEG", _("Non Veg")
+
+
+class PriceType(TextChoices):
+    HALF = "HALF", _("Half")
+    FULL = "FULL", _("Full")
+
+
+class OrderStatus(TextChoices):
+    PENDING = "PENDING", _("Pending")
+    ACCEPTED = "ACCEPTED", _("Accepted")
+    REJECTED = "REJECTED", _("Rejected")
+    MAKING = "MAKING", _("Making")
+    DELIVERED = "DELIVERED", _("Delivered")
+    COMPLETED = "COMPLETED", _("Completed")
