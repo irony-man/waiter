@@ -1,11 +1,11 @@
 <template>
-  <footer class="bg-secondary border-top mt-5">
-    <div class="container py-3">
-      <p class="text-center mb-0">
-        Developed by <strong>Shivam Rai</strong>
-      </p>
+  <nav class="navbar fixed-bottom bg-body-tertiary">
+    <div class="container-fluid">
+      <a
+        class="navbar-brand"
+        href="#">Fixed bottom</a>
     </div>
-  </footer>
+  </nav>
 </template>
 
 <script>

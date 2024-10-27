@@ -1,8 +1,10 @@
-from cloudinary import uploader
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer  # type: ignore
+from cloudinary import uploader  # type: ignore
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from common.models import Table
+from common.models import Order, Table
 
 
 @receiver(post_save, sender=Table)
@@ -22,3 +24,22 @@ def table_save(sender, instance: Table, **kwargs):
 def table_delete(sender, instance: Table, using, **kwargs):
     if public_id := instance.qr_code_response.get("public_id", None):
         uploader.destroy(public_id=public_id)
+
+
+@receiver(post_save, sender=Order)
+def order_save(sender, instance: Order, **kwargs):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        str(instance.session_uid),
+        {
+            "type": "send_order",
+            "order": instance,
+        },
+    )
+    async_to_sync(channel_layer.group_send)(
+        str(instance.table.restaurant.chain.uid),
+        {
+            "type": "send_order",
+            "order": instance,
+        },
+    )

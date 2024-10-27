@@ -5,16 +5,12 @@
         :router-items="routerItems"
         name="Order"/>
       <PageTitle
-        class="border-bottom pb-4"
-        :secondary="`<div class='fs-6 mb-2'>Restaurant: <strong>${instance.table.restaurant?.name}</strong></div>`"
-        :primary="`Orders from Table: <strong>#${instance.table.number}</strong>`"/>
+        :secondary="`This is where you manage <b>Chain ${user.chain_name}</b>.`"
+        primary="Orders"/>
 
       <div class="mb-5">
-        <h6 class="fw-bold mb-4 text-uppercase">
-          Orders <span class="ms-1">({{ totalItems }})</span>
-        </h6>
         <Empty
-          v-if="!totalItems"
+          v-if="!orderData.results.length"
           title="No Items"
           text="You don't have any Orders."
           icon="fas fa-face-frown"/>
@@ -40,7 +36,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="({ menu_item, ...order }, key) in instance.orders"
+                v-for="({ menu_item, ...order }, key) in orderData.results"
                 :key="key">
                 <td colspan="auto">
                   <div class="d-flex align-items-center min-w-200">
@@ -71,18 +67,19 @@
                   {{ $filters.formatCurrency(order.total_price) }}
                 </td>
               </tr>
-              <tr>
-                <td
-                  class="fw-bold"
-                  colspan="5">
-                  Total Price
-                </td>
-                <td class="text-end fw-bold">
-                  {{ $filters.formatCurrency(instance.total_price) }}
-                </td>
-              </tr>
             </tbody>
           </table>
+          <div
+            v-if="orderData.next"
+            class="mt-5 text-center">
+            <LoadingButton
+              :is-loading="!!orderData.loading"
+              class="btn-dark"
+              btn-type="button"
+              @click="fetchOrders()">
+              Load More
+            </LoadingButton>
+          </div>
         </div>
       </div>
     </div>
@@ -102,7 +99,7 @@ import ItemIcon from "@/components/ItemIcon.vue";
 import CartButtons from "@/components/CartButtons.vue";
 
 export default {
-  name: 'OrderView',
+  name: 'DashboardOrderView',
   components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons },
   data() {
     return {
@@ -110,6 +107,11 @@ export default {
       instance: {
         table: {},
         orders: [],
+      },
+      orderData: {
+        results: [],
+        page: 0,
+        loading: false,
       },
       badgeClass: {
         PENDING: "info",
@@ -122,32 +124,22 @@ export default {
   },
   computed: {
     ...mapState(['cart', 'user']),
-    tableUid() {
-      return this.$route.params.tableUid;
-    },
-    totalItems() {
-      return this.instance.orders.length;
-    },
-    totalPrice() {
-      return Object.values(this.cart).reduce((sum, { quantity, price }) => sum + quantity * price, 0);
-    },
     routerItems() {
       return [{
-        name: this.instance.table.restaurant?.name,
-        to: { name: 'table', params: { uid: this.tableUid } }
+        name: this.user.chain_name,
+        to: { name: 'dashboard' }
       }];
     }
   },
   async mounted() {
     try {
-      const [a] = await Promise.all([this.getTableOrder(this.tableUid), this.initWebsocket()]);
-      this.instance = a;
+      await Promise.all([this.fetchOrders(), this.initWebsocket()]);
     } catch (error) {
       console.error(error);
-      let message = error?.data?.detail ?? "Error fetching Orders!!";
+      let message = error?.data?.detail ?? "Error fetching Table!!";
       if (error instanceof HttpNotFound) {
         this.instance.notFound = true;
-        message = error.data?.detail ?? "Orders not found!!";
+        message = error.data?.detail ?? "Table not found!!";
       } else if (error instanceof HttpServerError) {
         message = this.error.message;
       }
@@ -160,7 +152,20 @@ export default {
     this.disconnect();
   },
   methods: {
-    ...mapActions(['getTableOrder', 'orderWebsocket']),
+    ...mapActions(['listOrder', 'orderWebsocket']),
+    async fetchOrders() {
+      try {
+        this.orderData.loading = true;
+        const response = await this.listOrder({ limit: this.limit, offset: this.orderData.page++ * this.limit });
+        response.results = [...this.orderData.results, ...response.results];
+        this.orderData = { ...this.orderData, ...response };
+      } catch (err) {
+        this.$toast.error("Error fetching orders!!");
+        console.error(err);
+      } finally {
+        this.orderData.loading = false;
+      }
+    },
     async disconnect() {
       if (this.connection.readyState === WebSocket.OPEN) {
         this.connection.close(1000);
@@ -175,8 +180,13 @@ export default {
     },
     updateOrder(e) {
       const data = JSON.parse(e.data);
-      this.instance.orders = this.instance?.orders.map(order => {
-        return data.uid === order.uid ? data : order;
+      console.log(data);
+
+      this.orderData.results = this.orderData.results?.map(order => {
+        if (data.uid === order.uid) {
+          order.status = data.status;
+        }
+        return order;
       });
       this.$toast.success(`Order #${data.uid} updated!!`);
     },

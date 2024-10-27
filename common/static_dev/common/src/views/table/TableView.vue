@@ -18,65 +18,63 @@
           icon="fas fa-face-frown"/>
 
         <div v-else>
-          <div class="table-responsive">
-            <div
-              v-for="category in instance.categories"
-              :key="category.uid"
-              class="mt-5">
-              <h6 class="fw-bold mb-3 text-uppercase">
-                {{ category.category?.name }}
-              </h6>
-              <table
-                class="table table-striped align-middle">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th
-                      v-if="category.has_half_price"
-                      class="text-end">
-                      Half Price
-                    </th>
-                    <th class="text-end">
-                      {{ category.has_half_price ? 'Full' : '' }} Price
-                    </th>
-                    <th class="text-end"/>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="item in category.menu_items"
-                    :key="item.uid">
-                    <td>
-                      <div class="d-flex align-items-center min-w-200">
-                        <ItemIcon :menu-type="item.menu_type"/>
-                        <p class="mb-0">
-                          {{ item.name }}
-                        </p>
-                      </div>
-                      <small
-                        v-if="item.description"
-                        class="mt-2 fw-light">{{ item.description }}</small>
-                    </td>
-                    <td
-                      v-if="category.has_half_price"
-                      class="text-end w-150">
-                      {{ $filters.formatCurrency(item.half_price, true) }}
-                    </td>
-                    <td class="text-end w-150">
-                      {{ $filters.formatCurrency(item.full_price) }}
-                    </td>
-                    <td class="text-end min-w-200">
-                      <CartButtons
-                        class="w-100"
-                        :value="getQuantity(item)"
-                        :available="item.available"
-                        @add="() => preAddItem(item)"
-                        @remove="() => removeItem(item)"/>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div
+            v-for="category in instance.categories"
+            :key="category.uid"
+            class="mt-5 table-responsive">
+            <h6 class="fw-bold mb-3 text-uppercase">
+              {{ category.category?.name }}
+            </h6>
+            <table
+              class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th
+                    v-if="category.has_half_price"
+                    class="text-end">
+                    Half Price
+                  </th>
+                  <th class="text-end">
+                    {{ category.has_half_price ? 'Full' : '' }} Price
+                  </th>
+                  <th class="text-end"/>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in category.menu_items"
+                  :key="item.uid">
+                  <td>
+                    <div class="d-flex align-items-center min-w-200">
+                      <ItemIcon :menu-type="item.menu_type"/>
+                      <p class="mb-0">
+                        {{ item.name }}
+                      </p>
+                    </div>
+                    <small
+                      v-if="item.description"
+                      class="mt-2 fw-light">{{ item.description }}</small>
+                  </td>
+                  <td
+                    v-if="category.has_half_price"
+                    class="text-end w-150">
+                    {{ $filters.formatCurrency(item.half_price, true) }}
+                  </td>
+                  <td class="text-end w-150">
+                    {{ $filters.formatCurrency(item.full_price) }}
+                  </td>
+                  <td class="text-end min-w-200">
+                    <CartButtons
+                      class="w-100"
+                      :value="getQuantity(item)"
+                      :available="item.available"
+                      @add="() => preAddItem(item)"
+                      @remove="() => removeItem(item)"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

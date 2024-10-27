@@ -43,7 +43,7 @@ from common.serializers import (
     TableSerializer,
     UserProfileSerializer,
 )
-from common.taxonomies import PriceType
+from common.taxonomies import OrderStatus, PriceType
 
 
 def is_ajax(request) -> bool:
@@ -113,9 +113,9 @@ class UserProfileViewSet(AuthMixin, ModelViewSet):
         return UserProfile.objects.all()
 
 
-class UserViewSet(AuthMixin, ModelViewSet):
+class UserViewSet(ModelViewSet):
     serializer_class = UserProfileSerializer
-    http_method_names = ("get", "post", "patch")
+    http_method_names = ("get", "patch")
 
     def get_queryset(self):
         if self.request.method.upper() == "PATCH" and self.kwargs.get("uid"):
@@ -125,6 +125,9 @@ class UserViewSet(AuthMixin, ModelViewSet):
     def get_object(self):
         if self.request.user.is_authenticated:
             return UserProfile.objects.get(user=self.request.user)
+        uid = self.request.session.get("uid", str(uuid.uuid4()))
+        self.request.session["uid"] = uid
+        return UserProfile(uid=uid)
 
 
 class RestaurantViewSet(AuthMixin, ModelViewSet):
@@ -263,7 +266,7 @@ class OrderViewSet(AuthMixin, ModelViewSet):
 
     def get_queryset(self):
         return Order.objects.filter(
-            session_uid=self.request.session.get("uid", None)
+            table__restaurant__chain=self.request.chain
         )
 
 
@@ -310,25 +313,28 @@ class OrderAPIView(APIView):
             if not uid or not is_valid_uid(uid):
                 raise Http404
             instance = Table.objects.get(uid=uid)
-            request.session["table"] = str(instance.uid)
             request.session["uid"] = request.session.get(
                 "uid", str(uuid.uuid4())
             )
-            orders = []
+            request.session["table"] = str(instance.uid)
             cart = json.loads(request.COOKIES.get("cart", "{}"))
             for key, val in cart.items():
-                uid, price_type = key.split("/", 1)
-                order_ser = OrderSerializer(
-                    data=dict(
-                        menu_item=uid,
-                        table=instance.uid,
-                        price_type=price_type,
-                        quantity=val.get("quantity", 0),
-                        session_uid=request.session["uid"],
-                    )
+                menu_uid, price_type = key.split("/", 1)
+                menu_item = MenuItem.objects.filter(
+                    uid=menu_uid, available=True
+                ).first()
+                order, created = Order.objects.get_or_create(
+                    menu_item=menu_item,
+                    table=instance,
+                    price_type=price_type,
+                    status=OrderStatus.PENDING,
+                    session_uid=request.session["uid"],
+                    defaults={"quantity": val.get("quantity", 0)},
                 )
-                if order_ser.is_valid():
-                    orders.append(order_ser.save())
+                if not created:
+                    order.quantity += val.get("quantity", 0)
+                    order.clean()
+                    order.save()
             return Response(status=HTTP_201_CREATED)
         except Exception as e:
             raise ValidationError(dict(detail=e))

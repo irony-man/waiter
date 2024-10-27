@@ -43,6 +43,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 INSTALLED_APPS = [
     # Native
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -93,6 +94,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "waiter.wsgi.application"
 ASGI_APPLICATION = "waiter.asgi.application"
 
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

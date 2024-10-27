@@ -15,25 +15,25 @@ const routes = [
       {
         path: "",
         name: "table",
-        meta: { showNavCart: true, title: "Table" },
+        meta: { showNavCart: true, showNavOrder: true, title: "Table" },
         component: () => import("../views/table/TableView.vue"),
       },
       {
         path: "cart",
         name: "table-cart",
-        meta: { title: "Cart" },
+        meta: { showNavOrder: true, title: "Cart" },
         component: () => import("../views/table/CartView.vue"),
       },
       {
         path: "order",
         name: "table-order",
-        meta: { title: "Order" },
+        meta: { showNavCart: true, title: "Order" },
         component: () => import("../views/table/OrderView.vue"),
       },
       {
         path: "category/:categoryUid",
         name: "table-category",
-        meta: { showNavCart: true, title: "Category" },
+        meta: { showNavCart: true, showNavOrder: true, title: "Category" },
         component: () => import("../views/table/CategoryView.vue"),
       },
     ]
@@ -61,6 +61,12 @@ const routes = [
         name: "dashboard-category",
         meta: { title: "Category" },
         component: () => import("../views/dashboard/Category.vue"),
+      },
+      {
+        path: "order",
+        name: "dashboard-order",
+        meta: { title: "Order" },
+        component: () => import("../views/dashboard/Order.vue"),
       },
     ],
   },

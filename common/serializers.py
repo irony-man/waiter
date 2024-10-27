@@ -246,6 +246,12 @@ class OrderSerializer(serializers.ModelSerializer):
     table = SerializedRelationField(
         "uid", Table.objects, TableSerializer, write_only=True
     )
+    price = serializers.DecimalField(
+        max_digits=12, decimal_places=2, read_only=True
+    )
+    total_price = serializers.DecimalField(
+        max_digits=12, decimal_places=2, read_only=True
+    )
 
     class Meta:
         model = Order
@@ -265,3 +271,12 @@ class OrderSerializer(serializers.ModelSerializer):
         instance = Order(**attrs)
         instance.clean()
         return super(OrderSerializer, self).validate(attrs)
+
+
+class LiteOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = [
+            "uid",
+            "status",
+        ]

@@ -2,6 +2,7 @@ import { getRequest, getUrl, deleteRequest, postRequest } from "./network";
 import Types from "./types.js";
 import GeneratedActions from "./actions.gen.js";
 import cookiesLib from "../cookiesLib.js";
+import webSocket from "./webSocket.js";
 
 export default {
   async getUser({ commit }) {
@@ -61,13 +62,14 @@ export default {
     return await getRequest(url);
   },
 
-  async getOrder(ctx, uid) {
+  async getTableOrder(ctx, uid) {
     return await getRequest(`/order/${uid}/`);
   },
 
-  async createOrder(ctx, uid) {
+  async createTableOrder(ctx, uid) {
     return await postRequest(`/order/${uid}/`);
   },
 
   ...GeneratedActions,
+  ...webSocket,
 };

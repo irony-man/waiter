@@ -15,9 +15,21 @@
 import NavigationBar from "./components/NavigationBar.vue";
 import UserNavigationBar from "./components/UserNavigationBar.vue";
 import Footer from "./components/Footer.vue";
+import {mapActions} from "vuex";
 
 export default {
   name: "App",
   components: {NavigationBar, UserNavigationBar, Footer},
+  async mounted() {
+    try {
+      await this.getUser();
+    } catch (error) {
+      this.$toast.error("Error fetching user");
+    }
+    // this.$refs.loader.complete();
+  },
+  methods: {
+    ...mapActions(['getUser']),
+  },
 };
 </script>

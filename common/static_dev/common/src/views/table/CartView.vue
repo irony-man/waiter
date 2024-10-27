@@ -161,7 +161,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getCart', 'addCartItem', 'removeCartItem', 'createOrder']),
+    ...mapActions(['getCart', 'setCart', 'addCartItem', 'removeCartItem', 'createTableOrder']),
     addItem(item, price_type = 'FULL') {
       try {
         item.price_type = price_type;
@@ -184,9 +184,9 @@ export default {
     async placeOrder() {
       try {
         this.creatingOrder = true;
-        await this.createOrder(this.tableUid);
+        await this.createTableOrder(this.tableUid);
         this.$toast.success("Order placed!!");
-        this.$filters.deleteCookie("cart");
+        this.setCart({});
         this.$router.push({name: "table-order", params: { tableUid: this.tableUid } });
       } catch (error) {
         const message = error?.data?.detail ?? "Error placing Order!!";

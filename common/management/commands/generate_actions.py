@@ -43,6 +43,7 @@ class Command(BaseCommand):
             "table",
             "category",
             "menu-item",
+            "order",
         }
         for name in sorted(actions):
             title = name.replace("-", " ").title().replace(" ", "")

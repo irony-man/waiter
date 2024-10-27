@@ -99,6 +99,36 @@ export default {
   },
 
 
+  async listOrder(ctx, query) {
+    const url = getUrl("order");
+    return await getRequest(url, query);
+  },
+
+  async getOrder(ctx, uid) {
+    const url = getUrl(`order/${uid}`);
+    return await getRequest(url);
+  },
+
+  async createOrder(ctx, formData) {
+    const url = getUrl("order");
+    return await postRequest(url, formData);
+  },
+
+  async updateOrder(ctx, {uid, formData}) {
+    const url = getUrl(`order/${uid}`);
+    return await patchRequest(url, formData);
+  },
+
+  async createOrUpdateOrder(ctx, {uid, formData}) {
+    return await uid?this.updateOrder(ctx, {uid, formData}):this.createOrder(ctx, formData);
+  },
+
+  async deleteOrder(ctx, uid) {
+    const url = getUrl(`order/${uid}`);
+    return await deleteRequest(url);
+  },
+
+
   async listRestaurant(ctx, query) {
     const url = getUrl("restaurant");
     return await getRequest(url, query);

@@ -21,9 +21,15 @@
         <div class="navbar-toolbar d-flex gap-3 align-items-center">
           <router-link
             v-if="totalPrice && $route.meta.showNavCart"
-            class="btn btn-primary"
+            class="btn d-flex gap-3 align-items-center btn-outline-primary"
             :to="{ name: 'table-cart', params: { tableUid: $route.params.tableUid } }">
-            <i class="fas fa-cart-shopping me-3"/> {{ $filters.formatCurrency(totalPrice) }}
+            <i class="ci-cart"/><span class="d-none d-lg-block">{{ $filters.formatCurrency(totalPrice) }}</span>
+          </router-link>
+          <router-link
+            v-if="$route.meta.showNavOrder"
+            class="btn d-flex gap-3 align-items-center btn-primary"
+            :to="{ name: 'table-order', params: { tableUid: $route.params.tableUid } }">
+            <i class="fas fa-bowl-food"/><span class="d-none d-lg-block">Orders</span>
           </router-link>
         </div>
       </div>
