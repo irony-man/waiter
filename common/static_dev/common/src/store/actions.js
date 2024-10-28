@@ -57,6 +57,11 @@ export default {
     return response;
   },
 
+  async importRestaurantCategory(ctx, uid) {
+    const url = getUrl(`restaurant/${uid}/import_menu`);
+    return await postRequest(url);
+  },
+
   async getTableCategory(ctx, {uid, query={}}) {
     const url = getUrl(`table/${uid}/categories`);
     return await getRequest(url, query);

@@ -43,6 +43,7 @@ from common.serializers import (
     TableSerializer,
     UserProfileSerializer,
 )
+from common.tasks import import_menu_items
 from common.taxonomies import OrderStatus, PriceType
 
 
@@ -147,6 +148,17 @@ class RestaurantViewSet(AuthMixin, ModelViewSet):
             category.delete()
         instance.table_set.all().delete()
         return super(RestaurantViewSet, self).destroy(request, **kwargs)
+
+    @action(methods=["POST"], detail=True)
+    def import_menu(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            if instance.category_set.count():
+                raise ValueError("This restaurant already has categories!!")
+            import_menu_items(instance.id)
+            return Response(status=HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError(dict(detail=e))
 
     @action(methods=["DELETE"], detail=True)
     def table(self, request, *args, **kwargs):

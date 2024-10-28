@@ -183,7 +183,6 @@ export default {
     },
     onHasHalfPrichChange(e) {
       const value = e.target.value;
-      console.log(value);
       if (!value) {
         this.instance.half_price = 0;
       }

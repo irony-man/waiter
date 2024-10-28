@@ -6,7 +6,7 @@
         primary="Dashboard"/>
 
       <div class="mb-5">
-        <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
+        <div class="d-flex gap-3 flex-wrap align-items-center mb-4 g-4">
           <div class="flex-grow-1">
             <h6 class="fw-bold mb-0 text-uppercase">
               Restaurants

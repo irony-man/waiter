@@ -29,7 +29,7 @@
 
 
         <div class="mb-5">
-          <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
+          <div class="d-flex gap-3 flex-wrap align-items-center mb-4 g-4">
             <div class="flex-grow-1">
               <h6 class="fw-bold mb-0 text-uppercase">
                 Tables
@@ -92,19 +92,28 @@
         </div>
 
         <div class="mb-5">
-          <div class="d-flex gap-3 flex-wrap align-items-center mb-5 g-4">
+          <div class="d-flex gap-3 flex-wrap align-items-center mb-4 g-4">
             <div class="flex-grow-1">
               <h6 class="fw-bold mb-0 text-uppercase">
                 Categories
               </h6>
             </div>
-
-            <Button
-              class="btn-primary"
-              btn-icon="fas fa-plus me-2"
-              @click="showModal = true">
-              Add Category
-            </Button>
+            <div class="d-flex gap-3 flex-wrap align-items-center">
+              <Button
+                class="btn-primary"
+                btn-icon="fas fa-plus me-2"
+                @click="startEditing(-1)">
+                Add Category
+              </Button>
+              <LoadingButton
+                v-if="!categoryData.results.length"
+                class="btn-warning"
+                :is-loading="!!categoryData.importing"
+                btn-icon="fas fa-arrow-down me-2"
+                @click="importCategory">
+                Import Category
+              </LoadingButton>
+            </div>
           </div>
 
           <Empty
@@ -181,6 +190,7 @@ export default {
         results: [],
         page: 0,
         loading: false,
+        importing: false,
       },
     };
   },
@@ -208,7 +218,7 @@ export default {
     this.$refs.loader.complete();
   },
   methods: {
-    ...mapActions(['getRestaurant', 'listTable', 'createTable', 'deleteRestaurant', 'deleteRestaurantTable', 'listCategory']),
+    ...mapActions(['getRestaurant', 'listTable', 'createTable', 'deleteRestaurant', 'deleteRestaurantTable', 'listCategory', 'importRestaurantCategory']),
     async fetchRestaurant() {
       try {
         this.restaurant = await this.getRestaurant(this.restaurantUid);
@@ -237,6 +247,18 @@ export default {
         this.categoryData.loading = false;
       }
     },
+    async importCategory() {
+      try {
+        this.categoryData.importing = true;
+        await this.importRestaurantCategory(this.restaurantUid);
+        await this.saveCategory();
+      } catch (err) {
+        this.$toast.error("Error fetching categories!!");
+        console.error(err);
+      } finally {
+        this.categoryData.importing = false;
+      }
+    },
     async fetchTable() {
       try {
         this.tableData.loading = true;
@@ -257,7 +279,7 @@ export default {
       this.showModal = false;
     },
     startEditing(idx) {
-      this.instance = this.categoryData.results[idx];
+      this.instance = idx === -1 ? {} : this.categoryData.results[idx];
       this.instance.restaurant = this.restaurant;
       this.showModal = true;
     },

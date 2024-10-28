@@ -83,13 +83,6 @@ export default {
         return this.modelValue;
       },
       set(v) {
-        console.log("VAL",v);
-        // const typedValue =
-        // v instanceof Date
-        //     ? this.mode === 'date'
-        //     ? v.toISOString().substring(0, 10)
-        //     : v.toISOString()
-        //     : v
         var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
         var localISOTime = (new Date(v - tzoffset)).toISOString().slice(0, -1);
         const finalValue = localISOTime.substring(0, 10);
