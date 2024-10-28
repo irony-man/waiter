@@ -132,7 +132,7 @@ export default {
   },
   async mounted() {
     try {
-      this.instance = await this.getTableCategory(this.tableUid);
+      this.instance = await this.getTableCategory({uid: this.tableUid, query: {}});
     } catch (error) {
       console.error(error);
       let message = error?.data?.detail ?? "Error fetching Table!!";

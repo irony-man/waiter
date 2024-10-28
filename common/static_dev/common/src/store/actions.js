@@ -57,9 +57,9 @@ export default {
     return response;
   },
 
-  async getTableCategory(ctx, uid) {
+  async getTableCategory(ctx, {uid, query={}}) {
     const url = getUrl(`table/${uid}/categories`);
-    return await getRequest(url);
+    return await getRequest(url, query);
   },
 
   async getTableOrder(ctx, uid) {

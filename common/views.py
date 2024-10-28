@@ -3,7 +3,7 @@ import uuid
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Case, F, Sum, When
+from django.db.models import Case, F, Prefetch, Q, Sum, When
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -179,25 +179,41 @@ class TableViewSet(ModelViewSet):
             data = dict(
                 table=TableSerializer(instance=instance).data, categories=[]
             )
-            for category in Category.objects.filter(
-                restaurant=instance.restaurant
-            ).order_by("name"):
-                items = MenuItem.objects.filter(category=category)
-                data["categories"].append(
-                    dict(
-                        category=LiteCategorySerializer(
-                            instance=category,
-                        ).data,
-                        has_half_price=items.aggregate(
-                            total_half_price=Sum("half_price", default=0)
-                        ).get("total_half_price", 0)
-                        > 0,
-                        menu_items=LiteMenuItemSerializer(
-                            instance=items,
-                            many=True,
-                        ).data,
+            search_term = request.GET.get("search", "")
+            categories = (
+                Category.objects.filter(
+                    restaurant=instance.restaurant, name__icontains=search_term
+                )
+                .order_by("name")
+                .prefetch_related(
+                    Prefetch(
+                        "menuitem_set",
+                        queryset=MenuItem.objects.filter(
+                            Q(name__icontains=search_term)
+                            | Q(description__icontains=search_term)
+                        ),
+                        to_attr="filtered_menuitems",
                     )
                 )
+            )
+
+            for category in categories:
+                menu_items = category.filtered_menuitems
+                if not len(menu_items):
+                    continue
+                total_half_price = sum(item.half_price for item in menu_items)
+                data["categories"].append(
+                    {
+                        "category": LiteCategorySerializer(
+                            instance=category
+                        ).data,
+                        "has_half_price": total_half_price > 0,
+                        "menu_items": LiteMenuItemSerializer(
+                            instance=menu_items, many=True
+                        ).data,
+                    }
+                )
+
             return Response(data=data, status=HTTP_200_OK)
         except Exception as e:
             raise ValidationError(dict(detail=e))

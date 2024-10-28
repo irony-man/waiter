@@ -7,9 +7,14 @@
         :primary="`Ordering from Table: <strong>#${instance.table.number}</strong>`"/>
 
       <div class="mt-5">
-        <h5 class="fw-bold mb-0 text-uppercase">
-          Items
-        </h5>
+        <div class="mb-5">
+          <Input
+            v-model="searchTerm"
+            name="searchTerm"
+            type="search"
+            placeholder="Search Item"
+            @input="searchItem"/>
+        </div>
 
         <Empty
           v-if="!instance.categories.length"
@@ -100,10 +105,11 @@ import CategoryCard from "@/components/CategoryCard.vue";
 import CartFormModal from "@/components/CartFormModal.vue";
 import ItemIcon from "@/components/ItemIcon.vue";
 import CartButtons from "@/components/CartButtons.vue";
+import Input from '@/components/Input.vue';
 
 export default {
   name: "TableView",
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal, CategoryCard, CartFormModal, ItemIcon, CartButtons },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal, CategoryCard, CartFormModal, ItemIcon, CartButtons, Input },
   data() {
     return {
       instance: {
@@ -112,6 +118,8 @@ export default {
       },
       showCartModal: false,
       cartItem: {},
+      searchTerm: "",
+      timer: null,
     };
   },
   computed: {
@@ -121,21 +129,9 @@ export default {
     },
   },
   async mounted() {
-    try {
-      this.instance = await this.getTableCategory(this.tableUid);
-    } catch (error) {
-      console.error(error);
-      let message = "Error fetching Table!!";
-      if (error instanceof HttpNotFound) {
-        this.instance.notFound = true;
-        message = error.data?.detail ?? "Table not found!!";
-      } else if (error instanceof HttpServerError) {
-        message = this.error.message;
-      }
-      this.$toast.error(message);
-    } finally {
-      this.$refs.loader.complete();
-    }
+    this.searchTerm = this.$route.query.search ?? "";
+    await this.fetchDetails();
+    this.$refs.loader.complete();
   },
   methods: {
     ...mapActions(['getTableCategory', 'setCart', 'addCartItem', 'removeCartItem']),
@@ -175,7 +171,37 @@ export default {
       } finally {
         item.removing = false;
       }
-    }
+    },
+    async searchItem(e) {
+      if(this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.searchTerm = e.target.value;
+      this.$router.replace({
+        query: {
+          search: this.searchTerm
+        },
+      });
+      this.timer = setTimeout(async ()=> {
+        await this.fetchDetails();
+      }, 300);
+    },
+    async fetchDetails() {
+      try {
+        this.instance = await this.getTableCategory({uid: this.tableUid, query: {search: this.searchTerm}});
+
+      } catch (error) {
+        console.error(error);
+        let message = "Error fetching Table!!";
+        if (error instanceof HttpNotFound) {
+          this.instance.notFound = true;
+          message = error.data?.detail ?? "Table not found!!";
+        } else if (error instanceof HttpServerError) {
+          message = this.error.message;
+        }
+        this.$toast.error(message);
+      }
+    },
   }
 };
 </script>

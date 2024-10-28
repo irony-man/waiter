@@ -176,6 +176,16 @@ class TableSerializer(serializers.ModelSerializer):
         ]
 
 
+class LiteTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Table
+        fields = [
+            "uid",
+            "number",
+            "qr_code_url",
+        ]
+
+
 class CategorySerializer(serializers.ModelSerializer):
     restaurant = SerializedRelationField(
         "uid", Restaurant.objects, RestaurantSerializer
@@ -243,9 +253,7 @@ class OrderSerializer(serializers.ModelSerializer):
     menu_item = SerializedRelationField(
         "uid", MenuItem.objects.filter(available=True), LiteMenuItemSerializer
     )
-    table = SerializedRelationField(
-        "uid", Table.objects, TableSerializer, write_only=True
-    )
+    table = SerializedRelationField("uid", Table.objects, LiteTableSerializer)
     price = serializers.DecimalField(
         max_digits=12, decimal_places=2, read_only=True
     )

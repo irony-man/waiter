@@ -21,6 +21,9 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th class="text-end">
+                  Table Number
+                </th>
                 <th>Type</th>
                 <th>Status</th>
                 <th class="text-end">
@@ -36,7 +39,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="({ menu_item, ...order }, key) in orderData.results"
+                v-for="({ menu_item, table, ...order }, key) in orderData.results"
                 :key="key">
                 <td colspan="auto">
                   <div class="d-flex align-items-center min-w-200">
@@ -48,6 +51,9 @@
                   <small
                     v-if="menu_item.description"
                     class="mt-2 fw-light">{{ menu_item.description }}</small>
+                </td>
+                <td class="fw-bold text-end">
+                  #{{ table.number }}
                 </td>
                 <td>
                   {{ order.price_type.toTitleCase() }}
@@ -180,7 +186,6 @@ export default {
     },
     updateOrder(e) {
       const data = JSON.parse(e.data);
-      console.log(data);
 
       this.orderData.results = this.orderData.results?.map(order => {
         if (data.uid === order.uid) {
