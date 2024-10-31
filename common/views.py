@@ -290,6 +290,8 @@ class MenuItemViewSet(AuthMixin, ModelViewSet):
 class OrderViewSet(AuthMixin, ModelViewSet):
     lookup_field = "uid"
     serializer_class = OrderSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ("table__restaurant__uid",)
     http_method_names = ("get",)
 
     def get_queryset(self):

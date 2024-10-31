@@ -130,6 +130,12 @@ export default {
   },
   computed: {
     ...mapState(['cart', 'user']),
+    restaurantUid(){
+      return this.$route.params.uid;
+    },
+    limit() {
+      return 30;
+    },
     routerItems() {
       return [{
         name: this.user.chain_name,
@@ -162,7 +168,7 @@ export default {
     async fetchOrders() {
       try {
         this.orderData.loading = true;
-        const response = await this.listOrder({ limit: this.limit, offset: this.orderData.page++ * this.limit });
+        const response = await this.listOrder({ table__restaurant__uid: this.restaurantUid, limit: this.limit, offset: this.orderData.page++ * this.limit });
         response.results = [...this.orderData.results, ...response.results];
         this.orderData = { ...this.orderData, ...response };
       } catch (err) {

@@ -63,7 +63,7 @@ const routes = [
         component: () => import("../views/dashboard/Category.vue"),
       },
       {
-        path: "order",
+        path: "order/:uid",
         name: "dashboard-order",
         meta: { title: "Order" },
         component: () => import("../views/dashboard/Order.vue"),

@@ -35,6 +35,7 @@
                   <th>Name</th>
                   <th>Number of Tables</th>
                   <th>Number of Categories</th>
+                  <th/>
                 </tr>
               </thead>
               <tbody>
@@ -50,6 +51,13 @@
                   </td>
                   <td>{{ restaurant.table_count }}</td>
                   <td>{{ restaurant.category_count }}</td>
+                  <td>
+                    <router-link
+                      :to="{ name: 'dashboard-order', params: { uid: restaurant.uid } }">
+                      <i class="fas me-2 fa-bowl-food "/>
+                      Orders
+                    </router-link>
+                  </td>
                   <td class="text-end">
                     <div>
                       <LoadingButton
