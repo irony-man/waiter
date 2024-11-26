@@ -25,5 +25,5 @@ class OrderStatus(TextChoices):
     ACCEPTED = "ACCEPTED", _("Accepted")
     REJECTED = "REJECTED", _("Rejected")
     MAKING = "MAKING", _("Making")
-    EXPIRED = "EXPIRED", _("Expired")
+    CANCELLED = "CANCELLED", _("Cancelled")
     COMPLETED = "COMPLETED", _("Completed")

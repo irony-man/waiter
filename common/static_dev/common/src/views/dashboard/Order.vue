@@ -67,13 +67,30 @@
                   </span>
                 </td>
                 <td>
-                  <Button
+                  <LoadingButton
                     v-if="order.status == 'ACCEPTED' || order.status == 'MAKING'"
+                    :is-loading="!!order.submitting"
                     class="w-100 text-uppercase p-1 rounded-pill btn-sm"
                     :class="`btn-${badgeClass[getNextStatus(order.status)]}`"
                     @click="() => submitOrder({...order, status: getNextStatus(order.status)})">
                     Change to {{ getNextStatus(order.status) }}
-                  </Button>
+                  </LoadingButton>
+                  <div
+                    v-if="order.status == 'PENDING'"
+                    class="d-flex gap-1">
+                    <LoadingButton
+                      :is-loading="!!instance.submitting"
+                      class="w-100 text-uppercase p-1 rounded-pill btn-sm btn-success"
+                      @click="() => submitOrder({...order, status: 'ACCEPTED'})">
+                      Accept
+                    </LoadingButton>
+                    <LoadingButton
+                      :is-loading="!!instance.submitting"
+                      class="w-100 text-uppercase p-1 rounded-pill btn-sm btn-danger"
+                      @click="() => submitOrder({...order, status: 'REJECTED'})">
+                      Reject
+                    </LoadingButton>
+                  </div>
                 </td>
                 <td class="text-end">
                   {{ $filters.formatCurrency(order.price) }}

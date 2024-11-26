@@ -104,6 +104,9 @@ class Category(CreateUpdate):
     def __str__(self):
         return f"{self.name} / {self.restaurant}"
 
+    class Meta:
+        verbose_name_plural = "Categories"
+
 
 class MenuItem(CreateUpdate):
     name = CharField(max_length=512)

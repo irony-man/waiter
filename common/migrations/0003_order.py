@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                             ("ACCEPTED", "Accepted"),
                             ("REJECTED", "Rejected"),
                             ("MAKING", "Making"),
-                            ("DELIVERED", "Delivered"),
+                            ("CANCELLED", "Cancelled"),
                             ("COMPLETED", "Completed"),
                         ],
                         default="PENDING",
