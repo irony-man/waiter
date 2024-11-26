@@ -37,7 +37,7 @@ def order_save(sender, instance: Order, **kwargs):
         },
     )
     async_to_sync(channel_layer.group_send)(
-        str(instance.table.restaurant.chain.uid),
+        str(instance.table.restaurant.uid),
         {
             "type": "send_order",
             "order": instance,

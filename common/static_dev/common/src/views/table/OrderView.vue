@@ -178,7 +178,7 @@ export default {
       this.instance.orders = this.instance?.orders.map(order => {
         return data.uid === order.uid ? data : order;
       });
-      this.$toast.success(`Order #${data.uid} updated!!`);
+      this.$toast.success(`Order ${data.menu_item?.name} updated!!`);
     },
     async send() {
     }

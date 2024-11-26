@@ -26,6 +26,7 @@
                 </th>
                 <th>Type</th>
                 <th>Status</th>
+                <th>Next Step</th>
                 <th class="text-end">
                   Price
                 </th>
@@ -39,8 +40,8 @@
             </thead>
             <tbody>
               <tr
-                v-for="({ menu_item, table, ...order }, key) in orderData.results"
-                :key="key">
+                v-for="({ menu_item, table, ...order }) in orderData.results"
+                :key="order.uid">
                 <td colspan="auto">
                   <div class="d-flex align-items-center min-w-200">
                     <ItemIcon :menu-type="menu_item.menu_type"/>
@@ -61,7 +62,18 @@
                 <td>
                   <span
                     class="w-100 p-2 badge rounded-pill"
-                    :class="`bg-${badgeClass[order.status]}`">{{ order.status }}</span>
+                    :class="`bg-${badgeClass[order.status]}`">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td>
+                  <Button
+                    v-if="order.status == 'ACCEPTED' || order.status == 'MAKING'"
+                    class="w-100 text-uppercase p-1 rounded-pill btn-sm"
+                    :class="`btn-${badgeClass[getNextStatus(order.status)]}`"
+                    @click="() => submitOrder({...order, status: getNextStatus(order.status)})">
+                    Change to {{ getNextStatus(order.status) }}
+                  </Button>
                 </td>
                 <td class="text-end">
                   {{ $filters.formatCurrency(order.price) }}
@@ -88,6 +100,10 @@
           </div>
         </div>
       </div>
+      <ConfirmOrderModal
+        v-if="newOrder"
+        :order="instance ?? {}"
+        @submit="submitOrder"/>
     </div>
   </Loader>
 </template>
@@ -100,20 +116,19 @@ import Empty from "@/components/Empty.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import LoadingButton from "@/components/LoadingButton.vue";
 import Button from "@/components/Button.vue";
-import { HttpNotFound, HttpServerError } from "@/store/network";
+import { HttpNotFound, HttpServerError, HttpBadRequestError } from "@/store/network";
 import ItemIcon from "@/components/ItemIcon.vue";
 import CartButtons from "@/components/CartButtons.vue";
+import ConfirmOrderModal from "@/components/ConfirmOrderModal.vue";
 
 export default {
   name: 'DashboardOrderView',
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons, ConfirmOrderModal },
   data() {
     return {
       connection: null,
-      instance: {
-        table: {},
-        orders: [],
-      },
+      newOrder: false,
+      instance: {},
       orderData: {
         results: [],
         page: 0,
@@ -130,11 +145,11 @@ export default {
   },
   computed: {
     ...mapState(['cart', 'user']),
-    restaurantUid(){
+    restaurantUid() {
       return this.$route.params.uid;
     },
     limit() {
-      return 30;
+      return 4;
     },
     routerItems() {
       return [{
@@ -165,10 +180,18 @@ export default {
   },
   methods: {
     ...mapActions(['listOrder', 'orderWebsocket']),
+    getNextStatus(status) {
+      return {
+        ACCEPTED: "MAKING",
+        MAKING: "COMPLETED",
+      }[status];
+    },
     async fetchOrders() {
       try {
         this.orderData.loading = true;
         const response = await this.listOrder({ table__restaurant__uid: this.restaurantUid, limit: this.limit, offset: this.orderData.page++ * this.limit });
+        // this.instance = response.results[0];
+        // this.newOrder = true;
         response.results = [...this.orderData.results, ...response.results];
         this.orderData = { ...this.orderData, ...response };
       } catch (err) {
@@ -184,22 +207,48 @@ export default {
       }
     },
     async initWebsocket() {
-      this.connection = await this.orderWebsocket(this.user.uid);
+      this.connection = await this.orderWebsocket(this.restaurantUid);
       this.connection.onmessage = this.updateOrder;
       this.connection.onerror = (event) => {
         console.error(event);
       };
     },
+    async submitOrder(order) {
+      try {
+        order.submitting = true;
+        // order.status = this.getNextStatus(order.status);
+        this.connection.send(JSON.stringify(order));
+      } catch (error) {
+        if (error instanceof HttpBadRequestError) {
+          this.errors = error.data;
+        }
+        this.$toast.error("Error updating Order!!");
+        console.error(error);
+      } finally {
+        order.submitting = false;
+        this.newOrder = false;
+      }
+    },
     updateOrder(e) {
       const data = JSON.parse(e.data);
-
+      this.instance = data;
+      this.newOrder = true;
       this.orderData.results = this.orderData.results?.map(order => {
         if (data.uid === order.uid) {
-          order.status = data.status;
+          this.newOrder = data.quantity !== order.quantity;
+          return data;
         }
         return order;
       });
-      this.$toast.success(`Order #${data.uid} updated!!`);
+      if (this.newOrder) {
+        this.orderData = {
+          results: [],
+          page: 0,
+          loading: false,
+        };
+        this.fetchOrders();
+      }
+      this.$toast.success(`Order ${data.menu_item?.name} updated!!`);
     },
     async send() {
     }

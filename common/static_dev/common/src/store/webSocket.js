@@ -12,7 +12,6 @@ export default {
       console.log('WebSocket closed');
     };
 
-    // this.connection.onmessage = this.updateOrder;
     return connection;
   }
 };
