@@ -22,6 +22,7 @@
           v-if="!!user.uid"
           class="navbar-toolbar d-flex gap-3 align-items-center">
           <a
+            v-if="user.is_staff"
             class="navbar-tool fw-bold ms-1 ms-lg-0 me-n1 me-lg-2"
             href="/wtr-adm/"
             target="_blank">

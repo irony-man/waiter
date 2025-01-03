@@ -13,6 +13,7 @@
         <h6 class="fw-bold mb-4 text-uppercase">
           Orders <span class="ms-1">({{ totalItems }})</span>
         </h6>
+        <Tabs/>
         <Empty
           v-if="!totalItems"
           title="No Items"
@@ -100,10 +101,11 @@ import Button from "@/components/Button.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
 import ItemIcon from "@/components/ItemIcon.vue";
 import CartButtons from "@/components/CartButtons.vue";
+import Tabs from "@/components/Tabs.vue";
 
 export default {
   name: 'OrderView',
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons, Tabs },
   data() {
     return {
       connection: null,

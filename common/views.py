@@ -1,18 +1,22 @@
 import json
 import uuid
 
-from django.contrib.auth import login, logout
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer  # type: ignore
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Case, F, Prefetch, Q, Sum, When
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import FormView, TemplateView
 from django_filters.rest_framework import DjangoFilterBackend
+from loguru import logger
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
@@ -23,9 +27,11 @@ from rest_framework.status import (
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from common.forms import LoginPinRequestForm
+from common.forms import LoginForm
+from common.model_helpers import generate_chain_name, generate_username
 from common.models import (
     Category,
+    Chain,
     MenuItem,
     Order,
     Restaurant,
@@ -75,20 +81,35 @@ class DashboardPage(AuthMixin, TemplateView):
     template_name = "common/home.html"
 
 
-class LoginPinRequestView(CreateView):
-    form_class = LoginPinRequestForm
+class LoginView(FormView):
+    form_class = LoginForm
     template_name = "common/login.html"
     success_url = reverse_lazy("common:dashboard")
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(self.success_url)
-        return super(LoginPinRequestView, self).dispatch(
-            request, *args, **kwargs
-        )
+        return super(LoginView, self).dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form: LoginPinRequestForm):
-        login(self.request, form.cleaned_data.get("instance"))
+    def form_valid(self, form: LoginForm):
+        logger.info(form.cleaned_data)
+        if form.cleaned_data.get("is_guest"):
+            user = User.objects.create(username=generate_username())
+            chain, _ = Chain.objects.get_or_create(name=generate_chain_name())
+            UserProfile.objects.create(user=user, chain=chain, is_guest=True)
+        else:
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(
+                self.request, username=username, password=password
+            )
+            errors = dict()
+            if not user:
+                errors.password = ("Invalid login credentials!!",)
+            if errors:
+                form.errors = errors
+                return super(LoginView, self).form_invalid(form)
+        login(self.request, user)
         return redirect(self.success_url)
 
     def form_invalid(self, form):
@@ -96,7 +117,7 @@ class LoginPinRequestView(CreateView):
             return JsonResponse(
                 {"status": 400, "errors": form.errors}, status=400
             )
-        return super(LoginPinRequestView, self).form_invalid(form)
+        return super(LoginView, self).form_invalid(form)
 
 
 class Logout(AuthMixin, TemplateView):
@@ -192,20 +213,16 @@ class TableViewSet(ModelViewSet):
                 table=TableSerializer(instance=instance).data, categories=[]
             )
             search_term = request.GET.get("search", "")
-            categories = (
-                Category.objects.filter(
-                    restaurant=instance.restaurant, name__icontains=search_term
-                )
-                .order_by("name")
-                .prefetch_related(
-                    Prefetch(
-                        "menuitem_set",
-                        queryset=MenuItem.objects.filter(
-                            Q(name__icontains=search_term)
-                            | Q(description__icontains=search_term)
-                        ),
-                        to_attr="filtered_menuitems",
-                    )
+            categories = instance.restaurant.category_set.order_by(
+                "name"
+            ).prefetch_related(
+                Prefetch(
+                    "menuitem_set",
+                    queryset=MenuItem.objects.filter(
+                        Q(name__icontains=search_term)
+                        | Q(description__icontains=search_term)
+                    ),
+                    to_attr="filtered_menuitems",
                 )
             )
 
@@ -290,8 +307,9 @@ class MenuItemViewSet(AuthMixin, ModelViewSet):
 class OrderViewSet(AuthMixin, ModelViewSet):
     lookup_field = "uid"
     serializer_class = OrderSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ("table__restaurant__uid",)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ("table__restaurant__uid", "status")
+    ordering_fields = ("created",)
     http_method_names = ("get",)
 
     def get_queryset(self):
@@ -348,6 +366,7 @@ class OrderAPIView(APIView):
             )
             request.session["table"] = str(instance.uid)
             cart = json.loads(request.COOKIES.get("cart", "{}"))
+            newOrders = []
             for key, val in cart.items():
                 menu_uid, price_type = key.split("/", 1)
                 menu_item = MenuItem.objects.filter(
@@ -361,10 +380,22 @@ class OrderAPIView(APIView):
                     session_uid=request.session["uid"],
                     defaults={"quantity": val.get("quantity", 0)},
                 )
-                if not created:
+                if created:
+                    newOrders.append(order)
+                else:
                     order.quantity += val.get("quantity", 0)
                     order.clean()
                     order.save()
+            logger.info(newOrders)
+            if len(newOrders):
+                channel_layer = get_channel_layer()
+                async_to_sync(channel_layer.group_send)(
+                    str(instance.restaurant.uid),
+                    {
+                        "type": "send_orders",
+                        "orders": newOrders,
+                    },
+                )
             return Response(status=HTTP_201_CREATED)
         except Exception as e:
             raise ValidationError(dict(detail=e))

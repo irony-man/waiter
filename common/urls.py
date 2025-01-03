@@ -16,7 +16,7 @@ router.register("menu-item", views.MenuItemViewSet, basename="menu-item")
 router.register("order", views.OrderViewSet, basename="order")
 
 urlpatterns = [
-    path("login/", views.LoginPinRequestView.as_view(), name="login"),
+    path("login/", views.LoginView.as_view(), name="login"),
     path("logout/", views.Logout.as_view(), name="logout"),
     path(
         "order/<str:uid>/",

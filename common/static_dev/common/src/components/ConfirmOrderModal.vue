@@ -28,7 +28,7 @@
             <hr class="my-3 summary-strip">
 
             <div class="table-responsive">
-              <table class="table summary-table border-0 table-sm table-borderless align-middle">
+              <table class="table summary-table border-0 table-sm table-borderless align-middle mb-0">
                 <tbody>
                   <tr>
                     <td>Item</td>
@@ -51,6 +51,10 @@
                     <td>{{ $filters.formatCurrency(order.price) }}</td>
                   </tr>
                   <tr>
+                    <td>Status</td>
+                    <td>{{ order.status_display }}</td>
+                  </tr>
+                  <tr>
                     <td colspan="2">
                       <hr class="my-3 summary-strip">
                     </td>
@@ -63,18 +67,31 @@
               </table>
             </div>
           </div>
-          <div class="modal-footer justify-content-center">
+          <div
+            v-if="order.status == 'ACCEPTED' || order.status == 'MAKING' || order.status == 'PENDING'"
+            class="modal-footer justify-content-center">
+            <div
+              v-if="order.status == 'PENDING'"
+              class="d-flex gap-1">
+              <LoadingButton
+                :is-loading="!!instance.submitting"
+                class="btn-success"
+                @click="() => submitOrder('ACCEPTED')">
+                Accept
+              </LoadingButton>
+              <LoadingButton
+                :is-loading="!!instance.submitting"
+                class="btn-danger"
+                @click="() => submitOrder('REJECTED')">
+                Reject
+              </LoadingButton>
+            </div>
             <LoadingButton
-              :is-loading="!!instance.submitting"
-              class="btn-success"
-              btn-type="submit">
-              Accept
-            </LoadingButton>
-            <LoadingButton
-              :is-loading="!!instance.submitting"
-              class="btn-danger"
-              @click="() => submitOrder('REJECTED')">
-              Reject
+              v-else
+              :is-loading="!!order.submitting"
+              :class="`btn-${badgeClass[getNextStatus(order.status)]}`"
+              @click="() => submitOrder(getNextStatus(order.status))">
+              Change to {{ getNextStatus(order.status).toTitleCase() }}
             </LoadingButton>
           </div>
         </form>
@@ -100,7 +117,17 @@ export default {
   },
   emits: ['closed', 'submit',],
   data() {
-    return { modalEl: null, instance: {}};
+    return {
+      modalEl: null,
+      instance: {},
+      badgeClass: {
+        PENDING: "info",
+        ACCEPTED: "primary",
+        REJECTED: "danger",
+        MAKING: "warning",
+        COMPLETED: "success",
+      },
+    };
   },
   computed: {
     ...mapState(["user"]),
@@ -125,7 +152,13 @@ export default {
     async submitOrder(status = "ACCEPTED") {
       this.instance.status = status;
       this.$emit('submit', this.instance);
-    }
+    },
+    getNextStatus(status) {
+      return {
+        ACCEPTED: "MAKING",
+        MAKING: "COMPLETED",
+      }[status];
+    },
   }
 };
 </script>

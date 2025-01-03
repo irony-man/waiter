@@ -12,7 +12,7 @@ from common.models import (
     Table,
     UserProfile,
 )
-from common.taxonomies import MenuType, serialize
+from common.taxonomies import MenuType, OrderStatus, serialize
 
 
 class SerializedRelationField(serializers.Field):
@@ -77,7 +77,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "full_name",
             "username",
             "email",
-            "email_verified",
             "uid",
             "chain_name",
             "created",
@@ -90,6 +89,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_choices(self, instance):
         choices = {
             "menu_type": serialize(MenuType),
+            "order_status": serialize(OrderStatus),
         }
         return choices
 
@@ -272,6 +272,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "price_type",
             "quantity",
             "status",
+            "status_display",
             "session_uid",
         ]
 
@@ -279,12 +280,3 @@ class OrderSerializer(serializers.ModelSerializer):
         instance = Order(**attrs)
         instance.clean()
         return super(OrderSerializer, self).validate(attrs)
-
-
-class LiteOrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = [
-            "uid",
-            "status",
-        ]

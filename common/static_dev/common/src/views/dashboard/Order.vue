@@ -5,10 +5,14 @@
         :router-items="routerItems"
         name="Order"/>
       <PageTitle
-        :secondary="`This is where you manage <b>Chain ${user.chain_name}</b>.`"
+        :secondary="`This is where you manage chain <b>${user.chain_name}</b>.`"
         primary="Orders"/>
 
       <div class="mb-5">
+        <Tabs
+          v-model="selectedTab"
+          :tabs="tabs"
+          @update:model-value="onChangeTab"/>
         <Empty
           v-if="!orderData.results.length"
           title="No Items"
@@ -26,7 +30,9 @@
                 </th>
                 <th>Type</th>
                 <th>Status</th>
-                <th>Next Step</th>
+                <th v-if="showNextStep">
+                  Next Step
+                </th>
                 <th class="text-end">
                   Price
                 </th>
@@ -40,21 +46,21 @@
             </thead>
             <tbody>
               <tr
-                v-for="({ menu_item, table, ...order }) in orderData.results"
+                v-for="order in orderData.results"
                 :key="order.uid">
                 <td colspan="auto">
                   <div class="d-flex align-items-center min-w-200">
-                    <ItemIcon :menu-type="menu_item.menu_type"/>
+                    <ItemIcon :menu-type="order.menu_item?.menu_type"/>
                     <p class="mb-0">
-                      {{ menu_item.name }}
+                      {{ order.menu_item?.name }}
                     </p>
                   </div>
                   <small
-                    v-if="menu_item.description"
-                    class="mt-2 fw-light">{{ menu_item.description }}</small>
+                    v-if="order.menu_item?.description"
+                    class="mt-2 fw-light">{{ order.menu_item?.description }}</small>
                 </td>
                 <td class="fw-bold text-end">
-                  #{{ table.number }}
+                  #{{ order.table?.number }}
                 </td>
                 <td>
                   {{ order.price_type.toTitleCase() }}
@@ -66,13 +72,13 @@
                     {{ order.status }}
                   </span>
                 </td>
-                <td>
+                <td v-if="showNextStep">
                   <LoadingButton
                     v-if="order.status == 'ACCEPTED' || order.status == 'MAKING'"
                     :is-loading="!!order.submitting"
                     class="w-100 text-uppercase p-1 rounded-pill btn-sm"
                     :class="`btn-${badgeClass[getNextStatus(order.status)]}`"
-                    @click="() => submitOrder({...order, status: getNextStatus(order.status)})">
+                    @click="() => submitOrder({ ...order, status: getNextStatus(order.status) })">
                     Change to {{ getNextStatus(order.status) }}
                   </LoadingButton>
                   <div
@@ -81,13 +87,13 @@
                     <LoadingButton
                       :is-loading="!!instance.submitting"
                       class="w-100 text-uppercase p-1 rounded-pill btn-sm btn-success"
-                      @click="() => submitOrder({...order, status: 'ACCEPTED'})">
+                      @click="() => submitOrder({ ...order, status: 'ACCEPTED' })">
                       Accept
                     </LoadingButton>
                     <LoadingButton
                       :is-loading="!!instance.submitting"
                       class="w-100 text-uppercase p-1 rounded-pill btn-sm btn-danger"
-                      @click="() => submitOrder({...order, status: 'REJECTED'})">
+                      @click="() => submitOrder({ ...order, status: 'REJECTED' })">
                       Reject
                     </LoadingButton>
                   </div>
@@ -118,9 +124,10 @@
         </div>
       </div>
       <ConfirmOrderModal
-        v-if="newOrder"
+        v-if="showModal"
         :order="instance ?? {}"
-        @submit="submitOrder"/>
+        @submit="submitOrder"
+        @closed="showModal = false"/>
     </div>
   </Loader>
 </template>
@@ -137,15 +144,21 @@ import { HttpNotFound, HttpServerError, HttpBadRequestError } from "@/store/netw
 import ItemIcon from "@/components/ItemIcon.vue";
 import CartButtons from "@/components/CartButtons.vue";
 import ConfirmOrderModal from "@/components/ConfirmOrderModal.vue";
+import Tabs from "@/components/Tabs.vue";
 
 export default {
   name: 'DashboardOrderView',
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons, ConfirmOrderModal },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons, ConfirmOrderModal, Tabs },
   data() {
     return {
       connection: null,
-      newOrder: false,
+      showModal: false,
       instance: {},
+      defaultState: {
+        results: [],
+        page: 0,
+        loading: false,
+      },
       orderData: {
         results: [],
         page: 0,
@@ -157,7 +170,8 @@ export default {
         REJECTED: "danger",
         MAKING: "warning",
         COMPLETED: "success",
-      }
+      },
+      selectedTab: '',
     };
   },
   computed: {
@@ -166,14 +180,23 @@ export default {
       return this.$route.params.uid;
     },
     limit() {
-      return 4;
+      return 48;
     },
     routerItems() {
       return [{
         name: this.user.chain_name,
         to: { name: 'dashboard' }
       }];
-    }
+    },
+    tabs() {
+      return [{ value: '', name: 'All' }, ...this.user.choices.order_status];
+    },
+    showNextStep() {
+      if (this.selectedTab === '') {
+        return this.orderData.results.some(o => (o.status === 'ACCEPTED' || o.status === 'PENDING' || o.status === 'MAKING'));
+      }
+      return this.selectedTab === 'ACCEPTED' || this.selectedTab === 'PENDING' || this.selectedTab === 'MAKING';
+    },
   },
   async mounted() {
     try {
@@ -203,12 +226,14 @@ export default {
         MAKING: "COMPLETED",
       }[status];
     },
+    onChangeTab() {
+      this.orderData = { ...this.defaultState };
+      this.fetchOrders();
+    },
     async fetchOrders() {
       try {
         this.orderData.loading = true;
-        const response = await this.listOrder({ table__restaurant__uid: this.restaurantUid, limit: this.limit, offset: this.orderData.page++ * this.limit });
-        // this.instance = response.results[0];
-        // this.newOrder = true;
+        const response = await this.listOrder({ table__restaurant__uid: this.restaurantUid, limit: this.limit, offset: this.orderData.page++ * this.limit, status: this.selectedTab, ordering: '-created' });
         response.results = [...this.orderData.results, ...response.results];
         this.orderData = { ...this.orderData, ...response };
       } catch (err) {
@@ -233,7 +258,6 @@ export default {
     async submitOrder(order) {
       try {
         order.submitting = true;
-        // order.status = this.getNextStatus(order.status);
         this.connection.send(JSON.stringify(order));
       } catch (error) {
         if (error instanceof HttpBadRequestError) {
@@ -243,32 +267,26 @@ export default {
         console.error(error);
       } finally {
         order.submitting = false;
-        this.newOrder = false;
+        this.showModal = false;
       }
     },
     updateOrder(e) {
       const data = JSON.parse(e.data);
+      console.log(data);
       this.instance = data;
-      this.newOrder = true;
-      this.orderData.results = this.orderData.results?.map(order => {
-        if (data.uid === order.uid) {
-          this.newOrder = data.quantity !== order.quantity;
-          return data;
-        }
-        return order;
-      });
-      if (this.newOrder) {
-        this.orderData = {
-          results: [],
-          page: 0,
-          loading: false,
-        };
+      this.showModal = false;
+      const oldOrder = this.orderData.results?.find(order => data.uid === order.uid);
+      if(oldOrder) {
+        this.showModal = oldOrder.quantity !== data.quantity;
+        oldOrder.quantity = data.quantity;
+      }
+      else {
+        this.showModal = true;
+        this.orderData = { ...this.defaultState };
         this.fetchOrders();
       }
       this.$toast.success(`Order ${data.menu_item?.name} updated!!`);
     },
-    async send() {
-    }
   }
 };
 </script>

@@ -14,7 +14,7 @@
           :name="restaurant.name"/>
         <PageTitle
           class="border-bottom pb-4"
-          :secondary="`A restaurant of ${user.chain_name}`"
+          :secondary="`A restaurant of <b>${user.chain_name}</b>.`"
           :primary="restaurant.name">
           <template #right>
             <LoadingButton

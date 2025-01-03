@@ -4,7 +4,6 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 
 from common.urls import router
-from common.views import DashboardPage, HomePage, LoginPinRequestView, Logout
 
 urlpatterns = [
     path("wtr-adm/", admin.site.urls),

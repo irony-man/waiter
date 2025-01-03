@@ -2,9 +2,9 @@
 <div class="container">
   <div
     class="container d-flex align-items-center justify-content-center"
-    style="height: 90vh; max-width: 780px"
+    style="height: 90vh; max-width: 360px"
   >
-    <div class="card-shadow p-5">
+    <div class="card w-100 p-5">
       <div class="fw-bold text-center mb-5">
         <img
           src="{% static 'images/logo.png' %}"
@@ -13,44 +13,56 @@
         />
       </div>
       <form method="POST" class="form" id="form">
-        {% comment %}
-        <div class="form-group mb-4">
-          <label for="phone_display" class="form-label"
-            >Enter Your Phone Number</label
-          >
+        <div class="form-group mb-3">
+          <label for="username" class="form-label">Username</label>
           <div>
             <input
-              type="tel"
-              name="phone_display"
-              id="phone_display"
+              type="text"
+              name="username"
+              id="username"
               class="form-control w-100"
-              {%
-              if
-              form.phone.value
-              %}value="{{ form.phone.value }}"
-              {%
-              endif
-              %}
               autofocus
-              placeholder="Enter your phone number"
+              placeholder="Username"
             />
-            <input type="hidden" name="phone" id="phone" />
           </div>
-          {% if form.errors.phone %}
+          {% if form.errors.username %}
           <div class="small text-danger mt-2">
-            {{ form.errors.phone|join:' ' }}
+            {{ form.errors.username|join:' ' }}
           </div>
           {% endif %}
         </div>
+        <div class="form-group mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control w-100"
+              autofocus
+              placeholder="Password"
+            />
+          </div>
+          {% if form.errors.password %}
+          <div class="small text-danger mt-2">
+            {{ form.errors.password|join:' ' }}
+          </div>
+          {% endif %}
+        </div>
+        <input type="hidden" name="is_guest" id="is_guest"/>
         {% if form.errors.all %}
         <div class="alert alert-danger mt-2">
           {{ form.errors.all|join:' ' }}
         </div>
-        {% endif %} {% endcomment %}
-        <div class="text-end mb-5">
+        {% endif %}
+        <div class="text-end mt-4">
           {% csrf_token %}
-          <button class="btn btn-primary btn-icon w-100">
+          <button type="submit" value="login" class="btn btn-primary btn-icon w-100">
             <i class="fas fa-lock me-2"></i> Login
+          </button>
+          <hr class="my-4">
+          <button type="submit" value="guest" class="btn btn-success btn-icon w-100">
+            <i class="fas fa-user me-2"></i> Guest Login
           </button>
         </div>
       </form>
@@ -62,6 +74,7 @@
   const form = document.getElementById("form");
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    document.getElementById("is_guest").value = e.submitter.value === 'guest';
     e.target.submit();
   });
 </script>

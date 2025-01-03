@@ -34,12 +34,7 @@ class Chain(CreateUpdate):
 class UserProfile(CreateUpdate):
     user = OneToOneField(to=User, on_delete=PROTECT)
     chain = ForeignKey(Chain, on_delete=PROTECT)
-    email_otp = PositiveIntegerField(
-        validators=[MaxValueValidator(999999), MinValueValidator(100000)],
-        default=random_pin,
-    )
-    email_otp_sent = DateTimeField(null=True, blank=True)
-    email_verified = BooleanField(default=False)
+    is_guest = BooleanField(default=False)
 
     def __str__(self):
         return f"{self.full_name} / {self.user}"
@@ -137,6 +132,10 @@ class Order(CreateUpdate):
     )
 
     @property
+    def status_display(self):
+        return self.get_status_display()
+
+    @property
     def price(self):
         return (
             self.menu_item.full_price
@@ -154,77 +153,3 @@ class Order(CreateUpdate):
     def clean(self):
         if self.table.restaurant != self.menu_item.category.restaurant:
             raise ValidationError({"table": "Table not found."})
-
-
-class LoginPinRequest(CreateUpdate):
-    DECAY_SECONDS = 15 * 60
-    RATE_LIMIT_SECONDS = 60
-
-    user = ForeignKey(User, on_delete=PROTECT)
-    generated_at = DateTimeField(auto_now_add=True)
-    pin = PositiveIntegerField(default=random_pin)
-    used = BooleanField(default=False)
-    used_timestamp = DateTimeField(null=True, blank=True)
-
-    def save(self, **kwargs):
-        super(LoginPinRequest, self).save(**kwargs)
-        logger.debug(f"**Pin Request** {self.pin}")
-
-    def __str__(self):
-        return f"{self.user} / {self.generated_at}"
-
-    def is_valid(self, user: User) -> bool:
-        if self.used or self.user != user:
-            return False
-        diff = (now_time() - self.generated_at).total_seconds()
-        return diff < self.DECAY_SECONDS
-
-    @property
-    def msg_body(self) -> str:
-        return f"Your OTP is {self.pin} for logging into Flameback app."
-
-    @property
-    def otp_resend_remaining_time(self) -> int:
-        match = (
-            LoginPinRequest.objects.filter(user=self.user)
-            .order_by("-generated_at")
-            .first()
-        )
-        if match:
-            diff = (now_time() - match.generated_at).total_seconds()
-            if diff < self.RATE_LIMIT_SECONDS:
-                remaining = self.RATE_LIMIT_SECONDS - diff
-                return int(remaining)
-
-        return 0
-
-    @classmethod
-    def rate_limited_create(cls, phone: str) -> "LoginPinRequest":
-        user, created = User.objects.get_or_create(username=phone)
-        if created:
-            UserProfile.objects.create(
-                phone=phone, user=user, phone_verified=True
-            )
-        if phone.startswith("+91322"):
-            instance = LoginPinRequest.objects.create(user=user)
-            instance.pin = "1234"
-            instance.save()
-            return instance
-        match = (
-            LoginPinRequest.objects.filter(user=user)
-            .order_by("-generated_at")
-            .first()
-        )
-        if match:
-            diff = (now_time() - match.generated_at).total_seconds()
-            if diff < cls.RATE_LIMIT_SECONDS:
-                remaining = cls.RATE_LIMIT_SECONDS - diff
-                raise ValidationError(
-                    {
-                        "phone": (
-                            f"Please wait for {int(remaining)} "
-                            f"seconds before retrying."
-                        )
-                    }
-                )
-        return LoginPinRequest.objects.create(user=user)
