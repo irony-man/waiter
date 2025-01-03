@@ -30,7 +30,4 @@ class Migration(migrations.Migration):
             name="is_guest",
             field=models.BooleanField(default=False),
         ),
-        migrations.DeleteModel(
-            name="LoginPinRequest",
-        ),
     ]
