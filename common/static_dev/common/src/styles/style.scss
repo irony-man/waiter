@@ -184,9 +184,7 @@ $primary: #4b566b;
   & tr:last-child {
     font-weight: 500;
   }
-  & td {
-    padding: 4px 0;
-
+  & td, th {
     &:last-child {
       text-align: right;
       font-weight: 500;

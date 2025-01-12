@@ -33,8 +33,12 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Number of Tables</th>
-                  <th>Number of Categories</th>
+                  <th class="text-end">
+                    Number of Tables
+                  </th>
+                  <th class="text-end">
+                    Number of Categories
+                  </th>
                   <th/>
                 </tr>
               </thead>
@@ -49,8 +53,12 @@
                       {{ restaurant.name }}
                     </router-link>
                   </td>
-                  <td>{{ restaurant.table_count }}</td>
-                  <td>{{ restaurant.category_count }}</td>
+                  <td class="text-end">
+                    {{ restaurant.table_count }}
+                  </td>
+                  <td class="text-end">
+                    {{ restaurant.category_count }}
+                  </td>
                   <td>
                     <router-link
                       :to="{ name: 'dashboard-order', params: { uid: restaurant.uid } }">

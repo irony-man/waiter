@@ -8,6 +8,7 @@ from common.models import (
     Chain,
     MenuItem,
     Order,
+    OrderItem,
     Restaurant,
     Table,
     UserProfile,
@@ -250,10 +251,39 @@ class LiteMenuItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    table = SerializedRelationField("uid", Table.objects, LiteTableSerializer)
+    total_price = serializers.DecimalField(
+        max_digits=12, decimal_places=2, read_only=True
+    )
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = [
+            "uid",
+            "table",
+            "total_price",
+            "status",
+            "status_display",
+            "session_uid",
+            "items",
+        ]
+
+    def get_items(self, instance: Order):
+        return OrderItemSerializer(
+            instance=instance.orderitem_set.all(), many=True
+        ).data
+
+    def validate(self, attrs):
+        instance = Order(**attrs)
+        instance.clean()
+        return super(OrderSerializer, self).validate(attrs)
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
     menu_item = SerializedRelationField(
         "uid", MenuItem.objects.filter(available=True), LiteMenuItemSerializer
     )
-    table = SerializedRelationField("uid", Table.objects, LiteTableSerializer)
     price = serializers.DecimalField(
         max_digits=12, decimal_places=2, read_only=True
     )
@@ -262,21 +292,17 @@ class OrderSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Order
+        model = OrderItem
         fields = [
             "uid",
             "menu_item",
-            "table",
             "price",
             "total_price",
             "price_type",
             "quantity",
-            "status",
-            "status_display",
-            "session_uid",
         ]
 
     def validate(self, attrs):
-        instance = Order(**attrs)
+        instance = OrderItem(**attrs)
         instance.clean()
-        return super(OrderSerializer, self).validate(attrs)
+        return super(OrderItemSerializer, self).validate(attrs)

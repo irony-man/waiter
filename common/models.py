@@ -122,11 +122,6 @@ class MenuItem(CreateUpdate):
 class Order(CreateUpdate):
     session_uid = UUIDField()
     table = ForeignKey(Table, on_delete=PROTECT)
-    menu_item = ForeignKey(MenuItem, on_delete=PROTECT)
-    price_type = CharField(
-        choices=PriceType.choices, default=PriceType.FULL, max_length=8
-    )
-    quantity = PositiveIntegerField()
     status = CharField(
         choices=OrderStatus.choices, default=OrderStatus.PENDING, max_length=32
     )
@@ -134,6 +129,22 @@ class Order(CreateUpdate):
     @property
     def status_display(self):
         return self.get_status_display()
+
+    @property
+    def total_price(self):
+        return sum(i.total_price for i in self.orderitem_set.all())
+
+    def __str__(self):
+        return f"{self.table} / {self.status}"
+
+
+class OrderItem(CreateUpdate):
+    order = ForeignKey(Order, on_delete=PROTECT)
+    menu_item = ForeignKey(MenuItem, on_delete=PROTECT)
+    price_type = CharField(
+        choices=PriceType.choices, default=PriceType.FULL, max_length=8
+    )
+    quantity = PositiveIntegerField()
 
     @property
     def price(self):
@@ -148,8 +159,8 @@ class Order(CreateUpdate):
         return self.price * self.quantity
 
     def __str__(self):
-        return f"{self.table} / {self.status} / {self.quantity}"
+        return f"{self.order} / {self.menu_item} / {self.quantity}"
 
     def clean(self):
-        if self.table.restaurant != self.menu_item.category.restaurant:
+        if self.order.table.restaurant != self.menu_item.category.restaurant:
             raise ValidationError({"table": "Table not found."})

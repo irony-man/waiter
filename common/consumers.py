@@ -54,6 +54,20 @@ class OrderConsumer(WebsocketConsumer):
         instance.status = data.get("status", instance.status)
         instance.clean()
         instance.save()
+        async_to_sync(self.channel_layer.group_send)(
+            str(instance.session_uid),
+            {
+                "type": "send_order",
+                "order": instance,
+            },
+        )
+        async_to_sync(self.channel_layer.group_send)(
+            str(instance.table.restaurant.uid),
+            {
+                "type": "send_order",
+                "order": instance,
+            },
+        )
 
     def send_order(self, event):
         self.send(

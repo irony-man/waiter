@@ -20,7 +20,6 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
-    HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
     HTTP_404_NOT_FOUND,
 )
@@ -34,6 +33,7 @@ from common.models import (
     Chain,
     MenuItem,
     Order,
+    OrderItem,
     Restaurant,
     Table,
     UserProfile,
@@ -103,11 +103,8 @@ class LoginView(FormView):
             user = authenticate(
                 self.request, username=username, password=password
             )
-            errors = dict()
             if not user:
-                errors.password = ("Invalid login credentials!!",)
-            if errors:
-                form.errors = errors
+                form.errors.password = ("Invalid login credentials!!",)
                 return super(LoginView, self).form_invalid(form)
         login(self.request, user)
         return redirect(self.success_url)
@@ -244,6 +241,8 @@ class TableViewSet(ModelViewSet):
                 )
 
             return Response(data=data, status=HTTP_200_OK)
+        except Http404:
+            raise Http404
         except Exception as e:
             raise ValidationError(dict(detail=e))
 
@@ -273,6 +272,8 @@ class TableViewSet(ModelViewSet):
                         quantity=quantity,
                     )
             return Response(data=data, status=HTTP_200_OK)
+        except Http404:
+            raise Http404
         except Exception as e:
             raise ValidationError(dict(detail=e))
 
@@ -331,27 +332,15 @@ class OrderAPIView(APIView):
             orders = Order.objects.filter(
                 table=instance, session_uid=request.session["uid"]
             )
-            total_price = orders.aggregate(
-                total_price=Sum(
-                    Case(
-                        When(
-                            price_type=PriceType.FULL,
-                            then=F("menu_item__full_price") * F("quantity"),
-                        ),
-                        When(
-                            price_type=PriceType.HALF,
-                            then=F("menu_item__half_price") * F("quantity"),
-                        ),
-                    )
-                )
-            ).get("total_price", 0)
             data = dict(
                 table=TableSerializer(instance=instance).data,
                 orders=OrderSerializer(instance=orders, many=True).data,
                 session_uid=request.session["uid"],
-                total_price=total_price,
+                total_price=sum(o.total_price for o in orders),
             )
             return Response(data=data, status=HTTP_200_OK)
+        except Http404:
+            raise Http404
         except Exception as e:
             raise ValidationError(dict(detail=e))
 
@@ -366,36 +355,50 @@ class OrderAPIView(APIView):
             )
             request.session["table"] = str(instance.uid)
             cart = json.loads(request.COOKIES.get("cart", "{}"))
-            newOrders = []
+            order, _ = Order.objects.get_or_create(
+                table=instance,
+                status=OrderStatus.PENDING,
+                session_uid=request.session["uid"],
+            )
             for key, val in cart.items():
                 menu_uid, price_type = key.split("/", 1)
                 menu_item = MenuItem.objects.filter(
                     uid=menu_uid, available=True
                 ).first()
-                order, created = Order.objects.get_or_create(
+
+                if not menu_item:
+                    continue
+
+                quantity = val.get("quantity", 0)
+                item, created = OrderItem.objects.get_or_create(
+                    order=order,
                     menu_item=menu_item,
-                    table=instance,
                     price_type=price_type,
-                    status=OrderStatus.PENDING,
-                    session_uid=request.session["uid"],
-                    defaults={"quantity": val.get("quantity", 0)},
+                    defaults={"quantity": quantity},
                 )
-                if created:
-                    newOrders.append(order)
-                else:
-                    order.quantity += val.get("quantity", 0)
-                    order.clean()
-                    order.save()
-            logger.info(newOrders)
-            if len(newOrders):
-                channel_layer = get_channel_layer()
-                async_to_sync(channel_layer.group_send)(
-                    str(instance.restaurant.uid),
-                    {
-                        "type": "send_orders",
-                        "orders": newOrders,
-                    },
-                )
-            return Response(status=HTTP_201_CREATED)
+
+                if not created:
+                    item.quantity += quantity
+
+                item.clean()
+                item.save()
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                str(order.session_uid),
+                {
+                    "type": "send_order",
+                    "order": order,
+                },
+            )
+            async_to_sync(channel_layer.group_send)(
+                str(order.table.restaurant.uid),
+                {
+                    "type": "send_order",
+                    "order": order,
+                },
+            )
+            return Response(status=HTTP_200_OK)
+        except Http404:
+            raise Http404
         except Exception as e:
             raise ValidationError(dict(detail=e))

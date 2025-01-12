@@ -3,7 +3,7 @@
     id="confirm-order-modal"
     class="modal fade"
     tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
       <Loader ref="loader">
         <form
           method="post"
@@ -11,57 +11,75 @@
           @submit.prevent="() => submitOrder('ACCEPTED')">
           <div class="modal-header">
             <h1 class="modal-title text-uppercase fs-5">
-              Incoming Order
+              Incoming Order from table <span class="fw-bold">#{{
+                order.table.number }}</span>
             </h1>
             <Button
               class="btn-close"
               data-bs-dismiss="modal"/>
           </div>
           <div class="modal-body text-start p-4">
-            <h5 class="fw-normal mb-5">
-              <span class="fw-bold">{{ order.menu_item?.name }}</span> for table <span class="fw-bold">#{{
-                order.table.number }}</span>
-            </h5>
-            <h6 class="mb-0">
+            <h5 class="mb-0">
               Order Summary
-            </h6>
+            </h5>
             <hr class="my-3 summary-strip">
 
             <div class="table-responsive">
               <table class="table summary-table border-0 table-sm table-borderless align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th class="text-end">
+                      Price
+                    </th>
+                    <th class="text-end">
+                      Quantity
+                    </th>
+                    <th class="text-end">
+                      Total Price
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr>
-                    <td>Item</td>
-                    <td>{{ order.menu_item?.name }}</td>
+                  <tr
+                    v-for="{menu_item, ...item} in order.items"
+                    :key="menu_item.uid">
+                    <td colspan="auto">
+                      <div class="d-flex align-items-center min-w-200">
+                        <ItemIcon :menu-type="menu_item.menu_type"/>
+                        <p class="mb-0">
+                          {{ menu_item.name }}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      {{ item.price_type.toTitleCase() }}
+                    </td>
+                    <td class="text-end">
+                      {{ $filters.formatCurrency(item.price) }}
+                    </td>
+                    <td class="text-end">
+                      {{ $filters.formatInteger(item.quantity) }}
+                    </td>
+                    <td class="text-end">
+                      {{ $filters.formatCurrency(item.total_price) }}
+                    </td>
                   </tr>
                   <tr>
-                    <td>Table</td>
-                    <td>#{{ order.table.number }}</td>
-                  </tr>
-                  <tr>
-                    <td>Type</td>
-                    <td>{{ order.price_type.toTitleCase() }}</td>
-                  </tr>
-                  <tr>
-                    <td>Quantity</td>
-                    <td>{{ order.quantity }}</td>
-                  </tr>
-                  <tr>
-                    <td>Price</td>
-                    <td>{{ $filters.formatCurrency(order.price) }}</td>
-                  </tr>
-                  <tr>
-                    <td>Status</td>
-                    <td>{{ order.status_display }}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
+                    <td colspan="5">
                       <hr class="my-3 summary-strip">
                     </td>
                   </tr>
                   <tr>
-                    <td>Total Price</td>
-                    <td>{{ $filters.formatCurrency(order.total_price) }}</td>
+                    <td
+                      class="fw-bold"
+                      colspan="4">
+                      Total Price
+                    </td>
+                    <td class="text-end fw-bold">
+                      {{ $filters.formatCurrency(order.total_price) }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -72,7 +90,7 @@
             class="modal-footer justify-content-center">
             <div
               v-if="order.status == 'PENDING'"
-              class="d-flex gap-1">
+              class="d-flex gap-3">
               <LoadingButton
                 :is-loading="!!instance.submitting"
                 class="btn-success"
@@ -101,14 +119,14 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
 import Button from './Button.vue';
 import LoadingButton from './LoadingButton.vue';
+import ItemIcon from './ItemIcon.vue';
 import Loader from './Loader.vue';
 
 export default {
   name: "ConfirmOrderModal",
-  components: { Button, LoadingButton, Loader },
+  components: { Button, LoadingButton, ItemIcon, Loader },
   props: {
     order: {
       type: Object,
@@ -129,9 +147,6 @@ export default {
       },
     };
   },
-  computed: {
-    ...mapState(["user"]),
-  },
   mounted() {
     this.$refs.loader.complete();
     this.modalEl = document.getElementById('confirm-order-modal');
@@ -148,7 +163,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['listRestaurant', 'createOrder', 'updateOrder']),
     async submitOrder(status = "ACCEPTED") {
       this.instance.status = status;
       this.$emit('submit', this.instance);

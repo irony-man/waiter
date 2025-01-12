@@ -20,96 +20,128 @@
           icon="fas fa-face-frown"/>
         <div
           v-else
-          class="table-responsive">
-          <table class="table align-middle">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th class="text-end">
-                  Table Number
-                </th>
-                <th>Type</th>
-                <th>Status</th>
-                <th v-if="showNextStep">
-                  Next Step
-                </th>
-                <th class="text-end">
-                  Price
-                </th>
-                <th class="text-end">
-                  Quantity
-                </th>
-                <th class="text-end">
-                  Total Price
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="order in orderData.results"
-                :key="order.uid">
-                <td colspan="auto">
-                  <div class="d-flex align-items-center min-w-200">
-                    <ItemIcon :menu-type="order.menu_item?.menu_type"/>
-                    <p class="mb-0">
-                      {{ order.menu_item?.name }}
-                    </p>
+          id="orderAccordion"
+          class="accordion">
+          <div
+            v-for="(order, idx) in orderData.results"
+            :key="order.uid"
+            class="accordion-item">
+            <h2 class="accordion-header">
+              <div
+                class="text-uppercase accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                :data-bs-target="`#orderCollapse-${idx}`">
+                <div class="row w-100">
+                  <div class="col">
+                    Order from table: #{{ order.table.number }}
                   </div>
-                  <small
-                    v-if="order.menu_item?.description"
-                    class="mt-2 fw-light">{{ order.menu_item?.description }}</small>
-                </td>
-                <td class="fw-bold text-end">
-                  #{{ order.table?.number }}
-                </td>
-                <td>
-                  {{ order.price_type.toTitleCase() }}
-                </td>
-                <td>
-                  <span
-                    class="w-100 p-2 badge rounded-pill"
-                    :class="`bg-${badgeClass[order.status]}`">
-                    {{ order.status }}
-                  </span>
-                </td>
-                <td v-if="showNextStep">
+                  <div class="col">
+                    <span
+                      class="ms-5 p-2 badge rounded-pill"
+                      :class="`bg-${badgeClass[order.status]}`">{{ order.status }}</span>
+                  </div>
+                </div>
+              </div>
+            </h2>
+            <div
+              :id="`orderCollapse-${idx}`"
+              class="accordion-collapse collapse"
+              :class="{'show': order.status !== 'COMPLETED'}">
+              <div
+                v-if="order.items?.length"
+                class="accordion-body table-responsive">
+                <table
+                  class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th class="text-end">
+                        Price
+                      </th>
+                      <th class="text-end">
+                        Quantity
+                      </th>
+                      <th class="text-end">
+                        Total Price
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="{menu_item, ...item} in order.items"
+                      :key="menu_item.uid">
+                      <td colspan="auto">
+                        <div class="d-flex align-items-center min-w-200">
+                          <ItemIcon :menu-type="menu_item.menu_type"/>
+                          <p class="mb-0">
+                            {{ menu_item.name }}
+                          </p>
+                        </div>
+                        <small
+                          v-if="menu_item.description"
+                          class="mt-2 fw-light">{{ menu_item.description }}</small>
+                      </td>
+                      <td>
+                        {{ item.price_type.toTitleCase() }}
+                      </td>
+                      <td class="text-end">
+                        {{ $filters.formatCurrency(item.price) }}
+                      </td>
+                      <td class="text-end">
+                        {{ $filters.formatInteger(item.quantity) }}
+                      </td>
+                      <td class="text-end">
+                        {{ $filters.formatCurrency(item.total_price) }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="fw-bold"
+                        colspan="4">
+                        Total Price
+                      </td>
+                      <td class="text-end fw-bold">
+                        {{ $filters.formatCurrency(order.total_price) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  v-if="showNextStep"
+                  class="text-end">
                   <LoadingButton
                     v-if="order.status == 'ACCEPTED' || order.status == 'MAKING'"
                     :is-loading="!!order.submitting"
-                    class="w-100 text-uppercase p-1 rounded-pill btn-sm"
+                    class=" text-uppercase btn-sm"
                     :class="`btn-${badgeClass[getNextStatus(order.status)]}`"
                     @click="() => submitOrder({ ...order, status: getNextStatus(order.status) })">
                     Change to {{ getNextStatus(order.status) }}
                   </LoadingButton>
                   <div
                     v-if="order.status == 'PENDING'"
-                    class="d-flex gap-1">
+                    class="d-flex justify-content-end gap-3">
                     <LoadingButton
                       :is-loading="!!instance.submitting"
-                      class="w-100 text-uppercase p-1 rounded-pill btn-sm btn-success"
+                      class="text-uppercase btn-sm btn-success"
                       @click="() => submitOrder({ ...order, status: 'ACCEPTED' })">
                       Accept
                     </LoadingButton>
                     <LoadingButton
                       :is-loading="!!instance.submitting"
-                      class="w-100 text-uppercase p-1 rounded-pill btn-sm btn-danger"
+                      class="text-uppercase btn-sm btn-danger"
                       @click="() => submitOrder({ ...order, status: 'REJECTED' })">
                       Reject
                     </LoadingButton>
                   </div>
-                </td>
-                <td class="text-end">
-                  {{ $filters.formatCurrency(order.price) }}
-                </td>
-                <td class="text-end">
-                  {{ $filters.formatInteger(order.quantity) }}
-                </td>
-                <td class="text-end">
-                  {{ $filters.formatCurrency(order.total_price) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="table-responsive">
           <div
             v-if="orderData.next"
             class="mt-5 text-center">
@@ -172,15 +204,13 @@ export default {
         COMPLETED: "success",
       },
       selectedTab: '',
+      limit: 48,
     };
   },
   computed: {
     ...mapState(['cart', 'user']),
     restaurantUid() {
       return this.$route.params.uid;
-    },
-    limit() {
-      return 48;
     },
     routerItems() {
       return [{
@@ -275,17 +305,20 @@ export default {
       console.log(data);
       this.instance = data;
       this.showModal = false;
-      const oldOrder = this.orderData.results?.find(order => data.uid === order.uid);
-      if(oldOrder) {
-        this.showModal = oldOrder.quantity !== data.quantity;
-        oldOrder.quantity = data.quantity;
-      }
-      else {
+      let oldOrder = false;
+      this.orderData.results = this.orderData.results?.map(order => {
+        if(data.uid === order.uid) {
+          oldOrder = true;
+          return data;
+        }
+        return order;
+      });
+      if(!oldOrder) {
         this.showModal = true;
-        this.orderData = { ...this.defaultState };
-        this.fetchOrders();
+        this.orderData.results?.push(data);
+        this.limit++;
       }
-      this.$toast.success(`Order ${data.menu_item?.name} updated!!`);
+      this.$toast.success(`Order ${data.uid} updated!!`);
     },
   }
 };

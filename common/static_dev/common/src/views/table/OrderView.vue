@@ -13,7 +13,6 @@
         <h6 class="fw-bold mb-4 text-uppercase">
           Orders <span class="ms-1">({{ totalItems }})</span>
         </h6>
-        <Tabs/>
         <Empty
           v-if="!totalItems"
           title="No Items"
@@ -21,69 +20,98 @@
           icon="fas fa-face-frown"/>
         <div
           v-else
-          class="table-responsive">
-          <table class="table align-middle">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th class="text-end">
-                  Price
-                </th>
-                <th class="text-end">
-                  Quantity
-                </th>
-                <th class="text-end">
-                  Total Price
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="({ menu_item, ...order }, key) in instance.orders"
-                :key="key">
-                <td colspan="auto">
-                  <div class="d-flex align-items-center min-w-200">
-                    <ItemIcon :menu-type="menu_item.menu_type"/>
-                    <p class="mb-0">
-                      {{ menu_item.name }}
-                    </p>
-                  </div>
-                  <small
-                    v-if="menu_item.description"
-                    class="mt-2 fw-light">{{ menu_item.description }}</small>
-                </td>
-                <td>
-                  {{ order.price_type.toTitleCase() }}
-                </td>
-                <td>
-                  <span
-                    class="w-100 p-2 badge rounded-pill"
-                    :class="`bg-${badgeClass[order.status]}`">{{ order.status }}</span>
-                </td>
-                <td class="text-end">
-                  {{ $filters.formatCurrency(order.price) }}
-                </td>
-                <td class="text-end">
-                  {{ $filters.formatInteger(order.quantity) }}
-                </td>
-                <td class="text-end">
-                  {{ $filters.formatCurrency(order.total_price) }}
-                </td>
-              </tr>
-              <tr>
-                <td
-                  class="fw-bold"
-                  colspan="5">
-                  Total Price
-                </td>
-                <td class="text-end fw-bold">
-                  {{ $filters.formatCurrency(instance.total_price) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          id="orderAccordion"
+          class="accordion">
+          <div class="p-3 border rounded-top">
+            <div class="row fw-medium">
+              <div class="col">
+                Total Price
+              </div>
+              <div class="col text-end">
+                {{ $filters.formatCurrency(instance.total_price) }}
+              </div>
+            </div>
+          </div>
+          <div
+            v-for="(order, idx) in instance.orders"
+            :key="order.uid"
+            class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                :data-bs-target="`#orderCollapse-${idx}`">
+                ID: #{{ idx + 1 }}
+                <span
+                  class="ms-5 p-2 badge rounded-pill"
+                  :class="`bg-${badgeClass[order.status]}`">{{ order.status }}</span>
+              </button>
+            </h2>
+            <div
+              :id="`orderCollapse-${idx}`"
+              class="accordion-collapse collapse"
+              :class="{'show': idx === 0}">
+              <div class="accordion-body table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th class="text-end">
+                        Price
+                      </th>
+                      <th class="text-end">
+                        Quantity
+                      </th>
+                      <th class="text-end">
+                        Total Price
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="{menu_item, ...item} in order.items"
+                      :key="menu_item.uid">
+                      <td colspan="auto">
+                        <div class="d-flex align-items-center min-w-200">
+                          <ItemIcon :menu-type="menu_item.menu_type"/>
+                          <p class="mb-0">
+                            {{ menu_item.name }}
+                          </p>
+                        </div>
+                        <small
+                          v-if="menu_item.description"
+                          class="mt-2 fw-light">{{ menu_item.description }}</small>
+                      </td>
+                      <td>
+                        {{ item.price_type.toTitleCase() }}
+                      </td>
+                      <td class="text-end">
+                        {{ $filters.formatCurrency(item.price) }}
+                      </td>
+                      <td class="text-end">
+                        {{ $filters.formatInteger(item.quantity) }}
+                      </td>
+                      <td class="text-end">
+                        {{ $filters.formatCurrency(item.total_price) }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="fw-bold"
+                        colspan="4">
+                        Total Price
+                      </td>
+                      <td class="text-end fw-bold">
+                        {{ $filters.formatCurrency(order.total_price) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -101,11 +129,10 @@ import Button from "@/components/Button.vue";
 import { HttpNotFound, HttpServerError } from "@/store/network";
 import ItemIcon from "@/components/ItemIcon.vue";
 import CartButtons from "@/components/CartButtons.vue";
-import Tabs from "@/components/Tabs.vue";
 
 export default {
   name: 'OrderView',
-  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons, Tabs },
+  components: { PageTitle, Loader, Empty, Button, Breadcrumb, LoadingButton, ItemIcon, CartButtons },
   data() {
     return {
       connection: null,
@@ -180,7 +207,7 @@ export default {
       this.instance.orders = this.instance?.orders.map(order => {
         return data.uid === order.uid ? data : order;
       });
-      this.$toast.success(`Order ${data.menu_item?.name} updated!!`);
+      this.$toast.success(`Order ${data.uid} updated!!`);
     },
     async send() {
     }

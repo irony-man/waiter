@@ -7,6 +7,7 @@ from common.models import (
     Chain,
     MenuItem,
     Order,
+    OrderItem,
     Restaurant,
     Table,
     UserProfile,
@@ -73,16 +74,17 @@ class MenuItemAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    list_display = ("table", "status", "total_price")
+    list_filter = ("status", "table__restaurant")
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
     list_display = (
         "menu_item",
-        "table",
         "price_type",
-        "status",
+        "price",
+        "quantity",
         "total_price",
     )
-    list_filter = (
-        "price_type",
-        "status",
-        "menu_item",
-        "table__restaurant",
-    )
+    list_filter = ("price_type", "menu_item")
