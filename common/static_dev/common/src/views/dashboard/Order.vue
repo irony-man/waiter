@@ -1,18 +1,19 @@
 <template>
-  <Loader ref="loader">
-    <div>
-      <Breadcrumb
-        :router-items="routerItems"
-        name="Order"/>
-      <PageTitle
-        :secondary="`This is where you manage chain <b>${user.chain_name}</b>.`"
-        primary="Orders"/>
+  <div>
+    <Breadcrumb
+      :router-items="routerItems"
+      name="Order"/>
+    <PageTitle
+      :secondary="`This is where you manage chain <b>${user.chain_name}</b>.`"
+      primary="Orders"/>
 
-      <div class="mb-5">
-        <Tabs
-          v-model="selectedTab"
-          :tabs="tabs"
-          @update:model-value="onChangeTab"/>
+    <div class="mb-5">
+      <Tabs
+        v-model="selectedTab"
+        :tabs="tabs"
+        @update:model-value="onChangeTab"/>
+
+      <Loader ref="orderLoader">
         <Empty
           v-if="!orderData.results.length"
           title="No Items"
@@ -154,14 +155,14 @@
             </LoadingButton>
           </div>
         </div>
-      </div>
-      <ConfirmOrderModal
-        v-if="showModal"
-        :order="instance ?? {}"
-        @submit="submitOrder"
-        @closed="showModal = false"/>
+      </Loader>
     </div>
-  </Loader>
+    <ConfirmOrderModal
+      v-if="showModal"
+      :order="instance ?? {}"
+      @submit="submitOrder"
+      @closed="showModal = false"/>
+  </div>
 </template>
 
 <script>
@@ -242,7 +243,7 @@ export default {
       }
       this.$toast.error(message);
     } finally {
-      this.$refs.loader.complete();
+      // this.$refs.loader.complete();
     }
   },
   unmounted() {
@@ -262,6 +263,7 @@ export default {
     },
     async fetchOrders() {
       try {
+        this.$refs.orderLoader.start();
         this.orderData.loading = true;
         const response = await this.listOrder({ table__restaurant__uid: this.restaurantUid, limit: this.limit, offset: this.orderData.page++ * this.limit, status: this.selectedTab, ordering: '-created' });
         response.results = [...this.orderData.results, ...response.results];
@@ -270,7 +272,7 @@ export default {
         this.$toast.error("Error fetching orders!!");
         console.error(err);
       } finally {
-        this.orderData.loading = false;
+        this.$refs.orderLoader.complete();
       }
     },
     async disconnect() {
