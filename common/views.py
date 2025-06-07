@@ -234,6 +234,7 @@ class TableViewSet(ModelViewSet):
                             instance=category
                         ).data,
                         "has_half_price": total_half_price > 0,
+                        "menu_items_count": len(menu_items),
                         "menu_items": LiteMenuItemSerializer(
                             instance=menu_items, many=True
                         ).data,

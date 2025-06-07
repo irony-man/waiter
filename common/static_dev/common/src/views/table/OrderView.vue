@@ -4,15 +4,24 @@
       <Breadcrumb
         :router-items="routerItems"
         name="Order"/>
-      <PageTitle
-        class="border-bottom pb-4"
-        :secondary="`<div class='fs-6 mb-2'>Restaurant: <strong>${instance.table.restaurant?.name}</strong></div>`"
-        :primary="`Orders from Table: <strong>#${instance.table.number}</strong>`"/>
+      <header class="pb-3 bg-body sticky-top z-2">
+        <div class="container flex-wrap border-bottom py-4 border-1 d-flex gap-3 align-items-center justify-content-between">
+          <div>
+            <h1 class="h3 fw-medium text-dark mb-1">
+              {{ instance.table.restaurant?.name }}
+            </h1>
+            <p class="mb-0 text-uppercase">
+              Ordering from Table: <span class="fw-medium text-primary">{{ instance.table.number }}</span>
+            </p>
+          </div>
 
+          <div class="d-flex align-items-center gap-3">
+            <span class="fs-6 fw-normal">ORDERS ({{ totalItems }})</span>
+            <span class="fs-4 fw-medium text-primary">{{ $filters.formatCurrency(instance.total_price) }}</span>
+          </div>
+        </div>
+      </header>
       <div class="mb-5">
-        <h6 class="fw-bold mb-4 text-uppercase">
-          Orders <span class="ms-1">({{ totalItems }})</span>
-        </h6>
         <Empty
           v-if="!totalItems"
           title="No Items"
@@ -22,23 +31,13 @@
           v-else
           id="orderAccordion"
           class="accordion">
-          <div class="p-3 border rounded-top">
-            <div class="row fw-medium">
-              <div class="col">
-                Total Price
-              </div>
-              <div class="col text-end">
-                {{ $filters.formatCurrency(instance.total_price) }}
-              </div>
-            </div>
-          </div>
           <div
             v-for="(order, idx) in instance.orders"
             :key="order.uid"
-            class="accordion-item">
+            class="accordion-item border-top border-1 mb-4">
             <h2 class="accordion-header">
               <button
-                class="accordion-button"
+                class="accordion-button shadow-sm"
                 type="button"
                 data-bs-toggle="collapse"
                 :data-bs-target="`#orderCollapse-${idx}`">
@@ -52,63 +51,65 @@
               :id="`orderCollapse-${idx}`"
               class="accordion-collapse collapse"
               :class="{'show': idx === 0}">
-              <div class="accordion-body table-responsive">
-                <table class="table align-middle">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th class="text-end">
-                        Price
-                      </th>
-                      <th class="text-end">
-                        Quantity
-                      </th>
-                      <th class="text-end">
-                        Total Price
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="{menu_item, ...item} in order.items"
-                      :key="menu_item.uid">
-                      <td colspan="auto">
-                        <div class="d-flex align-items-center min-w-200">
-                          <ItemIcon :menu-type="menu_item.menu_type"/>
-                          <p class="mb-0">
-                            {{ menu_item.name }}
-                          </p>
-                        </div>
-                        <small
-                          v-if="menu_item.description"
-                          class="mt-2 fw-light">{{ menu_item.description }}</small>
-                      </td>
-                      <td>
-                        {{ item.price_type.toTitleCase() }}
-                      </td>
-                      <td class="text-end">
-                        {{ $filters.formatCurrency(item.price) }}
-                      </td>
-                      <td class="text-end">
-                        {{ $filters.formatInteger(item.quantity) }}
-                      </td>
-                      <td class="text-end">
-                        {{ $filters.formatCurrency(item.total_price) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        class="fw-bold"
-                        colspan="4">
-                        Total Price
-                      </td>
-                      <td class="text-end fw-bold">
-                        {{ $filters.formatCurrency(order.total_price) }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="accordion-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="bg-light ">
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="text-end">
+                          Price
+                        </th>
+                        <th class="text-end">
+                          Quantity
+                        </th>
+                        <th class="text-end">
+                          Total Price
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="{menu_item, ...item} in order.items"
+                        :key="menu_item.uid">
+                        <td colspan="auto">
+                          <div class="d-flex gap-3 align-items-center min-w-200">
+                            <p class="mb-0">
+                              {{ menu_item.name }}
+                            </p>
+                            <ItemIcon :menu-type="menu_item.menu_type"/>
+                          </div>
+                          <small
+                            v-if="menu_item.description"
+                            class="mt-2 fw-light">{{ menu_item.description }}</small>
+                        </td>
+                        <td class="fw-light">
+                          {{ item.price_type.toTitleCase() }}
+                        </td>
+                        <td class="text-end fw-light">
+                          {{ $filters.formatCurrency(item.price) }}
+                        </td>
+                        <td class="text-end fw-light">
+                          {{ $filters.formatInteger(item.quantity) }}
+                        </td>
+                        <td class="text-end">
+                          {{ $filters.formatCurrency(item.total_price) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="text-end fw-medium"
+                          colspan="4">
+                          Total Price:
+                        </td>
+                        <td class="text-end fw-medium">
+                          {{ $filters.formatCurrency(order.total_price) }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -142,10 +143,10 @@ export default {
       },
       badgeClass: {
         PENDING: "info",
-        ACCEPTED: "primary",
+        ACCEPTED: "success",
         REJECTED: "danger",
         MAKING: "warning",
-        COMPLETED: "success",
+        COMPLETED: "primary",
       }
     };
   },
