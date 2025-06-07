@@ -22,20 +22,15 @@
       </header>
 
       <div class="container">
-        <Empty
-          v-if="!instance.categories.length"
-          title="No Categories"
-          text="You don't have any categories for this restaurant."
-          icon="fas fa-face-frown"/>
-
         <div
-          v-else
           class="row g-0 flex-grow-1">
           <div class="col-md-3 d-none d-md-block sticky-sidebar">
             <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">
               Menu Categories
             </h5>
-            <nav class="nav flex-column">
+            <nav
+              :key="instance.categories"
+              class="nav flex-column">
               <Button
                 v-for="({ category, ...item }) in instance.categories"
                 :key="category.name"
@@ -54,10 +49,17 @@
                 type="search"
                 class="mb-5"
                 placeholder="Search for dishes or drinks..."
-                icon="fas fa-search"/>
+                icon="fas fa-search"
+                @input="searchItem"/>
 
+              <Empty
+                v-if="!instance.categories.length"
+                title="No Categories"
+                text="You don't have any categories for this restaurant."
+                icon="fas fa-face-frown"/>
               <section
                 v-for="category in instance.categories"
+                v-else
                 :id="`category-${category.category.uid}`"
                 :key="category.category.uid"
                 class="mb-4">
