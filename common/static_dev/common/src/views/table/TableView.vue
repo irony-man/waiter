@@ -13,7 +13,8 @@
           </div>
 
           <Button
-            class="btn-primary"
+            v-if="totalPrice"
+            class="d-none d-sm-block btn-primary"
             btn-icon="fa fa-bowl-food me-2"
             @click="isCartOpen = true">
             Items ({{ $filters.formatCurrency(totalPrice) }})
@@ -112,6 +113,19 @@
           </main>
         </div>
 
+        <!-- Floating Cart Summary for small screens -->
+        <div
+          v-if="totalPrice"
+          class="fixed-bottom d-sm-none bg-danger text-white p-3 shadow-lg rounded-top-3 z-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-medium">Items ({{ $filters.formatCurrency(totalPrice) }})</span>
+            <Button
+              class="btn-light text-primary"
+              @click="isCartOpen = true">
+              View Cart
+            </Button>
+          </div>
+        </div>
         <CartFormModal
           v-if="isItemFormOpen"
           :item="cartItem"
