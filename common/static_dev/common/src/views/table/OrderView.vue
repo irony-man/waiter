@@ -1,6 +1,6 @@
 <template>
   <Loader ref="loader">
-    <div>
+    <div class="container">
       <Breadcrumb
         :router-items="routerItems"
         name="Order"/>

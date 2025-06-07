@@ -5,22 +5,21 @@
     <LoadingButton
       v-if="value && available"
       :is-loading="!!removing"
-      class="btn-outline-dark"
+      class="btn-primary"
       btn-icon="fas fa-minus"
       :disabled="!value"
       @click="$emit('remove')"/>
 
     <Button
       v-if="value && available"
-      class="btn-outline-dark"
-      disabled>
+      class="btn-outline-primary">
       {{ value }}
     </Button>
 
     <LoadingButton
       v-if="available"
       :is-loading="!!adding"
-      class="btn-outline-dark"
+      :class="{'btn-outline-primary': !value, 'btn-primary': value}"
       btn-icon="fas fa-plus"
       @click="$emit('add')">
       <span

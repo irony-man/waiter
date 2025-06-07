@@ -5,12 +5,7 @@
       class="d-block form-label">{{ label }}<span
         v-if="required && label"
         class="ms-1">*</span></label>
-    <div class="input-group">
-      <div
-        v-if="addon"
-        :id="name"
-        class="input-group-text"
-        v-html="addon"/>
+    <div class="position-relative">
       <input
         :id="name"
         ref="input"
@@ -21,12 +16,19 @@
         :disabled="disabled"
         :min="min"
         :max="max"
-        class="form-control"
+        class="form-control shadow-sm"
         :step="step ? step : undefined"
-        :class="{ 'hide-spin-buttons': hideSpinButtons, 'text-capitalize': textCapitalize }"
+        :class="{ 'hide-spin-buttons': hideSpinButtons, 'text-capitalize': textCapitalize, 'ps-5': icon }"
         :value="modelValue"
         @blur="$emit('blur')"
         @input="onInput">
+      <div
+        v-if="icon"
+        class="position-absolute top-50 start-0 translate-middle-y ps-3">
+        <i
+          :class="icon"
+          class="text-muted"/>
+      </div>
     </div>
     <div
       v-if="helpText"
@@ -122,6 +124,11 @@ export default {
       required: false,
       default: null
     },
+    icon: {
+      type: String,
+      required: false,
+      default: () => ''
+    }
   },
   emits: ['update:modelValue', 'blur'],
   methods: {

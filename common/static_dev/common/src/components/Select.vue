@@ -11,6 +11,7 @@
       :name="name"
       :placeholder="placeholder"
       open-direction="bottom"
+      class="shadow-sm"
       :label="displayBy"
       :track-by="trackBy"
       :show-labels="false"

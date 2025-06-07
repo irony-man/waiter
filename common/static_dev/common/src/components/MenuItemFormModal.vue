@@ -43,7 +43,7 @@
                 type="number"
                 label="Half Price"
                 name="half_price"
-                addon="<i class='fas fa-indian-rupee-sign'></i>"
+                icon="fas fa-indian-rupee-sign"
                 :min="0"
                 required
                 :error="errors.half_price"/>
@@ -54,7 +54,7 @@
                 type="number"
                 :label="instance.has_half_price ? 'Full Price': 'Price'"
                 name="full_price"
-                addon="<i class='fas fa-indian-rupee-sign'></i>"
+                icon="fas fa-indian-rupee-sign"
                 :min="0"
                 required
                 :error="errors.full_price"/>

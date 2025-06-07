@@ -1,15 +1,17 @@
 <template>
-  <div class="is-20 me-2 mb-2">
-    <img
+  <div>
+    <span
       v-if="menuType === 'VEG'"
-      class="is-20"
-      src="@/assets/images/veg.png"
-      alt="Veg">
-    <img
+      class="text-success me-2"
+      title="Vegetarian">
+      <i class="fas fa-leaf"/>
+    </span>
+    <span
       v-else
-      class="is-20"
-      src="@/assets/images/non-veg.png"
-      alt="Non Veg">
+      class="text-danger me-2"
+      title="Non-Vegetarian">
+      <i class="fas fa-drumstick-bite"/>
+    </span>
   </div>
 </template>
 

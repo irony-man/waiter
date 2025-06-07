@@ -19,7 +19,7 @@
         @input="$emit('update:modelValue', $event.target.value)">
       <label
         :for="`${name}_${i}`"
-        class="btn d-flex gap-3 justify-content-between btn-outline-dark text-start w-100 mb-3">
+        class="btn d-flex gap-3 justify-content-between btn-outline-primary text-start w-100 mb-3">
         <div>{{ choice.start }}</div>
         <div>{{ choice.end }}</div>
       </label>

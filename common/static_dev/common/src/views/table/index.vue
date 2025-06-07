@@ -1,6 +1,6 @@
 <template>
   <Loader ref="loader">
-    <div class="container my-5">
+    <div class="my-5">
       <Empty
         v-if="notFound"
         title="Restaurant not Found"

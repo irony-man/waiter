@@ -14,7 +14,7 @@
       :required="required"
       :disabled="disabled"
       :rows="rows"
-      class="form-control"
+      class="form-control shadow-sm"
       @change="e => $emit('update:modelValue', e.target.value)"/>
     <div
       v-if="helpText"

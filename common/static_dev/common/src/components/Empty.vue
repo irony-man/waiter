@@ -3,7 +3,7 @@
     class="d-flex align-items-center"
     :class="shadeClass()">
     <i
-      class="fas fa-2x me-4"
+      class="fas fa-2x me-4 text-primary"
       :class="icon"/>
     <div>
       <h6 class="fw-bold text-uppercase mb-1">
@@ -44,7 +44,7 @@ export default {
         return `alert alert-${this.kind} p-4`;
       }
 
-      return "alert alert-secondary p-4";
+      return "alert bg-primary-subtle alert-secondary p-4";
     },
   }
 };
