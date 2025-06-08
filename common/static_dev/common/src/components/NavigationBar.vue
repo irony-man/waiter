@@ -25,15 +25,7 @@
 
 <script>
 
-import { mapState } from "vuex";
-
 export default {
   name: "NavigationBar",
-  computed: {
-    ...mapState(["cart"]),
-    totalPrice() {
-      return Object.values(this.cart).reduce((sum, { quantity, price }) => sum + quantity * price, 0);
-    }
-  },
 };
 </script>

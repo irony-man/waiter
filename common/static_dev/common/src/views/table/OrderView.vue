@@ -5,21 +5,17 @@
         :router-items="routerItems"
         name="Order"/>
       <header class="pb-3 bg-body sticky-top z-2">
-        <div class="container flex-wrap border-bottom py-4 border-1 d-flex gap-3 align-items-center justify-content-between">
-          <div>
-            <h1 class="h3 fw-medium text-dark mb-1">
-              {{ instance.table.restaurant?.name }}
-            </h1>
-            <p class="mb-0 text-uppercase">
-              Ordering from Table: <span class="fw-medium text-primary">{{ instance.table.number }}</span>
-            </p>
-          </div>
-
-          <div class="d-flex align-items-center gap-3">
-            <span class="fs-6 fw-normal">ORDERS ({{ totalItems }})</span>
-            <span class="fs-4 fw-medium text-primary">{{ $filters.formatCurrency(instance.total_price) }}</span>
-          </div>
-        </div>
+        <PageTitle
+          class="container border-bottom py-4 border-1 d-flex align-items-center justify-content-between"
+          :secondary="`Orders from Table: <strong class='text-primary'>#${instance.table.number}</strong>`"
+          :primary="instance.table.restaurant?.name">
+          <template #right>
+            <div class="d-flex align-items-center gap-3">
+              <span class="fs-6 fw-normal">ORDERS ({{ totalItems }})</span>
+              <span class="fs-4 fw-medium text-primary">{{ $filters.formatCurrency(instance.total_price) }}</span>
+            </div>
+          </template>
+        </PageTitle>
       </header>
       <div class="mb-5">
         <Empty

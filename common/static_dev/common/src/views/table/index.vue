@@ -1,11 +1,14 @@
 <template>
   <Loader ref="loader">
     <div class="my-5">
-      <Empty
+      <div
         v-if="notFound"
-        title="Restaurant not Found"
-        text="The restaurant you are looking for is not in this chain."
-        icon="fas fa-face-frown"/>
+        class="container">
+        <Empty
+          title="Restaurant not Found"
+          text="The restaurant you are looking for is not in this chain."
+          icon="fas fa-face-frown"/>
+      </div>
       <router-view
         v-else
         v-slot="{ Component }">

@@ -8,11 +8,11 @@
       </div>
       <div>
         <div
-          class="letter-spacing-1 text-muted small mb-1"
-          v-html="secondary"/>
-        <h4
-          class="text-uppercase fw-bold mb-0"
+          class="letter-spacing-1 h3 fw-medium mb-1 text-uppercase"
           v-html="primary"/>
+        <p
+          class="mb-0 text-uppercase"
+          v-html="secondary"/>
       </div>
     </div>
     <slot name="right"/>

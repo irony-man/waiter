@@ -2,7 +2,7 @@
   <Loader ref="loader">
     <div class="container my-4">
       <PageTitle
-        :secondary="`This is where you manage Chain <b>${user.chain_name}</b>.`"
+        :secondary="`This is where you manage Chain <strong class='text-primary'>${user.chain_name}</strong>.`"
         primary="Dashboard"/>
 
       <div class="mb-5">

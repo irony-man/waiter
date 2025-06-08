@@ -2,29 +2,24 @@
   <Loader ref="loader">
     <div class="">
       <header class="pb-3 bg-body sticky-top z-2">
-        <div class="container border-bottom py-4 border-1 d-flex align-items-center justify-content-between">
-          <div>
-            <h1 class="h3 fw-medium text-dark mb-1">
-              {{ instance.table.restaurant?.name }}
-            </h1>
-            <p class="mb-0 text-uppercase">
-              Ordering from Table: <span class="fw-medium text-primary">{{ instance.table.number }}</span>
-            </p>
-          </div>
-
-          <Button
-            v-if="totalPrice"
-            class="d-none d-sm-block btn-primary"
-            btn-icon="fa fa-bowl-food me-2"
-            @click="isCartOpen = true">
-            Items ({{ $filters.formatCurrency(totalPrice) }})
-          </Button>
-        </div>
+        <PageTitle
+          class="container border-bottom py-4 border-1 d-flex align-items-center justify-content-between"
+          :secondary="`Ordering from Table: <strong class='text-primary'>#${instance.table.number}</strong>`"
+          :primary="instance.table.restaurant?.name">
+          <template #right>
+            <Button
+              v-if="totalPrice"
+              class="d-none d-sm-block btn-primary"
+              btn-icon="fa fa-bowl-food me-2"
+              @click="isCartOpen = true">
+              Items ({{ $filters.formatCurrency(totalPrice) }})
+            </Button>
+          </template>
+        </PageTitle>
       </header>
 
       <div class="container">
-        <div
-          class="row g-0 flex-grow-1">
+        <div class="row g-0 flex-grow-1">
           <div class="col-md-3 d-none d-md-block sticky-sidebar">
             <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">
               Menu Categories
@@ -35,7 +30,7 @@
               <Button
                 v-for="({ category, ...item }) in instance.categories"
                 :key="category.name"
-                :class="{'fw-medium bg-primary-subtle text-primary': activeCategory === category.uid, 'text-dark': activeCategory !== category.uid}"
+                :class="{ 'fw-medium bg-primary-subtle text-primary': activeCategory === category.uid, 'text-dark': activeCategory !== category.uid }"
                 class="text-start fw-light nav-link py-2 px-3 cursor-pointer transition-colors duration-200"
                 @click="scrollToCategory(category.uid)">
                 {{ category.name }} ({{ item.menu_items_count }})
@@ -70,7 +65,7 @@
                 <div
                   v-for="item in category.menu_items"
                   :key="item.uid">
-                  <div class="card h-100 border-0 d-flex flex-row px-0 py-3">
+                  <div class="card bg-body h-100 border-0 d-flex flex-row px-0 py-3">
                     <div class="flex-shrink-0 me-3">
                       <ItemImage :item="item"/>
                     </div>
@@ -113,7 +108,6 @@
           </main>
         </div>
 
-        <!-- Floating Cart Summary for small screens -->
         <div
           v-if="totalPrice"
           class="fixed-bottom d-sm-none bg-danger text-white p-3 shadow-lg rounded-top-3 z-3">
@@ -126,6 +120,7 @@
             </Button>
           </div>
         </div>
+
         <CartFormModal
           v-if="isItemFormOpen"
           :item="cartItem"
@@ -155,10 +150,11 @@ import CartButtons from "@/components/CartButtons.vue";
 import Input from '@/components/Input.vue';
 import ItemImage from "@/components/ItemImage.vue";
 import CartModal from "@/components/CartModal.vue";
+import PageTitle from "@/components/PageTitle.vue";
 
 export default {
   name: "TableView",
-  components: { Loader, Empty, Button, Breadcrumb, LoadingButton, CategoryFormModal, CategoryCard, CartFormModal, ItemIcon, CartButtons, Input, ItemImage, CartModal },
+  components: { Loader, Empty, Button, Breadcrumb, PageTitle, LoadingButton, CategoryFormModal, CategoryCard, CartFormModal, ItemIcon, CartButtons, Input, ItemImage, CartModal },
   data() {
     return {
       instance: {
@@ -225,7 +221,7 @@ export default {
     },
     removeItem(item) {
       try {
-        this.removeCartItem({item});
+        this.removeCartItem({ item });
       } catch (error) {
         this.$toast.error("Error removing Menu Item!!");
         console.error(error);
@@ -234,7 +230,7 @@ export default {
       }
     },
     async searchItem(e) {
-      if(this.timer) {
+      if (this.timer) {
         clearTimeout(this.timer);
       }
       this.searchTerm = e.target.value;
@@ -243,13 +239,13 @@ export default {
           search: this.searchTerm
         },
       });
-      this.timer = setTimeout(async ()=> {
+      this.timer = setTimeout(async () => {
         await this.fetchDetails();
       }, 300);
     },
     async fetchDetails() {
       try {
-        this.instance = await this.getTableCategory({uid: this.tableUid, query: {search: this.searchTerm}});
+        this.instance = await this.getTableCategory({ uid: this.tableUid, query: { search: this.searchTerm } });
 
       } catch (error) {
         console.error(error);
@@ -284,7 +280,7 @@ export default {
         threshold: 0,
       };
 
-      this.instance.categories.forEach(({category}) => {
+      this.instance.categories.forEach(({ category }) => {
         const element = document.getElementById(`category-${category.uid}`);
         if (element) {
           const observer = new IntersectionObserver((entries) => {

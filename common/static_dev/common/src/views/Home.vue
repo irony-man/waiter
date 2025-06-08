@@ -7,18 +7,18 @@
         <div
           class="text-center"
           style="max-width: 780px;">
-          <div class="fs-1 mb-3">
+          <div class="fs-1 text-primary mb-3">
             Welcome to <strong>Waiter</strong>
           </div>
           <div class="mb-5">
             The ultimate dining experience! Our platform allows you to easily order food directly from your table at your
             favorite restaurant by simply scanning a QR code. No more waiting for servers or handling physical menus—just
             scan, browse the digital menu, customize your order, and submit it instantly. Enjoy a seamless, contactless, and efficient dining
-            experience with <strong>Waiter</strong>. Your convenience is our priority!
+            experience with <strong class="text-primary">Waiter</strong>. Your convenience is our priority!
           </div>
           <div class="d-flex justify-content-center gap-4">
             <Button
-              class="btn-outline-dark"
+              class="btn-outline-primary"
               btn-icon="fas fa-qrcode me-2"
               @click="showScanner = true">
               Open Scanner
@@ -26,7 +26,7 @@
             <router-link
               class="btn btn-primary"
               :to="{ name: 'dashboard' }">
-              Dashboard
+              Dashboard <i class="fas fa-arrow-right ms-2"/>
             </router-link>
           </div>
         </div>

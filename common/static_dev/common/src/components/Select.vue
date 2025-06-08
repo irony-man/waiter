@@ -10,7 +10,7 @@
       :value="modelValue"
       :name="name"
       :required="required"
-      class="form-select"
+      class="form-select shadow-sm"
       :disabled="disabled"
       @input="$emit('update:modelValue', $event.target.value)">
       <option

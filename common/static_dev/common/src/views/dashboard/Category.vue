@@ -12,7 +12,7 @@
           :name="category.name"/>
         <PageTitle
           class="border-bottom pb-4"
-          :secondary="`A category of <strong>${category.restaurant.name}</strong>`"
+          :secondary="`A category of <strong class='text-primary'>${category.restaurant.name}</strong>`"
           :primary="category.name">
           <template #right>
             <div class="d-flex gap-3 flex-wrap align-items-center">

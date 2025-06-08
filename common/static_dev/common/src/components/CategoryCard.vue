@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-primary-subtle text-center h-100">
+  <div class="card text-center h-100">
     <div class="icon-img-container">
       <img
         v-if="category.image"

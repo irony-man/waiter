@@ -14,7 +14,7 @@
           :name="restaurant.name"/>
         <PageTitle
           class="border-bottom pb-4"
-          :secondary="`A restaurant of <b>${user.chain_name}</b>.`"
+          :secondary="`A restaurant of <strong class='text-primary'>${user.chain_name}</strong>.`"
           :primary="restaurant.name">
           <template #right>
             <LoadingButton
@@ -67,8 +67,8 @@
               v-for="table in tableData.results"
               :key="table.uid"
               class="col-12 col-sm-6 col-md-4">
-              <div class="card h-100">
-                <div class="bg-secondary card-header">
+              <div class="card border-3 border-primary-subtle h-100">
+                <div class="card-header">
                   Table number <span class="fw-bold">#{{ table.number }}</span>
                 </div>
                 <img

@@ -69,11 +69,6 @@ export default {
       required: false,
       default: () => ''
     },
-    addon: {
-      type: String,
-      required: false,
-      default: () => ''
-    },
     placeholder: {
       type: String,
       required: false,

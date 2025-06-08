@@ -1,6 +1,6 @@
 <template>
   <div class="shadow-sm mb-5">
-    <div class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar navbar-expand-lg navbar-light">
       <div class="container">
         <router-link
           class="navbar-brand d-none d-lg-block me-3 flex-shrink-0"
@@ -23,22 +23,18 @@
           class="navbar-toolbar d-flex gap-3 align-items-center">
           <a
             v-if="user.is_staff"
-            class="navbar-tool fw-bold ms-1 ms-lg-0 me-n1 me-lg-2"
+            class="ms-1 me-1 me-lg-5"
             href="/wtr-adm/"
             target="_blank">
-            <div class="navbar-tool-icon-box">
-              <i class="navbar-tool-icon ci-user"/>
-            </div>
-            <div class="navbar-tool-text ms-n2">Admin</div>
+            <i class="fas fa-user me-2"/> Admin
           </a>
           <a
-            class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2"
             href="/logout/">
-            <div class="navbar-tool-icon-box mt-2">
-              <i class="navbar-tool-icon fas fa-right-from-bracket"/>
+            <div class="mt-2">
+              <i class="fas fa-right-from-bracket"/> Logout
             </div>
-            <div class="navbar-tool-text ms-n2"><small>Hello, {{ user.username }}
-            </small>Logout</div>
+            <div class=" ms-n2"><small>Hi, {{ user.username }}
+            </small></div>
           </a>
         </div>
       </div>
