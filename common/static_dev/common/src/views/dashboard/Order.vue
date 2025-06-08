@@ -148,7 +148,7 @@
             class="mt-5 text-center">
             <LoadingButton
               :is-loading="!!orderData.loading"
-              class="btn-dark"
+              class="btn-primary"
               btn-type="button"
               @click="fetchOrders()">
               Load More

@@ -61,13 +61,12 @@ import { mapActions, mapState } from "vuex";
 import Button from './Button.vue';
 import LoadingButton from './LoadingButton.vue';
 import Input from './Input.vue';
-import Select from './Select.vue';
 import Loader from './Loader.vue';
 import { HttpBadRequestError } from "../store/network";
 
 export default {
   name: "RestaurantFormModal",
-  components: { Input, Button, LoadingButton, Select, Loader },
+  components: { Input, Button, LoadingButton, Loader },
   props: {
     restaurant: {
       type: Object,

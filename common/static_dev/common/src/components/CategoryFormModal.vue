@@ -28,7 +28,7 @@
                 :error="errors.name"/>
             </div>
             <div class="mb-3">
-              <Select
+              <ApiSelect
                 v-model="instance.restaurant"
                 label="Restaurant"
                 name="restaurant"
@@ -65,13 +65,13 @@ import Button from './Button.vue';
 import LoadingButton from './LoadingButton.vue';
 import Input from './Input.vue';
 import TextArea from './TextArea.vue';
-import Select from './Select.vue';
+import ApiSelect from './ApiSelect.vue';
 import Loader from './Loader.vue';
 import { HttpBadRequestError } from "../store/network";
 
 export default {
   name: "CategoryFormModal",
-  components: { Input, TextArea, Button, LoadingButton, Select, Loader },
+  components: { Input, TextArea, Button, LoadingButton, ApiSelect, Loader },
   props: {
     category: {
       type: Object,

@@ -59,7 +59,8 @@
                   <td class="text-end">
                     {{ restaurant.category_count }}
                   </td>
-                  <td>
+                  <td
+                    class="text-center">
                     <router-link
                       :to="{ name: 'dashboard-order', params: { uid: restaurant.uid } }">
                       <i class="fas me-2 fa-bowl-food "/>

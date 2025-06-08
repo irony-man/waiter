@@ -64,12 +64,12 @@
                 v-model="instance.menu_type"
                 label="Type"
                 name="menu_type"
-                :source="{ array: user.choices.menu_type }"
+                :choices="user.choices.menu_type"
                 required
                 :error="errors.menu_type"/>
             </div>
             <div class="mb-3">
-              <Select
+              <ApiSelect
                 v-model="instance.category"
                 label="Category"
                 name="category"
@@ -120,6 +120,7 @@ import Button from './Button.vue';
 import LoadingButton from './LoadingButton.vue';
 import Input from './Input.vue';
 import TextArea from './TextArea.vue';
+import ApiSelect from './ApiSelect.vue';
 import Select from './Select.vue';
 import Loader from './Loader.vue';
 import { HttpBadRequestError } from "../store/network";
@@ -127,7 +128,7 @@ import Switch from "./Switch.vue";
 
 export default {
   name: "MenuItemFormModal",
-  components: { Input, TextArea, Button, LoadingButton, Select, Loader, Switch },
+  components: { Input, TextArea, Button, LoadingButton, Select, ApiSelect, Loader, Switch },
   props: {
     menuItem: {
       type: Object,

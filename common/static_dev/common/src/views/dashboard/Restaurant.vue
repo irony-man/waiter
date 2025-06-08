@@ -82,7 +82,7 @@
               class="mt-5 text-center">
               <LoadingButton
                 :is-loading="!!tableData.loading"
-                class="btn-dark"
+                class="btn-primary"
                 btn-type="button"
                 @click="fetchTable()">
                 Load More
@@ -139,7 +139,7 @@
               class="mt-5 text-center">
               <LoadingButton
                 :is-loading="!!categoryData.loading"
-                class="btn-dark"
+                class="btn-primary"
                 btn-type="button"
                 @click="fetchCategory()">
                 Load More
