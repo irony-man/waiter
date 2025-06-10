@@ -52,6 +52,11 @@
                       <small
                         v-if="menu_item.description"
                         class="mt-2 fw-light">{{ menu_item.description }}</small>
+                      <div
+                        v-if="menu_item.ingredients"
+                        class="fw-light text-muted small mt-1">
+                        <strong>Ingredients:</strong> {{ menu_item.ingredients }}
+                      </div>
                     </td>
                     <td>
                       {{ price_type.toTitleCase() }}

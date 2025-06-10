@@ -230,6 +230,7 @@ class MenuItemSerializer(serializers.ModelSerializer):
             "half_price",
             "full_price",
             "description",
+            "ingredients",
             "created",
             "updated",
         ]
@@ -247,6 +248,7 @@ class LiteMenuItemSerializer(serializers.ModelSerializer):
             "half_price",
             "full_price",
             "description",
+            "ingredients",
         ]
 
 

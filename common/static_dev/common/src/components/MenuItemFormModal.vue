@@ -93,6 +93,13 @@
                 name="description"
                 :error="errors.description"/>
             </div>
+            <div class="mb-3">
+              <TextArea
+                v-model="instance.ingredients"
+                label="Ingredients"
+                name="ingredients"
+                :error="errors.ingredients"/>
+            </div>
           </div>
           <div class="modal-footer justify-content-start">
             <LoadingButton

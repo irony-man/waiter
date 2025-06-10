@@ -22,6 +22,10 @@ def import_menu_items(restaurant_id):
                         name=item["name"],
                         full_price=item["full_price"],
                         category=category,
+                        description=item.get("description", ""),
+                        ingredients=", ".join(
+                            item.get("ingredients", [])
+                        ).title(),
                     )
                     logger.info(
                         f"{item['name']} of category {category.name} is generated."

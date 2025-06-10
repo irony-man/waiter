@@ -1,9 +1,9 @@
 <template>
   <Loader ref="loader">
     <div class="">
-      <header class="pb-3 bg-body sticky-top z-2">
+      <header class="py-3 bg-body sticky-top z-2">
         <PageTitle
-          class="container border-bottom py-4 border-1 d-flex align-items-center justify-content-between"
+          class="container border-bottom border-1"
           :secondary="`Ordering from Table: <strong class='text-primary'>#${instance.table.number}</strong>`"
           :primary="instance.table.restaurant?.name">
           <template #right>
@@ -14,6 +14,13 @@
               @click="isCartOpen = true">
               Items ({{ $filters.formatCurrency(totalPrice) }})
             </Button>
+            <router-link
+              v-else
+              class="d-none d-sm-block btn btn-primary"
+              :to="{ name: 'table-order' }">
+              <i class="fa fa-bowl-food me-2"/>
+              Orders
+            </router-link>
           </template>
         </PageTitle>
       </header>
@@ -38,7 +45,7 @@
             </nav>
           </div>
 
-          <main class="col-md-9 ps-3 ps-lg-4 pb-5">
+          <main class="col-md-9 ps-md-3 ps-lg-4 pb-5">
             <div>
               <Input
                 v-model="searchTerm"
@@ -86,8 +93,14 @@
                         </div>
                         <p
                           v-if="item.description"
-                          class="card-text fw-light text-muted small mb-2">
+                          class="card-text fw-light text-muted small mb-1">
                           {{ item.description }}
+                        </p>
+
+                        <p
+                          v-if="item.ingredients"
+                          class="card-text fw-light text-muted small mb-0">
+                          <strong>Ingredients:</strong> {{ item.ingredients }}
                         </p>
                       </div>
 
@@ -108,10 +121,10 @@
           </main>
         </div>
 
-        <div
-          v-if="totalPrice"
-          class="fixed-bottom d-sm-none bg-danger text-white p-3 shadow-lg rounded-top-3 z-3">
-          <div class="d-flex justify-content-between align-items-center">
+        <div class="fixed-bottom d-sm-none bg-primary text-white p-3 shadow-lg rounded-top-3 z-3">
+          <div
+            v-if="totalPrice"
+            class="d-flex justify-content-between align-items-center">
             <span class="fw-medium">Items ({{ $filters.formatCurrency(totalPrice) }})</span>
             <Button
               class="btn-light text-primary"
@@ -119,6 +132,13 @@
               View Cart
             </Button>
           </div>
+          <router-link
+            v-else
+            class="btn btn-light text-primary w-100"
+            :to="{ name: 'table-order' }">
+            <i class="fa fa-bowl-food me-2"/>
+            Orders
+          </router-link>
         </div>
 
         <CartFormModal

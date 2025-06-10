@@ -114,6 +114,7 @@ class MenuItem(CreateUpdate):
     half_price = DecimalField(max_digits=10, decimal_places=2, default=0)
     full_price = DecimalField(max_digits=10, decimal_places=2, default=0)
     description = TextField(blank=True)
+    ingredients = TextField(blank=True)
 
     def __str__(self):
         return f"{self.name} / {self.category}"

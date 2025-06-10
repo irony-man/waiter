@@ -57,6 +57,11 @@
                       <small
                         v-if="item.description"
                         class="mt-2 fw-light">{{ item.description }}</small>
+                      <div
+                        v-if="item.ingredients"
+                        class="fw-light text-muted small mt-1">
+                        <strong>Ingredients:</strong> {{ item.ingredients }}
+                      </div>
                     </td>
                     <td
                       v-if="showHalfPrice"

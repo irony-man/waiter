@@ -2,390 +2,2685 @@
   {
     "category": "All Time Favourite",
     "items": [
-      { "name": "French Fries", "full_price": 106 },
-      { "name": "Chilli Cheese Toast", "full_price": 115 },
-      { "name": "Chilli Cheese Garlic Toast", "full_price": 115 },
-      { "name": "Garlic Bread", "full_price": 98 },
-      { "name": "Garlic Bread with Cheese", "full_price": 119 }
+      {
+        "id": "ff",
+        "name": "French Fries",
+        "full_price": 106,
+        "description": "Crispy golden fried potato sticks, lightly salted.",
+        "ingredients": ["potatoes", "vegetable oil", "salt"]
+      },
+      {
+        "id": "cct",
+        "name": "Chilli Cheese Toast",
+        "full_price": 115,
+        "description": "Toasted bread topped with spicy cheese.",
+        "ingredients": [
+          "bread",
+          "cheese",
+          "green chillies",
+          "bell peppers",
+          "onions",
+          "butter"
+        ]
+      },
+      {
+        "id": "ccgt",
+        "name": "Chilli Cheese Garlic Toast",
+        "full_price": 115,
+        "description": "Garlic bread with a kick of chilli and cheese.",
+        "ingredients": [
+          "bread",
+          "cheese",
+          "garlic",
+          "green chillies",
+          "butter",
+          "herbs"
+        ]
+      },
+      {
+        "id": "gb",
+        "name": "Garlic Bread",
+        "full_price": 98,
+        "description": "Classic toasted bread with garlic butter.",
+        "ingredients": ["bread", "butter", "garlic", "parsley"]
+      },
+      {
+        "id": "gbwc",
+        "name": "Garlic Bread with Cheese",
+        "full_price": 119,
+        "description": "Garlic bread generously topped with melted cheese.",
+        "ingredients": ["bread", "butter", "garlic", "cheese", "parsley"]
+      }
     ]
   },
-
   {
-    "category": "Sandvich",
+    "category": "Sandwich",
     "items": [
-      { "name": "Plain Sandwich", "full_price": 175 },
-      { "name": "Grilled Sandwich", "full_price": 175 },
-      { "name": "Club Sandwich", "full_price": 175 }
+      {
+        "id": "ps",
+        "name": "Plain Sandwich",
+        "full_price": 175,
+        "description": "Simple and fresh plain sandwich.",
+        "ingredients": [
+          "bread",
+          "butter",
+          "cucumber",
+          "tomato",
+          "lettuce",
+          "salt",
+          "pepper"
+        ]
+      },
+      {
+        "id": "grs",
+        "name": "Grilled Sandwich",
+        "full_price": 175,
+        "description": "Toasted sandwich with your choice of fillings.",
+        "ingredients": [
+          "bread",
+          "butter",
+          "cheese",
+          "vegetables (e.g., onion, capsicum, tomato)",
+          "sauces (e.g., mint chutney, mayonnaise)"
+        ]
+      },
+      {
+        "id": "cls",
+        "name": "Club Sandwich",
+        "full_price": 175,
+        "description": "Multi-layered sandwich with assorted fillings.",
+        "ingredients": [
+          "bread",
+          "butter",
+          "cheese",
+          "cucumber",
+          "tomato",
+          "lettuce",
+          "potato slices",
+          "mayonnaise",
+          "mint chutney"
+        ]
+      }
     ]
   },
-
   {
     "category": "Salads",
-    "items": [{ "name": "Russian Salad / Macaroni", "full_price": 119 }]
+    "items": [
+      {
+        "id": "rsm",
+        "name": "Russian Salad / Macaroni",
+        "full_price": 119,
+        "description": "Creamy Russian salad or a delightful macaroni salad.",
+        "ingredients": [
+          "potatoes",
+          "carrots",
+          "peas",
+          "french beans",
+          "pineapple",
+          "mayonnaise",
+          "cream",
+          "salt",
+          "pepper",
+          "macaroni"
+        ]
+      }
+    ]
   },
-
   {
     "category": "Burgers",
-    "items": [{ "name": "Veg. Burger", "full_price": 72 }]
+    "items": [
+      {
+        "id": "vb",
+        "name": "Veg. Burger",
+        "full_price": 72,
+        "description": "Classic vegetarian burger with a savory patty.",
+        "ingredients": [
+          "burger bun",
+          "veg patty (potatoes, peas, carrots, spices)",
+          "lettuce",
+          "tomato",
+          "onion",
+          "mayonnaise",
+          "ketchup"
+        ]
+      }
+    ]
   },
-
   {
     "category": "Bakes & Meals",
     "items": [
-      { "name": "Macaroni Hotpot", "full_price": 205 },
-      { "name": "Veg. Augratin", "full_price": 205 }
+      {
+        "id": "mh",
+        "name": "Macaroni Hotpot",
+        "full_price": 205,
+        "description": "Baked macaroni dish with a rich sauce.",
+        "ingredients": [
+          "macaroni pasta",
+          "cheese sauce (milk, butter, flour, cheese)",
+          "mixed vegetables (corn, peas, carrots, bell peppers)",
+          "herbs",
+          "bread crumbs (for topping)"
+        ]
+      },
+      {
+        "id": "va",
+        "name": "Veg. Augratin",
+        "full_price": 205,
+        "description": "Mixed vegetables baked in a creamy sauce.",
+        "ingredients": [
+          "mixed vegetables (potatoes, carrots, peas, beans)",
+          "white sauce (milk, butter, flour)",
+          "cheese",
+          "salt",
+          "pepper",
+          "herbs"
+        ]
+      }
     ]
   },
-
   {
     "category": "Choice of Pasta's",
     "items": [
-      { "name": "Pasta Spicy Tomato / Classical Cheese", "full_price": 190 },
-      { "name": "Pasta in Twin Sauce", "full_price": 190 }
+      {
+        "id": "pstm",
+        "name": "Pasta Spicy Tomato / Classical Cheese",
+        "full_price": 190,
+        "description": "Pasta in a fiery tomato sauce or a classic cheese sauce.",
+        "ingredients": [
+          "pasta (penne, spaghetti, etc.)",
+          "spicy tomato sauce (tomatoes, garlic, chili flakes, basil)",
+          "cheese sauce (milk, butter, flour, cheese)",
+          "vegetables"
+        ]
+      },
+      {
+        "id": "pitts",
+        "name": "Pasta in Twin Sauce",
+        "full_price": 190,
+        "description": "Pasta served with a blend of two delicious sauces.",
+        "ingredients": [
+          "pasta (penne, spaghetti, etc.)",
+          "red sauce (tomato-based)",
+          "white sauce (cream-based)",
+          "mixed vegetables",
+          "herbs",
+          "cheese"
+        ]
+      }
     ]
   },
-
   {
     "category": "Pizza's",
     "items": [
-      { "name": "Plain Cheese Pizza", "full_price": 190 },
-      { "name": "Capsicum, Onion Pizza", "full_price": 210 },
-      { "name": "Tomato, Onion Pizza", "full_price": 210 },
-      { "name": "Capsicum, Onion, Mushroom Pizza", "full_price": 250 },
-      { "name": "Jain Spl. Pizza", "full_price": 250 },
-      { "name": "Tandoori Pizza", "full_price": 250 },
-      { "name": "Super Veggie Pizza (Double Cheese)", "full_price": 265 }
+      {
+        "id": "pcp",
+        "name": "Plain Cheese Pizza",
+        "full_price": 190,
+        "description": "Simple pizza with rich cheese topping.",
+        "ingredients": [
+          "pizza base",
+          "pizza sauce",
+          "mozzarella cheese",
+          "oregano",
+          "chili flakes"
+        ]
+      },
+      {
+        "id": "cop",
+        "name": "Capsicum, Onion Pizza",
+        "full_price": 210,
+        "description": "Pizza topped with fresh capsicum and onions.",
+        "ingredients": [
+          "pizza base",
+          "pizza sauce",
+          "mozzarella cheese",
+          "capsicum",
+          "onions",
+          "oregano",
+          "chili flakes"
+        ]
+      },
+      {
+        "id": "top",
+        "name": "Tomato, Onion Pizza",
+        "full_price": 210,
+        "description": "Flavorful pizza with juicy tomatoes and onions.",
+        "ingredients": [
+          "pizza base",
+          "pizza sauce",
+          "mozzarella cheese",
+          "tomatoes",
+          "onions",
+          "oregano",
+          "chili flakes"
+        ]
+      },
+      {
+        "id": "comp",
+        "name": "Capsicum, Onion, Mushroom Pizza",
+        "full_price": 250,
+        "description": "Pizza loaded with capsicum, onion, and mushrooms.",
+        "ingredients": [
+          "pizza base",
+          "pizza sauce",
+          "mozzarella cheese",
+          "capsicum",
+          "onions",
+          "mushrooms",
+          "oregano",
+          "chili flakes"
+        ]
+      },
+      {
+        "id": "jsp",
+        "name": "Jain Spl. Pizza",
+        "full_price": 250,
+        "description": "Special Jain-friendly pizza.",
+        "ingredients": [
+          "pizza base",
+          "Jain pizza sauce (without onion/garlic)",
+          "mozzarella cheese",
+          "vegetables (e.g., capsicum, tomatoes, corn, paneer)",
+          "oregano",
+          "chili flakes"
+        ]
+      },
+      {
+        "id": "tp",
+        "name": "Tandoori Pizza",
+        "full_price": 250,
+        "description": "Pizza with a unique tandoori flavor.",
+        "ingredients": [
+          "pizza base",
+          "tandoori sauce",
+          "mozzarella cheese",
+          "tandoori paneer/vegetables (e.g., capsicum, onion)",
+          "coriander",
+          "oregano",
+          "chili flakes"
+        ]
+      },
+      {
+        "id": "svp",
+        "name": "Super Veggie Pizza (Double Cheese)",
+        "full_price": 265,
+        "description": "Veggie-packed pizza with extra cheese.",
+        "ingredients": [
+          "pizza base",
+          "pizza sauce",
+          "double mozzarella cheese",
+          "assorted vegetables (e.g., capsicum, onion, mushroom, corn, olives, jalapenos)",
+          "oregano",
+          "chili flakes"
+        ]
+      }
     ]
   },
-
   {
     "category": "Extra Toppings",
-    "items": [{ "name": "Cheese", "full_price": 55 }]
+    "items": [
+      {
+        "id": "ch",
+        "name": "Cheese",
+        "full_price": 55,
+        "description": "Add extra cheese to your dish.",
+        "ingredients": ["mozzarella cheese", "cheddar cheese"]
+      }
+    ]
   },
-
   {
     "category": "Hearth Stone Special",
     "items": [
-      { "name": "Lasagna Roll", "full_price": 133 },
-      { "name": "Paneer Salsa Wrap", "full_price": 133 },
-      { "name": "Lebanese Falafel", "full_price": 133 }
+      {
+        "id": "lsr",
+        "name": "Lasagna Roll",
+        "full_price": 133,
+        "description": "Savory lasagna rolled into a convenient bite.",
+        "ingredients": [
+          "lasagna sheets",
+          "ricotta cheese",
+          "spinach",
+          "marinara sauce",
+          "mozzarella cheese",
+          "parmesan cheese"
+        ]
+      },
+      {
+        "id": "psw",
+        "name": "Paneer Salsa Wrap",
+        "full_price": 133,
+        "description": "Tangy paneer and salsa wrapped in a soft bread.",
+        "ingredients": [
+          "tortilla/wrap bread",
+          "paneer (cottage cheese)",
+          "salsa (tomatoes, onions, cilantro, lime)",
+          "bell peppers",
+          "spices",
+          "mint chutney/mayonnaise"
+        ]
+      },
+      {
+        "id": "lf",
+        "name": "Lebanese Falafel",
+        "full_price": 133,
+        "description": "Crispy and flavorful Lebanese falafel.",
+        "ingredients": [
+          "chickpeas",
+          "herbs (parsley, cilantro)",
+          "spices (cumin, coriander)",
+          "onion",
+          "garlic",
+          "baking soda",
+          "vegetable oil (for frying)"
+        ]
+      }
     ]
   },
-
   {
     "category": "Soups",
     "items": [
-      { "name": "Hot & Sour", "full_price": 109 },
-      { "name": "Lemon & Coriander", "full_price": 109 },
-      { "name": "Veg. Noodle Soup", "full_price": 109 },
-      { "name": "Sweet Corn", "full_price": 109 },
-      { "name": "Veg. Munchow", "full_price": 109 },
-      { "name": "Veg. Clear Soup", "full_price": 109 }
+      {
+        "id": "hs",
+        "name": "Hot & Sour",
+        "full_price": 109,
+        "description": "Spicy and tangy soup, a classic.",
+        "ingredients": [
+          "vegetable broth",
+          "cabbage",
+          "carrots",
+          "mushrooms",
+          "bamboo shoots",
+          "vinegar",
+          "soy sauce",
+          "chilli sauce",
+          "ginger",
+          "garlic",
+          "pepper",
+          "cornflour slurry"
+        ]
+      },
+      {
+        "id": "lc",
+        "name": "Lemon & Coriander",
+        "full_price": 109,
+        "description": "Refreshing soup with lemon and fresh coriander.",
+        "ingredients": [
+          "vegetable broth",
+          "lemon juice",
+          "fresh coriander",
+          "mixed vegetables (carrots, beans, corn)",
+          "ginger",
+          "salt",
+          "pepper"
+        ]
+      },
+      {
+        "id": "vns",
+        "name": "Veg. Noodle Soup",
+        "full_price": 109,
+        "description": "Hearty soup with vegetables and noodles.",
+        "ingredients": [
+          "vegetable broth",
+          "noodles",
+          "mixed vegetables (cabbage, carrots, bell peppers)",
+          "soy sauce",
+          "ginger",
+          "garlic",
+          "salt",
+          "pepper"
+        ]
+      },
+      {
+        "id": "sc",
+        "name": "Sweet Corn",
+        "full_price": 109,
+        "description": "Light and creamy sweet corn soup.",
+        "ingredients": [
+          "sweet corn kernels",
+          "vegetable broth",
+          "milk",
+          "cornflour slurry",
+          "salt",
+          "pepper"
+        ]
+      },
+      {
+        "id": "vm",
+        "name": "Veg. Munchow",
+        "full_price": 109,
+        "description": "Spicy and flavorful Munchow soup with crispy noodles.",
+        "ingredients": [
+          "vegetable broth",
+          "mixed vegetables",
+          "ginger",
+          "garlic",
+          "green chillies",
+          "soy sauce",
+          "vinegar",
+          "chilli sauce",
+          "crispy fried noodles"
+        ]
+      },
+      {
+        "id": "vcs",
+        "name": "Veg. Clear Soup",
+        "full_price": 109,
+        "description": "Light and healthy clear vegetable soup.",
+        "ingredients": [
+          "vegetable broth",
+          "mixed vegetables (carrots, beans, peas)",
+          "salt",
+          "pepper",
+          "ginger"
+        ]
+      }
     ]
   },
-
   {
     "category": "Starters",
     "items": [
-      { "name": "Spring Roll", "full_price": 145 },
-      { "name": "Chilly Paneer Dry", "full_price": 195 },
-      { "name": "Veg. Manchurian Dry", "full_price": 153 },
-      { "name": "Potatoes in Honey & Chilly", "full_price": 175 },
-      { "name": "Fried Vegetables in Salt & Pepper", "full_price": 190 },
-      { "name": "Crispy Spinach & Baby Corn", "full_price": 198 },
-      { "name": "Chilly Mushroom Dry", "full_price": 193 }
+      {
+        "id": "sr",
+        "name": "Spring Roll",
+        "full_price": 145,
+        "description": "Crispy fried spring rolls with a savory filling.",
+        "ingredients": [
+          "spring roll wrappers",
+          "cabbage",
+          "carrots",
+          "bell peppers",
+          "noodles",
+          "soy sauce",
+          "ginger",
+          "garlic",
+          "salt",
+          "pepper",
+          "vegetable oil (for frying)"
+        ]
+      },
+      {
+        "id": "cpd",
+        "name": "Chilly Paneer Dry",
+        "full_price": 195,
+        "description": "Spicy paneer cubes tossed in a dry chilli sauce.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "bell peppers (capsicum)",
+          "onions",
+          "green chillies",
+          "ginger-garlic paste",
+          "soy sauce",
+          "chilli sauce",
+          "vinegar",
+          "cornflour",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "vmd",
+        "name": "Veg. Manchurian Dry",
+        "full_price": 153,
+        "description": "Crispy Manchurian balls in a dry sauce.",
+        "ingredients": [
+          "mixed vegetables (cabbage, carrots, beans)",
+          "flour (maida/cornflour)",
+          "ginger-garlic paste",
+          "soy sauce",
+          "chilli sauce",
+          "vinegar",
+          "spring onion",
+          "oil (for frying)"
+        ]
+      },
+      {
+        "id": "pihc",
+        "name": "Potatoes in Honey & Chilly",
+        "full_price": 175,
+        "description": "Crispy potatoes tossed in a sweet and spicy honey chilli sauce.",
+        "ingredients": [
+          "potatoes (fried)",
+          "honey",
+          "chilli sauce",
+          "soy sauce",
+          "sesame seeds",
+          "spring onion",
+          "garlic",
+          "ginger"
+        ]
+      },
+      {
+        "id": "fvisp",
+        "name": "Fried Vegetables in Salt & Pepper",
+        "full_price": 190,
+        "description": "Assorted vegetables fried and seasoned with salt and pepper.",
+        "ingredients": [
+          "mixed vegetables (e.g., broccoli, mushrooms, baby corn, bell peppers)",
+          "cornflour",
+          "salt",
+          "black pepper",
+          "garlic",
+          "green chillies",
+          "oil (for frying)"
+        ]
+      },
+      {
+        "id": "cscb",
+        "name": "Crispy Spinach & Baby Corn",
+        "full_price": 198,
+        "description": "Crunchy spinach and baby corn, a delightful appetizer.",
+        "ingredients": [
+          "fresh spinach",
+          "baby corn",
+          "cornflour",
+          "salt",
+          "pepper",
+          "garlic",
+          "green chillies",
+          "oil (for frying)"
+        ]
+      },
+      {
+        "id": "cmd",
+        "name": "Chilly Mushroom Dry",
+        "full_price": 193,
+        "description": "Mushrooms tossed in a spicy and flavorful dry chilli sauce.",
+        "ingredients": [
+          "mushrooms",
+          "bell peppers",
+          "onions",
+          "green chillies",
+          "ginger-garlic paste",
+          "soy sauce",
+          "chilli sauce",
+          "vinegar",
+          "cornflour",
+          "salt",
+          "oil"
+        ]
+      }
     ]
   },
-
   {
     "category": "Main Course",
     "items": [
-      { "name": "Veg Chopsuey", "full_price": 195 },
-      { "name": "Chilly Paneer Gravy", "full_price": 205 },
-      { "name": "Manchurian Gravy", "full_price": 175 },
-      { "name": "Sweet & Sour Veg.", "full_price": 175 },
-      { "name": "Mixed Veg. in Hot Garlic Sauce", "full_price": 185 },
-      { "name": "Shredded Potatoes in Hot Garlic Sauce", "full_price": 153 }
+      {
+        "id": "vcs",
+        "name": "Veg Chopsuey",
+        "full_price": 195,
+        "description": "Crispy noodles topped with a savory vegetable sauce.",
+        "ingredients": [
+          "crispy fried noodles",
+          "mixed vegetables (cabbage, carrots, bell peppers, mushrooms)",
+          "soy sauce",
+          "ginger",
+          "garlic",
+          "vinegar",
+          "sugar",
+          "salt",
+          "cornflour (for gravy)"
+        ]
+      },
+      {
+        "id": "cpg",
+        "name": "Chilly Paneer Gravy",
+        "full_price": 205,
+        "description": "Soft paneer cubes in a spicy chilli gravy.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "bell peppers",
+          "onions",
+          "ginger-garlic paste",
+          "soy sauce",
+          "chilli sauce",
+          "vinegar",
+          "tomato puree",
+          "cornflour (for gravy)",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "mg",
+        "name": "Manchurian Gravy",
+        "full_price": 175,
+        "description": "Manchurian balls in a rich and flavorful gravy.",
+        "ingredients": [
+          "veg manchurian balls",
+          "soy sauce",
+          "ginger-garlic paste",
+          "chilli sauce",
+          "vinegar",
+          "spring onions",
+          "cornflour (for gravy)",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "sv",
+        "name": "Sweet & Sour Veg.",
+        "full_price": 175,
+        "description": "Mixed vegetables in a classic sweet and sour sauce.",
+        "ingredients": [
+          "mixed vegetables (pineapple, bell peppers, carrots, onions)",
+          "pineapple juice",
+          "vinegar",
+          "sugar",
+          "ketchup",
+          "soy sauce",
+          "cornflour (for gravy)"
+        ]
+      },
+      {
+        "id": "mvihgs",
+        "name": "Mixed Veg. in Hot Garlic Sauce",
+        "full_price": 185,
+        "description": "Assorted vegetables in a pungent hot garlic sauce.",
+        "ingredients": [
+          "mixed vegetables (broccoli, mushrooms, baby corn, bell peppers)",
+          "garlic",
+          "red chillies",
+          "soy sauce",
+          "vinegar",
+          "chilli sauce",
+          "sugar",
+          "cornflour (for gravy)"
+        ]
+      },
+      {
+        "id": "spihgs",
+        "name": "Shredded Potatoes in Hot Garlic Sauce",
+        "full_price": 153,
+        "description": "Crispy shredded potatoes in a spicy garlic sauce.",
+        "ingredients": [
+          "potatoes (shredded and fried)",
+          "garlic",
+          "red chillies",
+          "soy sauce",
+          "chilli sauce",
+          "vinegar",
+          "sugar",
+          "spring onion",
+          "cornflour (for gravy)"
+        ]
+      }
     ]
   },
-
   {
     "category": "Noodles",
     "items": [
-      { "name": "Veg Hakka Noodles", "full_price": 145 },
-      { "name": "Chilli Garlic Noodles", "full_price": 145 },
-      { "name": "Pan Fried Noodles", "full_price": 225 },
-      { "name": "Gravy Noodles", "full_price": 225 }
+      {
+        "id": "vhn",
+        "name": "Veg Hakka Noodles",
+        "full_price": 145,
+        "description": "Classic Hakka noodles with vegetables.",
+        "ingredients": [
+          "noodles",
+          "cabbage",
+          "carrots",
+          "bell peppers",
+          "onions",
+          "soy sauce",
+          "vinegar",
+          "ginger",
+          "garlic",
+          "salt",
+          "pepper",
+          "oil"
+        ]
+      },
+      {
+        "id": "cgn",
+        "name": "Chilli Garlic Noodles",
+        "full_price": 145,
+        "description": "Noodles tossed with spicy chilli and garlic.",
+        "ingredients": [
+          "noodles",
+          "garlic",
+          "red chillies",
+          "soy sauce",
+          "vinegar",
+          "spring onions",
+          "oil",
+          "salt",
+          "pepper"
+        ]
+      },
+      {
+        "id": "pfn",
+        "name": "Pan Fried Noodles",
+        "full_price": 225,
+        "description": "Crispy pan-fried noodles with a savory topping.",
+        "ingredients": [
+          "pan-fried crispy noodles",
+          "mixed vegetables (broccoli, mushrooms, bell peppers)",
+          "savory sauce (soy sauce, ginger, garlic, cornflour, broth)"
+        ]
+      },
+      {
+        "id": "gn",
+        "name": "Gravy Noodles",
+        "full_price": 225,
+        "description": "Noodles served with a rich and thick gravy.",
+        "ingredients": [
+          "noodles",
+          "mixed vegetables (cabbage, carrots, bell peppers, mushrooms)",
+          "gravy (soy sauce, vinegar, ginger, garlic, cornflour, vegetable broth)"
+        ]
+      }
     ]
   },
-
   {
     "category": "Rice",
     "items": [
-      { "name": "Veg. Fried Rice", "full_price": 165 },
-      { "name": "Chilly Garlic Rice", "full_price": 165 }
+      {
+        "id": "vfr",
+        "name": "Veg. Fried Rice",
+        "full_price": 165,
+        "description": "Flavorful fried rice with mixed vegetables.",
+        "ingredients": [
+          "basmati rice",
+          "mixed vegetables (carrots, peas, french beans, corn)",
+          "soy sauce",
+          "ginger",
+          "garlic",
+          "spring onions",
+          "oil",
+          "salt",
+          "pepper"
+        ]
+      },
+      {
+        "id": "cgr",
+        "name": "Chilly Garlic Rice",
+        "full_price": 165,
+        "description": "Rice tossed with spicy chilli and garlic.",
+        "ingredients": [
+          "basmati rice",
+          "garlic",
+          "red chillies",
+          "soy sauce",
+          "vinegar",
+          "spring onions",
+          "oil",
+          "salt",
+          "pepper"
+        ]
+      }
     ]
   },
-
   {
     "category": "Snacky Bites",
     "items": [
-      { "name": "Pav Bhaji", "full_price": 140 },
-      { "name": "Jain Pav Bhaji", "full_price": 155 },
-      { "name": "Bombay Vada Pav", "full_price": 102 },
-      { "name": "Extra Pav", "full_price": 35 }
+      {
+        "id": "pb",
+        "name": "Pav Bhaji",
+        "full_price": 140,
+        "description": "Popular Indian street food with a spiced vegetable mash and buttered rolls.",
+        "ingredients": [
+          "potatoes",
+          "cauliflower",
+          "peas",
+          "carrots",
+          "capsicum",
+          "onions",
+          "tomatoes",
+          "pav bhaji masala",
+          "butter",
+          "pav (bread rolls)",
+          "coriander",
+          "lemon"
+        ]
+      },
+      {
+        "id": "jpb",
+        "name": "Jain Pav Bhaji",
+        "full_price": 155,
+        "description": "Pav Bhaji prepared according to Jain dietary principles.",
+        "ingredients": [
+          "potatoes",
+          "cauliflower",
+          "peas",
+          "carrots",
+          "capsicum",
+          "tomatoes",
+          "Jain pav bhaji masala (no onion/garlic)",
+          "butter",
+          "pav (bread rolls)",
+          "coriander",
+          "lemon"
+        ]
+      },
+      {
+        "id": "bvp",
+        "name": "Bombay Vada Pav",
+        "full_price": 102,
+        "description": "Spicy potato fritter in a bread bun, a Bombay special.",
+        "ingredients": [
+          "vada (spiced potato dumpling, gram flour batter, fried)",
+          "pav (bread bun)",
+          "dry garlic chutney",
+          "green chilli chutney"
+        ]
+      },
+      {
+        "id": "ep",
+        "name": "Extra Pav",
+        "full_price": 35,
+        "description": "Additional buttered bread rolls.",
+        "ingredients": ["pav (bread rolls)", "butter"]
+      }
     ]
   },
-
   {
     "category": "Soups",
-    "items": [{ "name": "Tomato Soup", "full_price": 89 }]
+    "items": [
+      {
+        "id": "ts",
+        "name": "Tomato Soup",
+        "full_price": 89,
+        "description": "Classic comforting tomato soup.",
+        "ingredients": [
+          "tomatoes",
+          "vegetable broth",
+          "sugar",
+          "salt",
+          "pepper",
+          "cream",
+          "croutons"
+        ]
+      }
+    ]
   },
-
   {
     "category": "Starters",
     "items": [
-      { "name": "Tandoori Paneer Tikka", "full_price": 220 },
-      { "name": "Malai Paneer Tikka", "full_price": 220 },
-      { "name": "Soya Tandoori Tikka", "full_price": 175 },
-      { "name": "Tandoori Aloo", "full_price": 179 },
-      { "name": "Punjabi Soya Chap", "full_price": 179 },
-      { "name": "Hare-Bhare Kabab", "full_price": 162 },
-      { "name": "Dahi ke Kabab", "full_price": 179 },
-      { "name": "Platter", "full_price": 325 }
+      {
+        "id": "tpt",
+        "name": "Tandoori Paneer Tikka",
+        "full_price": 220,
+        "description": "Cubes of paneer marinated and grilled in a tandoor.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "yogurt",
+          "ginger-garlic paste",
+          "tandoori masala",
+          "red chili powder",
+          "turmeric",
+          "cumin powder",
+          "coriander powder",
+          "lemon juice",
+          "capsicum",
+          "onions"
+        ]
+      },
+      {
+        "id": "mpt",
+        "name": "Malai Paneer Tikka",
+        "full_price": 220,
+        "description": "Creamy paneer tikka marinated in a rich, mild spice blend.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "cream",
+          "yogurt",
+          "cashew paste",
+          "ginger-garlic paste",
+          "green cardamom powder",
+          "white pepper powder",
+          "salt",
+          "kasuri methi"
+        ]
+      },
+      {
+        "id": "tst",
+        "name": "Soya Tandoori Tikka",
+        "full_price": 175,
+        "description": "Healthy soya chunks marinated and grilled in a tandoor.",
+        "ingredients": [
+          "soya chunks",
+          "yogurt",
+          "ginger-garlic paste",
+          "tandoori masala",
+          "red chili powder",
+          "turmeric",
+          "cumin powder",
+          "coriander powder",
+          "lemon juice"
+        ]
+      },
+      {
+        "id": "ta",
+        "name": "Tandoori Aloo",
+        "full_price": 179,
+        "description": "Potatoes marinated in spices and cooked in a tandoor.",
+        "ingredients": [
+          "baby potatoes",
+          "yogurt",
+          "ginger-garlic paste",
+          "tandoori masala",
+          "red chili powder",
+          "turmeric",
+          "cumin powder",
+          "coriander powder",
+          "lemon juice"
+        ]
+      },
+      {
+        "id": "psc",
+        "name": "Punjabi Soya Chap",
+        "full_price": 179,
+        "description": "Soya chap cooked in a rich Punjabi style gravy.",
+        "ingredients": [
+          "soya chaap",
+          "onions",
+          "tomatoes",
+          "ginger-garlic paste",
+          "cream",
+          "cashew paste",
+          "spices (garam masala, red chili powder, turmeric, coriander powder)"
+        ]
+      },
+      {
+        "id": "hbk",
+        "name": "Hare-Bhare Kabab",
+        "full_price": 162,
+        "description": "Green vegetable patties, a healthy and delicious appetizer.",
+        "ingredients": [
+          "spinach",
+          "peas",
+          "potatoes",
+          "paneer",
+          "ginger",
+          "green chillies",
+          "breadcrumbs",
+          "spices (garam masala, cumin powder)"
+        ]
+      },
+      {
+        "id": "dkk",
+        "name": "Dahi ke Kabab",
+        "full_price": 179,
+        "description": "Soft yogurt patties, subtly spiced and fried.",
+        "ingredients": [
+          "hung curd (yogurt)",
+          "paneer (grated)",
+          "onions (finely chopped)",
+          "ginger",
+          "green chillies",
+          "coriander",
+          "breadcrumbs",
+          "spices (cumin powder, black pepper, salt)"
+        ]
+      },
+      {
+        "id": "pl",
+        "name": "Platter",
+        "full_price": 325,
+        "description": "Assortment of various delicious starters.",
+        "ingredients": [
+          "selection of paneer tikka",
+          "soya tikka",
+          "aloo tikka",
+          "hara bhara kabab",
+          "dahi ke kabab",
+          "chutneys",
+          "salad"
+        ]
+      }
     ]
   },
-
   {
     "category": "Subziyan",
     "items": [
-      { "name": "Shahi Paneer", "full_price": 210 },
-      { "name": "Kadhai Paneer", "full_price": 210 },
-      { "name": "Paneer Butter Masala", "full_price": 210 },
-      { "name": "Mushroom Masala", "full_price": 215 },
-      { "name": "Malai Kofta", "full_price": 210 }
+      {
+        "id": "sp",
+        "name": "Shahi Paneer",
+        "full_price": 210,
+        "description": "Royal paneer curry in a rich, creamy, and mildly spiced gravy.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "onions",
+          "tomatoes",
+          "cashew paste",
+          "cream",
+          "ginger-garlic paste",
+          "spices (cardamom, cinnamon, cloves, bay leaf, turmeric, red chili powder, garam masala)"
+        ]
+      },
+      {
+        "id": "kp",
+        "name": "Kadhai Paneer",
+        "full_price": 210,
+        "description": "Paneer cooked with bell peppers and onions in a spiced tomato gravy.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "bell peppers (capsicum)",
+          "onions",
+          "tomatoes",
+          "ginger-garlic paste",
+          "kadhai masala (coriander seeds, cumin seeds, red chilies)",
+          "cream"
+        ]
+      },
+      {
+        "id": "pbm",
+        "name": "Paneer Butter Masala",
+        "full_price": 210,
+        "description": "Creamy and rich paneer curry with a buttery tomato sauce.",
+        "ingredients": [
+          "paneer (cottage cheese)",
+          "tomatoes",
+          "onions",
+          "cashew paste",
+          "cream",
+          "butter",
+          "ginger-garlic paste",
+          "spices (turmeric, red chili powder, garam masala, fenugreek leaves)"
+        ]
+      },
+      {
+        "id": "mm",
+        "name": "Mushroom Masala",
+        "full_price": 215,
+        "description": "Mushrooms cooked in a fragrant and spicy masala gravy.",
+        "ingredients": [
+          "mushrooms",
+          "onions",
+          "tomatoes",
+          "ginger-garlic paste",
+          "spices (turmeric, red chili powder, coriander powder, garam masala)",
+          "green chilies",
+          "coriander"
+        ]
+      },
+      {
+        "id": "mk",
+        "name": "Malai Kofta",
+        "full_price": 210,
+        "description": "Soft paneer and potato dumplings in a rich, creamy gravy.",
+        "ingredients": [
+          "kofta balls (grated paneer, mashed potatoes, flour, spices, fried)",
+          "gravy (onions, cashews, cream, mild spices, ginger-garlic paste)"
+        ]
+      }
     ]
   },
-
   {
     "category": "Dals",
     "items": [
-      { "name": "Dal Makhani", "full_price": 192 },
-      { "name": "Yellow Dal", "full_price": 141 },
-      { "name": "Rajma", "full_price": 141 },
-      { "name": "Chole", "full_price": 141 }
+      {
+        "id": "dm",
+        "name": "Dal Makhani",
+        "full_price": 192,
+        "description": "Creamy black lentils slow-cooked with butter and spices.",
+        "ingredients": [
+          "black lentils (urad dal)",
+          "kidney beans (rajma)",
+          "butter",
+          "cream",
+          "ginger",
+          "garlic",
+          "tomatoes",
+          "spices (cumin, red chili powder, garam masala)"
+        ]
+      },
+      {
+        "id": "yd",
+        "name": "Yellow Dal",
+        "full_price": 141,
+        "description": "Comforting yellow lentil curry, simply seasoned.",
+        "ingredients": [
+          "toor dal (split pigeon peas)",
+          "moong dal (split yellow lentils)",
+          "turmeric",
+          "salt",
+          "ghee/oil (for tempering)",
+          "cumin seeds",
+          "asafoetida",
+          "green chillies",
+          "coriander"
+        ]
+      },
+      {
+        "id": "rj",
+        "name": "Rajma",
+        "full_price": 141,
+        "description": "Kidney beans cooked in a thick, savory gravy.",
+        "ingredients": [
+          "kidney beans (rajma)",
+          "onions",
+          "tomatoes",
+          "ginger-garlic paste",
+          "spices (rajma masala, red chili powder, turmeric, coriander powder)",
+          "green chillies",
+          "coriander"
+        ]
+      },
+      {
+        "id": "cl",
+        "name": "Chole",
+        "full_price": 141,
+        "description": "Spicy and tangy chickpea curry.",
+        "ingredients": [
+          "chickpeas (chole)",
+          "onions",
+          "tomatoes",
+          "ginger-garlic paste",
+          "chole masala",
+          "green chillies",
+          "coriander",
+          "tamarind"
+        ]
+      }
     ]
   },
-
   {
     "category": "Breads",
     "items": [
-      { "name": "Tandoori Roti", "full_price": 30 },
-      { "name": "Roomali Roti", "full_price": 17 },
-      { "name": "Butter Roti", "full_price": 36 },
-      { "name": "Plain Naan", "full_price": 43 },
-      { "name": "Butter Naan", "full_price": 58 },
-      { "name": "Garlic Naan Butter", "full_price": 60 },
-      { "name": "Tawa Parantha", "full_price": 53 },
-      { "name": "Laccha Parantha", "full_price": 53 },
-      { "name": "Pudina Parantha", "full_price": 53 },
-      { "name": "Stuffed Kulcha (Aloo)", "full_price": 65 },
-      { "name": "Stuffed Kulcha (Paneer)", "full_price": 65 },
-      { "name": "Stuffed Kulcha (Onion)", "full_price": 65 },
-      { "name": "Papad", "full_price": 15 }
+      {
+        "id": "tr",
+        "name": "Tandoori Roti",
+        "full_price": 30,
+        "description": "Whole wheat flatbread baked in a tandoor.",
+        "ingredients": ["whole wheat flour", "water", "salt"]
+      },
+      {
+        "id": "rr",
+        "name": "Roomali Roti",
+        "full_price": 17,
+        "description": "Thin, soft, and handkerchief-like flatbread.",
+        "ingredients": ["all-purpose flour (maida)", "water", "salt", "oil"]
+      },
+      {
+        "id": "br",
+        "name": "Butter Roti",
+        "full_price": 36,
+        "description": "Tandoori roti brushed with butter.",
+        "ingredients": ["whole wheat flour", "water", "salt", "butter"]
+      },
+      {
+        "id": "pn",
+        "name": "Plain Naan",
+        "full_price": 43,
+        "description": "Soft, leavened flatbread.",
+        "ingredients": [
+          "all-purpose flour (maida)",
+          "yogurt",
+          "milk",
+          "sugar",
+          "baking powder",
+          "baking soda",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "bn",
+        "name": "Butter Naan",
+        "full_price": 58,
+        "description": "Naan bread with a generous brushing of butter.",
+        "ingredients": [
+          "all-purpose flour (maida)",
+          "yogurt",
+          "milk",
+          "sugar",
+          "baking powder",
+          "baking soda",
+          "salt",
+          "oil",
+          "butter"
+        ]
+      },
+      {
+        "id": "gnb",
+        "name": "Garlic Naan Butter",
+        "full_price": 60,
+        "description": "Buttery naan infused with garlic.",
+        "ingredients": [
+          "all-purpose flour (maida)",
+          "yogurt",
+          "milk",
+          "sugar",
+          "baking powder",
+          "baking soda",
+          "salt",
+          "oil",
+          "garlic (minced)",
+          "coriander",
+          "butter"
+        ]
+      },
+      {
+        "id": "tp",
+        "name": "Tawa Parantha",
+        "full_price": 53,
+        "description": "Griddle-cooked whole wheat flatbread.",
+        "ingredients": ["whole wheat flour", "water", "salt", "oil/ghee"]
+      },
+      {
+        "id": "lp",
+        "name": "Laccha Parantha",
+        "full_price": 53,
+        "description": "Layered flaky flatbread.",
+        "ingredients": [
+          "whole wheat flour",
+          "all-purpose flour",
+          "water",
+          "salt",
+          "oil/ghee"
+        ]
+      },
+      {
+        "id": "pp",
+        "name": "Pudina Parantha",
+        "full_price": 53,
+        "description": "Layered flatbread flavored with fresh mint.",
+        "ingredients": [
+          "whole wheat flour",
+          "water",
+          "salt",
+          "fresh mint leaves (chopped)",
+          "oil/ghee"
+        ]
+      },
+      {
+        "id": "sk_a",
+        "name": "Stuffed Kulcha (Aloo)",
+        "full_price": 65,
+        "description": "Soft leavened bread stuffed with spiced potato.",
+        "ingredients": [
+          "all-purpose flour (maida)",
+          "mashed potatoes",
+          "spices (garam masala, red chili powder, amchur)",
+          "coriander",
+          "onions",
+          "yogurt",
+          "baking powder",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "sk_p",
+        "name": "Stuffed Kulcha (Paneer)",
+        "full_price": 65,
+        "description": "Soft leavened bread stuffed with spiced cottage cheese.",
+        "ingredients": [
+          "all-purpose flour (maida)",
+          "grated paneer",
+          "spices (garam masala, red chili powder)",
+          "coriander",
+          "onions",
+          "yogurt",
+          "baking powder",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "sk_o",
+        "name": "Stuffed Kulcha (Onion)",
+        "full_price": 65,
+        "description": "Soft leavened bread stuffed with spiced onion.",
+        "ingredients": [
+          "all-purpose flour (maida)",
+          "onions (finely chopped)",
+          "spices (ajwain, red chili powder, garam masala)",
+          "coriander",
+          "yogurt",
+          "baking powder",
+          "salt",
+          "oil"
+        ]
+      },
+      {
+        "id": "pd",
+        "name": "Papad",
+        "full_price": 15,
+        "description": "Crispy lentil cracker.",
+        "ingredients": [
+          "lentil flour (urad dal/moong dal)",
+          "salt",
+          "asafoetida",
+          "black pepper",
+          "oil (for frying/roasting)"
+        ]
+      }
     ]
   },
-
   {
     "category": "Rice / Pulao / Biryanis / Raitas",
     "items": [
-      { "name": "Steam Rice", "full_price": 161 },
-      { "name": "Soya Dum Biryani", "full_price": 220 },
-      { "name": "Veg. Pulao", "full_price": 161 },
-      { "name": "Mix Veg. Pulao", "full_price": 161 },
-      { "name": "Jeera Pulao", "full_price": 161 },
-      { "name": "Matka Biryani With Raita", "full_price": 220 },
-      { "name": "Hyderabadi Biryani", "full_price": 220 },
-      { "name": "Plain Raita", "full_price": 102 },
-      { "name": "Boondi Raita", "full_price": 102 },
-      { "name": "Mix. Veg. Raita", "full_price": 102 },
-      { "name": "Jeera Raita", "full_price": 102 },
-      { "name": "Pineapple Raita", "full_price": 102 }
+      {
+        "id": "sr",
+        "name": "Steam Rice",
+        "full_price": 161,
+        "description": "Plain steamed basmati rice.",
+        "ingredients": ["basmati rice", "water"]
+      },
+      {
+        "id": "sdb",
+        "name": "Soya Dum Biryani",
+        "full_price": 220,
+        "description": "Fragrant biryani with soya chunks cooked in dum style.",
+        "ingredients": [
+          "basmati rice",
+          "soya chunks",
+          "yogurt",
+          "onions",
+          "tomatoes",
+          "ginger-garlic paste",
+          "biryani spices (cardamom, cinnamon, cloves, bay leaf, star anise)",
+          "mint",
+          "coriander",
+          "saffron"
+        ]
+      },
+      {
+        "id": "vp",
+        "name": "Veg. Pulao",
+        "full_price": 161,
+        "description": "Basmati rice cooked with mixed vegetables.",
+        "ingredients": [
+          "basmati rice",
+          "mixed vegetables (carrots, peas, french beans, potatoes)",
+          "onions",
+          "ginger-garlic paste",
+          "whole spices (cinnamon, cloves, cardamom, bay leaf)",
+          "salt"
+        ]
+      },
+      {
+        "id": "mvp",
+        "name": "Mix Veg. Pulao",
+        "full_price": 161,
+        "description": "Pulao with a variety of fresh mixed vegetables.",
+        "ingredients": [
+          "basmati rice",
+          "a wide variety of mixed vegetables (carrots, peas, beans, corn, capsicum, cauliflower)",
+          "onions",
+          "ginger-garlic paste",
+          "whole spices",
+          "salt"
+        ]
+      },
+      {
+        "id": "jp",
+        "name": "Jeera Pulao",
+        "full_price": 161,
+        "description": "Basmati rice flavored with cumin seeds.",
+        "ingredients": [
+          "basmati rice",
+          "cumin seeds (jeera)",
+          "ghee/oil",
+          "salt",
+          "water"
+        ]
+      },
+      {
+        "id": "mbwr",
+        "name": "Matka Biryani With Raita",
+        "full_price": 220,
+        "description": "Traditional biryani served in an earthen pot with raita.",
+        "ingredients": [
+          "basmati rice",
+          "mixed vegetables (potatoes, carrots, beans, peas)",
+          "onions",
+          "tomatoes",
+          "yogurt",
+          "ginger-garlic paste",
+          "biryani spices",
+          "mint",
+          "coriander",
+          "raita (yogurt, cucumber, spices)"
+        ]
+      },
+      {
+        "id": "hb",
+        "name": "Hyderabadi Biryani",
+        "full_price": 220,
+        "description": "Spicy and aromatic biryani from Hyderabad.",
+        "ingredients": [
+          "basmati rice",
+          "mixed vegetables (potatoes, carrots, beans)",
+          "onions (fried)",
+          "yogurt",
+          "ginger-garlic paste",
+          "biryani spices",
+          "mint",
+          "coriander",
+          "saffron",
+          "green chillies"
+        ]
+      },
+      {
+        "id": "pr",
+        "name": "Plain Raita",
+        "full_price": 102,
+        "description": "Simple yogurt dip.",
+        "ingredients": [
+          "yogurt",
+          "salt",
+          "roasted cumin powder (jeera powder)"
+        ]
+      },
+      {
+        "id": "br",
+        "name": "Boondi Raita",
+        "full_price": 102,
+        "description": "Yogurt dip with crispy fried gram flour pearls.",
+        "ingredients": [
+          "yogurt",
+          "boondi (fried gram flour pearls)",
+          "salt",
+          "roasted cumin powder",
+          "red chili powder"
+        ]
+      },
+      {
+        "id": "mvr",
+        "name": "Mix. Veg. Raita",
+        "full_price": 102,
+        "description": "Yogurt dip with finely chopped mixed vegetables.",
+        "ingredients": [
+          "yogurt",
+          "cucumber",
+          "onions",
+          "tomatoes",
+          "coriander",
+          "salt",
+          "roasted cumin powder",
+          "black salt"
+        ]
+      },
+      {
+        "id": "jr",
+        "name": "Jeera Raita",
+        "full_price": 102,
+        "description": "Yogurt dip flavored with roasted cumin powder.",
+        "ingredients": [
+          "yogurt",
+          "roasted cumin powder (jeera powder)",
+          "salt",
+          "black salt",
+          "coriander"
+        ]
+      },
+      {
+        "id": "par",
+        "name": "Pineapple Raita",
+        "full_price": 102,
+        "description": "Sweet and tangy yogurt dip with pineapple pieces.",
+        "ingredients": [
+          "yogurt",
+          "pineapple pieces (fresh or canned)",
+          "sugar",
+          "salt",
+          "roasted cumin powder",
+          "black salt"
+        ]
+      }
     ]
   },
-
   {
     "category": "Dessert",
     "items": [
-      { "name": "Gulab Jamun", "full_price": 60 },
-      { "name": "Halwa (Seasonal)", "full_price": 60 }
+      {
+        "id": "gj",
+        "name": "Gulab Jamun",
+        "full_price": 60,
+        "description": "Soft milk-solids balls soaked in sweet rose-flavored syrup.",
+        "ingredients": [
+          "khoya (reduced milk solids)",
+          "flour (maida)",
+          "sugar",
+          "water",
+          "cardamom",
+          "rose water",
+          "oil/ghee (for frying)"
+        ]
+      },
+      {
+        "id": "hs",
+        "name": "Halwa (Seasonal)",
+        "full_price": 60,
+        "description": "Seasonal sweet pudding, rich and comforting.",
+        "ingredients": [
+          "semolina (sooji) / carrots (gajar) / moong dal (for seasonal variations)",
+          "ghee",
+          "sugar",
+          "milk/water",
+          "cardamom",
+          "nuts (cashews, almonds)",
+          "raisins"
+        ]
+      }
     ]
   },
-
   {
     "category": "Meal For One (North Indian)",
     "items": [
-      { "name": "Thali Regular (Only Packing)", "full_price": 196 },
-      { "name": "Thali Special", "full_price": 280 },
-      { "name": "Roomali Roti with Paneer Tikka Masala", "full_price": 250 },
-      { "name": "Rogan Soya Chap with Roomali Roti", "full_price": 250 }
+      {
+        "id": "thr",
+        "name": "Thali Regular (Only Packing)",
+        "full_price": 196,
+        "description": "A balanced meal with assorted North Indian dishes.",
+        "ingredients": [
+          "rice",
+          "dal",
+          "seasonal vegetable curry",
+          "roti (2-3 pieces)",
+          "salad",
+          "pickle",
+          "sweet"
+        ]
+      },
+      {
+        "id": "ths",
+        "name": "Thali Special",
+        "full_price": 280,
+        "description": "An enhanced North Indian thali with more variety.",
+        "ingredients": [
+          "rice",
+          "special dal (e.g., Dal Makhani)",
+          "paneer curry",
+          "seasonal vegetable curry",
+          "roti/naan (2-3 pieces)",
+          "raita",
+          "salad",
+          "pickle",
+          "sweet"
+        ]
+      },
+      {
+        "id": "rrwpm",
+        "name": "Roomali Roti with Paneer Tikka Masala",
+        "full_price": 250,
+        "description": "Soft roomali roti served with creamy paneer tikka masala.",
+        "ingredients": [
+          "roomali roti",
+          "paneer tikka pieces",
+          "rich tomato-onion gravy",
+          "cream",
+          "spices"
+        ]
+      },
+      {
+        "id": "rscwrr",
+        "name": "Rogan Soya Chap with Roomali Roti",
+        "full_price": 250,
+        "description": "Flavorful Rogan soya chap served with soft roomali roti.",
+        "ingredients": [
+          "roomali roti",
+          "soya chaap pieces",
+          "rich rogan josh style gravy (onions, tomatoes, yogurt, aromatic spices, red chili)"
+        ]
+      }
     ]
   },
-
   {
     "category": "South-Indian",
     "items": [
-      { "name": "Rice Idli", "full_price": 81 },
-      { "name": "Sambhar Vada", "full_price": 85 },
-      { "name": "Dahi Vada", "full_price": 81 }
+      {
+        "id": "ri",
+        "name": "Rice Idli",
+        "full_price": 81,
+        "description": "Steamed rice cakes, a South Indian staple.",
+        "ingredients": [
+          "rice",
+          "urad dal (black gram lentils)",
+          "fenugreek seeds",
+          "salt",
+          "water",
+          "oil (for greasing)"
+        ]
+      },
+      {
+        "id": "sv",
+        "name": "Sambhar Vada",
+        "full_price": 85,
+        "description": "Savory lentil fritters served with tangy sambhar.",
+        "ingredients": [
+          "vada (urad dal, spices, fried)",
+          "sambhar (tamarind, lentils, mixed vegetables, sambhar powder)"
+        ]
+      },
+      {
+        "id": "dv",
+        "name": "Dahi Vada",
+        "full_price": 81,
+        "description": "Soft lentil dumplings soaked in creamy yogurt.",
+        "ingredients": [
+          "vada (urad dal, fried)",
+          "yogurt",
+          "sweet chutney (tamarind, dates)",
+          "green chutney (mint, coriander)",
+          "roasted cumin powder",
+          "red chili powder",
+          "black salt"
+        ]
+      }
     ]
   },
-
   {
     "category": "Dosas",
     "items": [
-      { "name": "Plain Dosa (Butter)", "full_price": 125 },
-      { "name": "Onion Dosa (Butter)", "full_price": 136 },
-      { "name": "Paper Dosa", "full_price": 130 },
-      { "name": "Mysore Dosa", "full_price": 123 },
-      { "name": "Rawa Dosa", "full_price": 119 },
-      { "name": "Onion Rawa Dosa", "full_price": 136 },
-      { "name": "Masala Dosa (Butter)", "full_price": 145 },
-      { "name": "Onion Masala Dosa (Butter)", "full_price": 156 },
-      { "name": "Paper Masala Dosa", "full_price": 150 },
-      { "name": "Mysore Masala Dosa", "full_price": 143 },
-      { "name": "Rawa Masala Dosa", "full_price": 156 },
-      { "name": "Onion Rawa Masala Dosa", "full_price": 171 }
+      {
+        "id": "pdb",
+        "name": "Plain Dosa (Butter)",
+        "full_price": 125,
+        "description": "Thin, crispy crepe made from fermented batter, with butter.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "fenugreek seeds",
+          "salt",
+          "butter"
+        ]
+      },
+      {
+        "id": "odb",
+        "name": "Onion Dosa (Butter)",
+        "full_price": 136,
+        "description": "Dosa filled with sautéed onions and butter.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "onions (finely chopped)",
+          "fenugreek seeds",
+          "salt",
+          "butter"
+        ]
+      },
+      {
+        "id": "pd",
+        "name": "Paper Dosa",
+        "full_price": 130,
+        "description": "Extra thin and crispy dosa.",
+        "ingredients": ["rice", "urad dal", "fenugreek seeds", "salt"]
+      },
+      {
+        "id": "md",
+        "name": "Mysore Dosa",
+        "full_price": 123,
+        "description": "Spicy red chutney spread inside a dosa.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "fenugreek seeds",
+          "salt",
+          "red chili chutney (red chilies, garlic, spices)"
+        ]
+      },
+      {
+        "id": "rd",
+        "name": "Rawa Dosa",
+        "full_price": 119,
+        "description": "Crispy dosa made from semolina batter.",
+        "ingredients": [
+          "semolina (rawa)",
+          "rice flour",
+          "all-purpose flour",
+          "curd",
+          "cumin seeds",
+          "green chillies",
+          "coriander",
+          "onions",
+          "salt",
+          "water"
+        ]
+      },
+      {
+        "id": "ord",
+        "name": "Onion Rawa Dosa",
+        "full_price": 136,
+        "description": "Semolina dosa with crispy onions.",
+        "ingredients": [
+          "semolina (rawa)",
+          "rice flour",
+          "onions (finely chopped)",
+          "curd",
+          "cumin seeds",
+          "green chillies",
+          "coriander",
+          "salt",
+          "water"
+        ]
+      },
+      {
+        "id": "mdb",
+        "name": "Masala Dosa (Butter)",
+        "full_price": 145,
+        "description": "Dosa filled with spiced potato masala and butter.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "fenugreek seeds",
+          "salt",
+          "potato masala (boiled potatoes, onions, green chillies, curry leaves, mustard seeds)",
+          "butter"
+        ]
+      },
+      {
+        "id": "omdb",
+        "name": "Onion Masala Dosa (Butter)",
+        "full_price": 156,
+        "description": "Masala dosa with onions and butter.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "fenugreek seeds",
+          "salt",
+          "potato masala",
+          "onions (finely chopped)",
+          "butter"
+        ]
+      },
+      {
+        "id": "pmd",
+        "name": "Paper Masala Dosa",
+        "full_price": 150,
+        "description": "Very thin and crispy masala dosa.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "fenugreek seeds",
+          "salt",
+          "potato masala"
+        ]
+      },
+      {
+        "id": "mmd",
+        "name": "Mysore Masala Dosa",
+        "full_price": 143,
+        "description": "Spicy potato masala and red chutney inside a dosa.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "fenugreek seeds",
+          "salt",
+          "red chili chutney",
+          "potato masala"
+        ]
+      },
+      {
+        "id": "rmd",
+        "name": "Rawa Masala Dosa",
+        "full_price": 156,
+        "description": "Semolina dosa with a spiced potato filling.",
+        "ingredients": [
+          "semolina (rawa)",
+          "rice flour",
+          "curd",
+          "cumin seeds",
+          "green chillies",
+          "coriander",
+          "salt",
+          "water",
+          "potato masala"
+        ]
+      },
+      {
+        "id": "ormd",
+        "name": "Onion Rawa Masala Dosa",
+        "full_price": 171,
+        "description": "Semolina dosa with onions and potato masala.",
+        "ingredients": [
+          "semolina (rawa)",
+          "rice flour",
+          "onions (finely chopped)",
+          "curd",
+          "cumin seeds",
+          "green chillies",
+          "coriander",
+          "salt",
+          "water",
+          "potato masala"
+        ]
+      }
     ]
   },
-
   {
     "category": "Uttapam",
     "items": [
-      { "name": "Onion Uttapam", "full_price": 155 },
-      { "name": "Tomato Uttapam", "full_price": 155 },
-      { "name": "Mix Veg Uttapam", "full_price": 155 }
+      {
+        "id": "ou",
+        "name": "Onion Uttapam",
+        "full_price": 155,
+        "description": "Thick savory pancake topped with onions.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "onions (finely chopped)",
+          "green chillies",
+          "coriander",
+          "salt"
+        ]
+      },
+      {
+        "id": "tu",
+        "name": "Tomato Uttapam",
+        "full_price": 155,
+        "description": "Thick savory pancake topped with tomatoes.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "tomatoes (finely chopped)",
+          "green chillies",
+          "coriander",
+          "salt"
+        ]
+      },
+      {
+        "id": "mvu",
+        "name": "Mix Veg Uttapam",
+        "full_price": 155,
+        "description": "Thick savory pancake topped with mixed vegetables.",
+        "ingredients": [
+          "rice",
+          "urad dal",
+          "mixed vegetables (onions, tomatoes, capsicum, carrots, green chillies)",
+          "coriander",
+          "salt"
+        ]
+      }
     ]
   },
-
   {
     "category": "Rice",
     "items": [
-      { "name": "Sambhar Rice", "full_price": 132 },
-      { "name": "Curd Rice", "full_price": 132 }
+      {
+        "id": "sr_s",
+        "name": "Sambhar Rice",
+        "full_price": 132,
+        "description": "Rice mixed with tangy sambhar.",
+        "ingredients": [
+          "rice",
+          "sambhar (lentils, tamarind, mixed vegetables, sambhar powder)",
+          "ghee"
+        ]
+      },
+      {
+        "id": "cr",
+        "name": "Curd Rice",
+        "full_price": 132,
+        "description": "Comforting rice dish mixed with yogurt.",
+        "ingredients": [
+          "cooked rice",
+          "yogurt",
+          "milk",
+          "mustard seeds",
+          "curry leaves",
+          "ginger",
+          "green chillies",
+          "salt",
+          "oil (for tempering)"
+        ]
+      }
     ]
   },
-
   {
     "category": "Sweets",
-    "items": [{ "name": "Rava Kesri", "full_price": 72 }]
+    "items": [
+      {
+        "id": "rk",
+        "name": "Rava Kesri",
+        "full_price": 72,
+        "description": "Sweet semolina pudding, a delicious dessert.",
+        "ingredients": [
+          "semolina (rawa)",
+          "ghee",
+          "sugar",
+          "water",
+          "saffron",
+          "cardamom powder",
+          "cashews",
+          "raisins"
+        ]
+      }
+    ]
   },
-
   {
     "category": "Extra",
     "items": [
-      { "name": "Sambhar", "full_price": 35 },
-      { "name": "Chutney", "full_price": 15 }
+      {
+        "id": "s",
+        "name": "Sambhar",
+        "full_price": 35,
+        "description": "Extra serving of tangy lentil stew.",
+        "ingredients": [
+          "tamarind",
+          "lentils",
+          "mixed vegetables (drumstick, brinjal, pumpkin)",
+          "sambhar powder",
+          "salt",
+          "water"
+        ]
+      },
+      {
+        "id": "c",
+        "name": "Chutney",
+        "full_price": 15,
+        "description": "Extra serving of flavorful dipping sauce.",
+        "ingredients": [
+          "coconut",
+          "green chillies",
+          "ginger",
+          "roasted chana dal",
+          "tamarind",
+          "mustard seeds",
+          "curry leaves",
+          "salt",
+          "water"
+        ]
+      }
     ]
   },
-
   {
     "category": "S.L.U.R.P.",
-    "items": [{ "name": "Fresh Juices", "full_price": 160 }]
+    "items": [
+      {
+        "id": "fj",
+        "name": "Fresh Juices",
+        "full_price": 160,
+        "description": "Refreshing and healthy fresh fruit juices.",
+        "ingredients": [
+          "fresh fruits (e.g., orange, pineapple, watermelon, apple, grape)",
+          "water",
+          "sugar",
+          "ice"
+        ]
+      }
+    ]
   },
-
   {
     "category": "Smoothies & Mocktails",
     "items": [
-      { "name": "Fruit Punch", "full_price": 150 },
-      { "name": "Red Sea", "full_price": 150 },
-      { "name": "Virgin Colada", "full_price": 150 },
-      { "name": "Love Valley", "full_price": 150 },
-      { "name": "Pomi Twist", "full_price": 150 },
-      { "name": "Ginger Fizz", "full_price": 150 },
-      { "name": "Italian Smooch", "full_price": 150 },
-      { "name": "Devils Kiss", "full_price": 150 },
-      { "name": "Blue Lagoon", "full_price": 150 },
-      { "name": "Fresh Mint Mojito", "full_price": 150 },
-      { "name": "Kiwi Smoothie", "full_price": 150 },
-      { "name": "Virgin Guava", "full_price": 150 },
-      { "name": "Litchi Smoothie", "full_price": 150 },
-      { "name": "Peach Apricot", "full_price": 150 },
-      { "name": "Blue Berry Smoothie", "full_price": 150 },
-      { "name": "Green Hayland", "full_price": 150 },
-      { "name": "White Rosy", "full_price": 150 },
-      { "name": "Watermelon Mojito", "full_price": 150 }
+      {
+        "id": "fp",
+        "name": "Fruit Punch",
+        "full_price": 150,
+        "description": "A delightful mix of various fruit juices.",
+        "ingredients": [
+          "orange juice",
+          "pineapple juice",
+          "cranberry juice",
+          "lemon juice",
+          "ginger ale/soda",
+          "fruit slices (for garnish)"
+        ]
+      },
+      {
+        "id": "rs",
+        "name": "Red Sea",
+        "full_price": 150,
+        "description": "A vibrant and refreshing mocktail.",
+        "ingredients": [
+          "cranberry juice",
+          "grenadine syrup",
+          "lemon juice",
+          "soda/sprite",
+          "ice"
+        ]
+      },
+      {
+        "id": "vc",
+        "name": "Virgin Colada",
+        "full_price": 150,
+        "description": "Creamy and tropical non-alcoholic pina colada.",
+        "ingredients": ["pineapple juice", "coconut cream", "ice"]
+      },
+      {
+        "id": "lv",
+        "name": "Love Valley",
+        "full_price": 150,
+        "description": "A sweet and romantic mocktail.",
+        "ingredients": [
+          "strawberry syrup",
+          "cranberry juice",
+          "lemon juice",
+          "sprite/soda",
+          "ice"
+        ]
+      },
+      {
+        "id": "pt",
+        "name": "Pomi Twist",
+        "full_price": 150,
+        "description": "Tangy and sweet pomegranate twist mocktail.",
+        "ingredients": [
+          "pomegranate juice",
+          "lemon juice",
+          "mint leaves",
+          "sugar syrup",
+          "soda",
+          "ice"
+        ]
+      },
+      {
+        "id": "gf",
+        "name": "Ginger Fizz",
+        "full_price": 150,
+        "description": "Refreshing ginger-infused fizzy drink.",
+        "ingredients": [
+          "ginger (grated/juice)",
+          "lemon juice",
+          "sugar syrup",
+          "soda water",
+          "mint leaves",
+          "ice"
+        ]
+      },
+      {
+        "id": "is",
+        "name": "Italian Smooch",
+        "full_price": 150,
+        "description": "A sweet and bubbly Italian-inspired mocktail.",
+        "ingredients": [
+          "strawberry syrup",
+          "orange juice",
+          "lemon juice",
+          "sprite",
+          "ice"
+        ]
+      },
+      {
+        "id": "dk",
+        "name": "Devils Kiss",
+        "full_price": 150,
+        "description": "A fiery and intriguing mocktail.",
+        "ingredients": [
+          "cranberry juice",
+          "orange juice",
+          "grenadine",
+          "tabasco sauce (optional, for heat)",
+          "soda",
+          "ice"
+        ]
+      },
+      {
+        "id": "bl",
+        "name": "Blue Lagoon",
+        "full_price": 150,
+        "description": "A vibrant blue, tropical non-alcoholic drink.",
+        "ingredients": [
+          "blue curacao syrup (non-alcoholic)",
+          "lemonade",
+          "sprite/soda",
+          "ice"
+        ]
+      },
+      {
+        "id": "fmm",
+        "name": "Fresh Mint Mojito",
+        "full_price": 150,
+        "description": "Classic refreshing mojito with fresh mint.",
+        "ingredients": [
+          "fresh mint leaves",
+          "lime wedges",
+          "sugar",
+          "soda water",
+          "crushed ice"
+        ]
+      },
+      {
+        "id": "ks",
+        "name": "Kiwi Smoothie",
+        "full_price": 150,
+        "description": "Creamy and tangy kiwi-flavored smoothie.",
+        "ingredients": ["kiwi", "yogurt", "milk", "sugar", "ice"]
+      },
+      {
+        "id": "vg",
+        "name": "Virgin Guava",
+        "full_price": 150,
+        "description": "Sweet and refreshing guava-flavored drink.",
+        "ingredients": [
+          "guava juice",
+          "lemon juice",
+          "sugar syrup",
+          "chaat masala",
+          "ice"
+        ]
+      },
+      {
+        "id": "ls",
+        "name": "Litchi Smoothie",
+        "full_price": 150,
+        "description": "Exotic and sweet litchi-flavored smoothie.",
+        "ingredients": [
+          "litchi (fresh or canned)",
+          "yogurt",
+          "milk",
+          "sugar",
+          "ice"
+        ]
+      },
+      {
+        "id": "pa",
+        "name": "Peach Apricot",
+        "full_price": 150,
+        "description": "Fruity blend of peach and apricot.",
+        "ingredients": [
+          "peach juice/pulp",
+          "apricot juice/pulp",
+          "sugar syrup",
+          "lemon juice",
+          "soda",
+          "ice"
+        ]
+      },
+      {
+        "id": "bbs",
+        "name": "Blue Berry Smoothie",
+        "full_price": 150,
+        "description": "Rich and creamy blueberry-flavored smoothie.",
+        "ingredients": ["blueberries", "yogurt", "milk", "sugar", "ice"]
+      },
+      {
+        "id": "gh",
+        "name": "Green Hayland",
+        "full_price": 150,
+        "description": "A healthy and refreshing green-colored drink.",
+        "ingredients": [
+          "kiwi",
+          "spinach (optional, for color)",
+          "apple juice",
+          "lemon juice",
+          "sugar",
+          "ice"
+        ]
+      },
+      {
+        "id": "wr",
+        "name": "White Rosy",
+        "full_price": 150,
+        "description": "A delicate and floral white-colored drink.",
+        "ingredients": [
+          "lychee juice",
+          "rose syrup",
+          "lemon juice",
+          "soda",
+          "ice"
+        ]
+      },
+      {
+        "id": "wm",
+        "name": "Watermelon Mojito",
+        "full_price": 150,
+        "description": "Refreshing mojito with sweet watermelon.",
+        "ingredients": [
+          "watermelon chunks",
+          "mint leaves",
+          "lime wedges",
+          "sugar",
+          "soda water",
+          "crushed ice"
+        ]
+      }
     ]
   },
-
   {
     "category": "Ice Cream",
     "items": [
-      { "name": "Vanilla/Strawberry", "full_price": 51 },
-      { "name": "Tutti Fruti", "full_price": 60 },
-      { "name": "Pineapple", "full_price": 60 },
-      { "name": "Chocolate", "full_price": 60 },
-      { "name": "Butter Scotch", "full_price": 60 },
-      { "name": "Kaju Kishmish", "full_price": 60 },
-      { "name": "Vanilla Chocochips", "full_price": 60 },
-      { "name": "Mango", "full_price": 60 },
-      { "name": "Anjeer Honey", "full_price": 60 },
-      { "name": "Chocolate Almond Fudge", "full_price": 60 },
-      { "name": "Kesar Pista", "full_price": 60 },
-      { "name": "Black Currant", "full_price": 60 }
+      {
+        "id": "vs",
+        "name": "Vanilla/Strawberry",
+        "full_price": 51,
+        "description": "Classic scoops of vanilla or strawberry ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "vanilla extract / strawberry puree",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "tf",
+        "name": "Tutti Fruti",
+        "full_price": 60,
+        "description": "Ice cream with colorful candied fruits.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "candied fruits (tutti frutti)",
+          "flavoring",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "pi",
+        "name": "Pineapple",
+        "full_price": 60,
+        "description": "Sweet and tangy pineapple flavored ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "pineapple pulp/flavoring",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "ch",
+        "name": "Chocolate",
+        "full_price": 60,
+        "description": "Rich and decadent chocolate ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "cocoa powder",
+          "chocolate chunks",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "bs",
+        "name": "Butter Scotch",
+        "full_price": 60,
+        "description": "Creamy butterscotch ice cream with crunchy bits.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "butterscotch flavor",
+          "butterscotch nuts/praline",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "kk",
+        "name": "Kaju Kishmish",
+        "full_price": 60,
+        "description": "Ice cream loaded with cashews and raisins.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "cashews",
+          "raisins",
+          "cardamom",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "vc",
+        "name": "Vanilla Chocochips",
+        "full_price": 60,
+        "description": "Vanilla ice cream with delicious chocolate chips.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "vanilla extract",
+          "chocolate chips",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "mg",
+        "name": "Mango",
+        "full_price": 60,
+        "description": "Sweet and fruity mango flavored ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "mango pulp/flavoring",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "ah",
+        "name": "Anjeer Honey",
+        "full_price": 60,
+        "description": "Unique fig and honey flavored ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "dried figs (anjeer)",
+          "honey",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "caf",
+        "name": "Chocolate Almond Fudge",
+        "full_price": 60,
+        "description": "Chocolate ice cream with almonds and fudge.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "cocoa powder",
+          "almonds (roasted/chopped)",
+          "chocolate fudge sauce",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "kp",
+        "name": "Kesar Pista",
+        "full_price": 60,
+        "description": "Saffron and pistachio flavored Indian ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "saffron (kesar)",
+          "pistachios (pista)",
+          "cardamom",
+          "stabilizers"
+        ]
+      },
+      {
+        "id": "bc",
+        "name": "Black Currant",
+        "full_price": 60,
+        "description": "Tangy and sweet black currant flavored ice cream.",
+        "ingredients": [
+          "milk",
+          "cream",
+          "sugar",
+          "black currant pulp/flavoring",
+          "stabilizers"
+        ]
+      }
     ]
   },
-
   {
     "category": "Sundaes",
     "items": [
-      { "name": "Hot Chocolate Fudge", "full_price": 165 },
-      { "name": "Fruit Salad Sundae", "full_price": 165 }
+      {
+        "id": "hcf",
+        "name": "Hot Chocolate Fudge",
+        "full_price": 165,
+        "description": "Vanilla ice cream topped with hot chocolate fudge.",
+        "ingredients": [
+          "vanilla ice cream",
+          "hot chocolate fudge sauce",
+          "nuts (walnuts/almonds)",
+          "whipped cream",
+          "cherry (for garnish)"
+        ]
+      },
+      {
+        "id": "fss",
+        "name": "Fruit Salad Sundae",
+        "full_price": 165,
+        "description": "Ice cream with fresh fruit salad and toppings.",
+        "ingredients": [
+          "ice cream (vanilla/strawberry)",
+          "fresh fruit salad (seasonal fruits like apple, banana, grapes, pineapple)",
+          "fruit syrup",
+          "whipped cream",
+          "nuts"
+        ]
+      }
     ]
   },
-
   {
     "category": "Ice Cream Sodas",
     "items": [
-      { "name": "Lime Ice / Orange", "full_price": 119 },
-      { "name": "Golden Glow / Strawberry", "full_price": 119 }
+      {
+        "id": "lio",
+        "name": "Lime Ice / Orange",
+        "full_price": 119,
+        "description": "Refreshing soda with a scoop of ice cream and lime or orange flavor.",
+        "ingredients": [
+          "vanilla ice cream",
+          "lemon-lime soda / orange soda",
+          "lime cordial / orange syrup",
+          "ice"
+        ]
+      },
+      {
+        "id": "ggs",
+        "name": "Golden Glow / Strawberry",
+        "full_price": 119,
+        "description": "Sparkling soda with ice cream, golden glow or strawberry flavor.",
+        "ingredients": [
+          "vanilla ice cream",
+          "soda water",
+          "golden glow syrup (pineapple/peach based) / strawberry syrup",
+          "ice"
+        ]
+      }
     ]
   },
-
   {
     "category": "Ice Cream Shakes",
     "items": [
-      { "name": "Vanilla", "full_price": 128 },
-      { "name": "Mango", "full_price": 128 },
-      { "name": "Pineapple", "full_price": 128 },
-      { "name": "Chocolate / Coffee", "full_price": 128 },
-      { "name": "Kesar Pista", "full_price": 128 },
-      { "name": "Butter Scotch", "full_price": 128 }
+      {
+        "id": "vs",
+        "name": "Vanilla",
+        "full_price": 128,
+        "description": "Classic thick vanilla milkshake.",
+        "ingredients": [
+          "vanilla ice cream",
+          "milk",
+          "sugar",
+          "vanilla extract"
+        ]
+      },
+      {
+        "id": "ms",
+        "name": "Mango",
+        "full_price": 128,
+        "description": "Creamy mango flavored milkshake.",
+        "ingredients": ["mango ice cream / fresh mango pulp", "milk", "sugar"]
+      },
+      {
+        "id": "ps",
+        "name": "Pineapple",
+        "full_price": 128,
+        "description": "Sweet and tangy pineapple milkshake.",
+        "ingredients": [
+          "pineapple ice cream / fresh pineapple",
+          "milk",
+          "sugar"
+        ]
+      },
+      {
+        "id": "cc",
+        "name": "Chocolate / Coffee",
+        "full_price": 128,
+        "description": "Rich chocolate or invigorating coffee milkshake.",
+        "ingredients": [
+          "chocolate ice cream / coffee ice cream / cocoa powder / instant coffee",
+          "milk",
+          "sugar"
+        ]
+      },
+      {
+        "id": "kps",
+        "name": "Kesar Pista",
+        "full_price": 128,
+        "description": "Saffron and pistachio flavored milkshake.",
+        "ingredients": [
+          "kesar pista ice cream / milk",
+          "saffron",
+          "pistachios",
+          "sugar"
+        ]
+      },
+      {
+        "id": "bs",
+        "name": "Butter Scotch",
+        "full_price": 128,
+        "description": "Creamy butterscotch flavored milkshake.",
+        "ingredients": [
+          "butterscotch ice cream",
+          "milk",
+          "sugar",
+          "butterscotch essence"
+        ]
+      }
     ]
   },
-
   {
     "category": "Tea & Coffee",
     "items": [
-      { "name": "Tea", "full_price": 40 },
-      { "name": "Coffee Mocachino", "full_price": 51 },
-      { "name": "Coffee Americano (Black)", "full_price": 55 },
-      { "name": "Coffee Espresso", "full_price": 60 },
-      { "name": "Ice Tea (Lemon)", "full_price": 51 },
-      { "name": "Coffee Cappuccino", "full_price": 51 },
-      { "name": "Espresso (Black)", "full_price": 55 },
-      { "name": "Cold-Coffee (Frappe)", "full_price": 70 }
+      {
+        "id": "t",
+        "name": "Tea",
+        "full_price": 40,
+        "description": "Classic hot tea.",
+        "ingredients": [
+          "tea leaves/powder",
+          "water",
+          "milk",
+          "sugar",
+          "ginger/cardamom"
+        ]
+      },
+      {
+        "id": "cm",
+        "name": "Coffee Mocachino",
+        "full_price": 51,
+        "description": "Rich coffee with chocolate and milk.",
+        "ingredients": [
+          "espresso/coffee",
+          "milk",
+          "chocolate syrup/cocoa powder",
+          "sugar",
+          "whipped cream"
+        ]
+      },
+      {
+        "id": "ca",
+        "name": "Coffee Americano (Black)",
+        "full_price": 55,
+        "description": "Strong black coffee.",
+        "ingredients": ["espresso shots", "hot water"]
+      },
+      {
+        "id": "ce",
+        "name": "Coffee Espresso",
+        "full_price": 60,
+        "description": "Concentrated coffee shot.",
+        "ingredients": ["ground coffee beans", "water (brewed under pressure)"]
+      },
+      {
+        "id": "itl",
+        "name": "Ice Tea (Lemon)",
+        "full_price": 51,
+        "description": "Chilled tea with lemon flavor.",
+        "ingredients": [
+          "black tea (brewed)",
+          "lemon juice",
+          "sugar syrup",
+          "ice",
+          "lemon slices (for garnish)"
+        ]
+      },
+      {
+        "id": "ccp",
+        "name": "Coffee Cappuccino",
+        "full_price": 51,
+        "description": "Espresso with steamed milk foam.",
+        "ingredients": [
+          "espresso",
+          "steamed milk",
+          "milk foam",
+          "cocoa powder (for dusting, optional)"
+        ]
+      },
+      {
+        "id": "eb",
+        "name": "Espresso (Black)",
+        "full_price": 55,
+        "description": "Strong black espresso shot.",
+        "ingredients": ["ground coffee beans", "water (brewed under pressure)"]
+      },
+      {
+        "id": "cf",
+        "name": "Cold-Coffee (Frappe)",
+        "full_price": 70,
+        "description": "Blended chilled coffee drink.",
+        "ingredients": [
+          "instant coffee powder",
+          "milk",
+          "sugar",
+          "ice",
+          "vanilla ice cream",
+          "chocolate syrup"
+        ]
+      }
     ]
   },
-
   {
     "category": "Aerated Beverages",
     "items": [
-      { "name": "Cola / Orange / Lemon", "full_price": 55 },
-      { "name": "Diet Pepsi", "full_price": 55 },
-      { "name": "Fresh Lime Soda Sweet / Salt", "full_price": 60 },
-      { "name": "Mineral Water", "full_price": 55 },
-      { "name": "Fresh Lime Water Sweet / Salt", "full_price": 60 }
+      {
+        "id": "clo",
+        "name": "Cola / Orange / Lemon",
+        "full_price": 55,
+        "description": "Popular carbonated soft drinks.",
+        "ingredients": [
+          "carbonated water",
+          "sugar",
+          "flavoring (cola, orange, lemon)",
+          "citric acid",
+          "preservatives"
+        ]
+      },
+      {
+        "id": "dp",
+        "name": "Diet Pepsi",
+        "full_price": 55,
+        "description": "Sugar-free cola.",
+        "ingredients": [
+          "carbonated water",
+          "caramel color",
+          "aspartame",
+          "phosphoric acid",
+          "potassium benzoate",
+          "caffeine",
+          "citric acid",
+          "natural flavors"
+        ]
+      },
+      {
+        "id": "flss",
+        "name": "Fresh Lime Soda Sweet / Salt",
+        "full_price": 60,
+        "description": "Refreshing soda with fresh lime, sweet or salty.",
+        "ingredients": [
+          "fresh lime juice",
+          "sugar syrup (for sweet) / black salt (for salty)",
+          "soda water",
+          "ice",
+          "mint leaves"
+        ]
+      },
+      {
+        "id": "mw",
+        "name": "Mineral Water",
+        "full_price": 55,
+        "description": "Bottled mineral water.",
+        "ingredients": [
+          "purified water",
+          "minerals (naturally occurring or added)"
+        ]
+      },
+      {
+        "id": "flws",
+        "name": "Fresh Lime Water Sweet / Salt",
+        "full_price": 60,
+        "description": "Refreshing fresh lime water, sweet or salty.",
+        "ingredients": [
+          "fresh lime juice",
+          "sugar (for sweet) / salt (for salty)",
+          "water",
+          "ice"
+        ]
+      }
     ]
   }
 ]

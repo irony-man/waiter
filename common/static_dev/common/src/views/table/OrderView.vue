@@ -1,12 +1,14 @@
 <template>
   <Loader ref="loader">
-    <div class="container">
-      <Breadcrumb
-        :router-items="routerItems"
-        name="Order"/>
-      <header class="pb-3 bg-body sticky-top z-2">
+    <div class="">
+      <div class="container">
+        <Breadcrumb
+          :router-items="routerItems"
+          name="Order"/>
+      </div>
+      <header class="py-3 bg-body sticky-top z-2">
         <PageTitle
-          class="container border-bottom py-4 border-1 d-flex align-items-center justify-content-between"
+          class="container border-bottom border-1"
           :secondary="`Orders from Table: <strong class='text-primary'>#${instance.table.number}</strong>`"
           :primary="instance.table.restaurant?.name">
           <template #right>
@@ -17,7 +19,7 @@
           </template>
         </PageTitle>
       </header>
-      <div class="mb-5">
+      <div class="container mb-5">
         <Empty
           v-if="!totalItems"
           title="No Items"
@@ -79,6 +81,12 @@
                           <small
                             v-if="menu_item.description"
                             class="mt-2 fw-light">{{ menu_item.description }}</small>
+
+                          <div
+                            v-if="menu_item.ingredients"
+                            class="fw-light text-muted small mt-1">
+                            <strong>Ingredients:</strong> {{ menu_item.ingredients }}
+                          </div>
                         </td>
                         <td class="fw-light">
                           {{ item.price_type.toTitleCase() }}
