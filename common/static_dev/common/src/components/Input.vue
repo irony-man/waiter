@@ -18,7 +18,7 @@
         :max="max"
         class="form-control shadow-sm"
         :step="step ? step : undefined"
-        :class="{ 'hide-spin-buttons': hideSpinButtons, 'text-capitalize': textCapitalize, 'ps-5': icon }"
+        :class="{ 'hide-spin-buttons': hideSpinButtons, 'text-capitalize': textCapitalize, 'ps-5': icon, 'form-control-sm': size === 'sm', 'form-control-lg': size === 'lg' }"
         :value="modelValue"
         @blur="$emit('blur')"
         @input="onInput">
@@ -120,6 +120,11 @@ export default {
       default: null
     },
     icon: {
+      type: String,
+      required: false,
+      default: () => ''
+    },
+    size: {
       type: String,
       required: false,
       default: () => ''

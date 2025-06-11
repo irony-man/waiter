@@ -10,12 +10,11 @@
             <Button
               v-if="totalPrice"
               class="d-none d-sm-block btn-primary"
-              btn-icon="fa fa-bowl-food me-2"
+              btn-icon="fa fa-shopping-cart me-2"
               @click="isCartOpen = true">
               Items ({{ $filters.formatCurrency(totalPrice) }})
             </Button>
             <router-link
-              v-else
               class="d-none d-sm-block btn btn-primary"
               :to="{ name: 'table-order' }">
               <i class="fa fa-bowl-food me-2"/>
@@ -50,9 +49,11 @@
               <Input
                 v-model="searchTerm"
                 type="search"
+                name="search"
                 class="mb-5"
                 placeholder="Search for dishes or drinks..."
                 icon="fas fa-search"
+                size="lg"
                 @input="searchItem"/>
 
               <Empty
@@ -85,7 +86,7 @@
                           </h6>
                           <ItemIcon :menu-type="item.menu_type"/>
                         </div>
-                        <div class="text-danger mb-2">
+                        <div class="text-primary mb-2">
                           <span v-if="parseFloat(item.half_price)">
                             {{ $filters.formatCurrency(item.half_price) }} /
                           </span>
@@ -124,21 +125,21 @@
         <div class="fixed-bottom d-sm-none bg-primary text-white p-3 shadow-lg rounded-top-3 z-3">
           <div
             v-if="totalPrice"
-            class="d-flex justify-content-between align-items-center">
+            class="d-flex justify-content-between gap-3 flex-wrap align-items-center">
             <span class="fw-medium">Items ({{ $filters.formatCurrency(totalPrice) }})</span>
             <Button
               class="btn-light text-primary"
+              btn-icon="fa fa-shopping-cart me-2"
               @click="isCartOpen = true">
               View Cart
             </Button>
+            <router-link
+              class="btn btn-light text-primary"
+              :to="{ name: 'table-order' }">
+              <i class="fa fa-bowl-food me-2"/>
+              Orders
+            </router-link>
           </div>
-          <router-link
-            v-else
-            class="btn btn-light text-primary w-100"
-            :to="{ name: 'table-order' }">
-            <i class="fa fa-bowl-food me-2"/>
-            Orders
-          </router-link>
         </div>
 
         <CartFormModal
