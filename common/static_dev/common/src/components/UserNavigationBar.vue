@@ -23,12 +23,13 @@
           class="navbar-toolbar d-flex gap-3 align-items-center">
           <a
             v-if="user.is_staff"
-            class="ms-1 me-1 me-lg-5"
+            class="ms-1 me-1 me-lg-5 nav-link"
             href="/wtr-adm/"
             target="_blank">
             <i class="fas fa-user me-2"/> Admin
           </a>
           <a
+            class="nav-link"
             href="/logout/">
             <div class="mt-2">
               <i class="fas fa-right-from-bracket"/> Logout

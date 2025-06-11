@@ -7,8 +7,8 @@
         <div
           class="text-center"
           style="max-width: 780px;">
-          <div class="fs-1 text-primary mb-3">
-            Welcome to <strong>Waiter</strong>
+          <div class="fs-1 mb-3">
+            Welcome to <strong class="text-primary">Waiter</strong>
           </div>
           <div class="mb-5">
             The ultimate dining experience! Our platform allows you to easily order food directly from your table at your
