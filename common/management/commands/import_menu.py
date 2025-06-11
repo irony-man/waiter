@@ -4,8 +4,6 @@ from common.tasks import import_menu_items
 
 
 class Command(BaseCommand):
-    # To run:
-    # ./manage.py import_menu --file <path>
     help = "Imports menu items"
 
     def add_arguments(self, parser):
