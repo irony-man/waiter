@@ -2,12 +2,10 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.files.images import ImageFile
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import (
     PROTECT,
     BooleanField,
     CharField,
-    DateTimeField,
     DecimalField,
     ForeignKey,
     ImageField,
@@ -17,10 +15,10 @@ from django.db.models import (
     TextField,
     UUIDField,
 )
-from loguru import logger
 
 from common.abstract_models import CreateUpdate
-from common.model_helpers import attach_qr, now_time, random_pin
+from common.model_helpers import attach_qr
+from common.storage_backends import PublicMediaStorage
 from common.taxonomies import MenuType, OrderStatus, PriceType
 
 
@@ -43,17 +41,6 @@ class UserProfile(CreateUpdate):
     def full_name(self):
         return self.user.get_full_name()
 
-    # def request_password_reset(self):
-    #     now = timezone.now()
-    #     delta = now - timedelta(minutes=10)
-    #     recent = PasswordResetRequest.objects.filter(
-    #         user=self.user, created__range=(delta, now)
-    #     )
-    #     if recent.exists():
-    #         logger.info("Request less than 10 minutes old exists.")
-    #         return
-    #     PasswordResetRequest.objects.create(user=self.user)
-
 
 class Restaurant(CreateUpdate):
     name = CharField(max_length=512)
@@ -74,7 +61,7 @@ class Restaurant(CreateUpdate):
 class Table(CreateUpdate):
     number = PositiveIntegerField(default=0)
     restaurant = ForeignKey(Restaurant, on_delete=PROTECT)
-    qr_code = ImageField()
+    qr_code = ImageField(storage=PublicMediaStorage())
     qr_code_response = JSONField(default=dict, blank=True)
 
     def qr_code_url(self):
@@ -94,7 +81,7 @@ class Table(CreateUpdate):
 class Category(CreateUpdate):
     name = CharField(max_length=512)
     restaurant = ForeignKey(Restaurant, on_delete=PROTECT)
-    image = ImageField(blank=True, null=True)
+    image = ImageField(blank=True, null=True, storage=PublicMediaStorage())
 
     def __str__(self):
         return f"{self.name} / {self.restaurant}"
@@ -105,7 +92,7 @@ class Category(CreateUpdate):
 
 class MenuItem(CreateUpdate):
     name = CharField(max_length=512)
-    image = ImageField(blank=True, null=True)
+    image = ImageField(blank=True, null=True, storage=PublicMediaStorage())
     category = ForeignKey(Category, on_delete=PROTECT)
     menu_type = CharField(
         max_length=8, choices=MenuType.choices, default=MenuType.VEG

@@ -73,7 +73,7 @@
                 </div>
                 <img
                   class="img card-img-bottom"
-                  :src="table.qr_code_url"
+                  :src="table.qr_code"
                   :alt="`Table number ${table.number}`">
               </div>
             </div>

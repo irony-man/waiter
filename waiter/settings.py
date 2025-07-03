@@ -39,6 +39,8 @@ DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "cloudinary",
     "phonenumber_field",
+    "storages",
     # Internal
     "common.apps.CommonConfig",
 ]
@@ -228,6 +231,28 @@ MEDIA_ROOT = os.getenv("MEDIA_ROOT")
 
 BASE_URL = os.getenv("BASE_URL")
 
+
+USE_S3 = os.getenv("AWS_USE_OBJECT_STORE", "False") == "True"
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_STORAGE_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_STORAGE_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.getenv("AWS_STORAGE_REGION", "ap-south-1")
+
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = (
+        f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+    )
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = MEDIA_ROOT
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
+    DEFAULT_FILE_STORAGE = "common.storage_backends.PublicMediaStorage"
+
+
 MEDIAFILES_LOCATION = "media"
 
 REQUESTS_TIMEOUT = 10
@@ -237,19 +262,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("common:dashboard")
 LOGOUT_URL = reverse_lazy("common:logout")
 
 
-import cloudinary
-
-cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_NAME"),
-    api_key=os.getenv("CLOUDINARY_KEY"),
-    api_secret=os.getenv("CLOUDINARY_SECRET"),
-)
-
-import cloudinary.api
-import cloudinary.uploader
-
 if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     STATICFILES_STORAGE = (
         "whitenoise.storage.CompressedManifestStaticFilesStorage"
     )
